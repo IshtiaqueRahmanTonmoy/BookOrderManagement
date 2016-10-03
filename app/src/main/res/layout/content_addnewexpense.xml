@@ -29,11 +29,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="3dip"
         android:textStyle="bold"
-        android:text="Destination from"
+        android:text="Destination from "
         android:layout_marginBottom="5dp"/>
 
     <EditText
-        android:id="@+id/onudanEdit"
+        android:id="@+id/Destinationfrom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Destination from.."
@@ -48,7 +48,7 @@
         android:layout_marginBottom="5dp"/>
 
     <EditText
-        android:id="@+id/onudanEdit1"
+        android:id="@+id/Destinationto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Destination to.."
@@ -63,7 +63,7 @@
         android:layout_marginBottom="5dp"/>
 
     <EditText
-        android:id="@+id/onudanEdit2"
+        android:id="@+id/Vehiclename"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Name of vehicle"
@@ -79,7 +79,7 @@
         android:layout_marginBottom="5dp"/>
 
     <EditText
-        android:id="@+id/onudanEdit3"
+        android:id="@+id/cost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Cost.."
@@ -93,7 +93,7 @@
         android:text="Distance in km"
         android:textAllCaps="true" />
     <EditText
-        android:id="@+id/onudanEdit4"
+        android:id="@+id/Distanceinkm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Distance in km.."
@@ -107,7 +107,7 @@
         android:layout_marginBottom="5dp"/>
 
     <EditText
-        android:id="@+id/onudanEdit5"
+        android:id="@+id/Mobilerent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Mobile rent.."
@@ -121,7 +121,7 @@
         android:layout_marginBottom="5dp"/>
 
     <EditText
-        android:id="@+id/onudanEdit6"
+        android:id="@+id/Compensation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Compensation.."
@@ -135,7 +135,7 @@
         android:layout_marginBottom="5dp"/>
 
     <EditText
-        android:id="@+id/onudanEdit7"
+        android:id="@+id/Packetwithdraw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Packet widthdraw.."
@@ -149,7 +149,7 @@
         android:layout_marginBottom="5dp"/>
 
     <EditText
-        android:id="@+id/onudanEdit8"
+        android:id="@+id/Othercost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Other cost.."
@@ -163,7 +163,7 @@
         android:layout_marginBottom="5dp"/>
 
     <EditText
-        android:id="@+id/onudanEdit9"
+        android:id="@+id/Totalamount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Total.."

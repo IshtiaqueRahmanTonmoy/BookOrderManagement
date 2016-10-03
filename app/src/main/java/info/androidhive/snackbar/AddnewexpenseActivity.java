@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -18,13 +19,25 @@ public class AddnewexpenseActivity extends AppCompatActivity {
     Spinner spinner;
     private ArrayList<String> expenselist;
 
+    EditText distancefrom,distanceto,nameofvehicle,cost,distanceinkm,mobilerent,packetwithdraw,othercost,total;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_addnewexpense);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        distancefrom = (EditText) findViewById(R.id.Destinationfrom);
+        distanceto = (EditText) findViewById(R.id.Destinationto);
+        nameofvehicle = (EditText) findViewById(R.id.Vehiclename);
+        cost = (EditText) findViewById(R.id.cost);
+        distanceinkm = (EditText) findViewById(R.id.Distanceinkm);
+        mobilerent = (EditText) findViewById(R.id.Mobilerent);
+        packetwithdraw = (EditText) findViewById(R.id.Packetwithdraw);
+        othercost = (EditText) findViewById(R.id.Othercost);
+        total = (EditText) findViewById(R.id.Totalamount);
 
         spinner = (Spinner) findViewById(R.id.expensetype);
         expenselist = new ArrayList<String>();
