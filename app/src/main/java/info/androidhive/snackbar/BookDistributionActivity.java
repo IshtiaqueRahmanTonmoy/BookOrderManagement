@@ -37,7 +37,7 @@ public class BookDistributionActivity extends AppCompatActivity {
 
         listview = (ListView) findViewById(R.id.mobile_list);
         listview.setAdapter(new DistributeBooktoTeacherCustomList(this, new String[] { "data1",
-                "data2" }));
+                "data2" },new String[] {"value1","value2"}));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

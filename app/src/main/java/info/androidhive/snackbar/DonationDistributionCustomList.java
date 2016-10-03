@@ -15,12 +15,14 @@ public class DonationDistributionCustomList extends BaseAdapter{
 
     Context context;
     String[] data;
+    String[] value;
     private static LayoutInflater inflater = null;
 
-    public  DonationDistributionCustomList(Context context, String[] data) {
+    public  DonationDistributionCustomList(Context context, String[] data,String[] value) {
         // TODO Auto-generated constructor stub
         this.context = context;
         this.data = data;
+        this.value = value;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -49,10 +51,10 @@ public class DonationDistributionCustomList extends BaseAdapter{
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.donationdistributioncustomlistview, null);
-        TextView booktext = (TextView) vi.findViewById(R.id.bookname);
-        TextView currentstock = (TextView) vi.findViewById(R.id.currentstock);
+        TextView booktext = (TextView) vi.findViewById(R.id.textView1);
+        TextView currentstock = (TextView) vi.findViewById(R.id.textView2);
         booktext.setText(data[position]);
-        currentstock.setText(data[position]);
+        currentstock.setText(value[position]);
         return vi;
     }
 }
