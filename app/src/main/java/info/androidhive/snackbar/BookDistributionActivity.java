@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -14,6 +15,7 @@ public class BookDistributionActivity extends AppCompatActivity {
 
     String[] SPINNERLIST = {"Android Material Design", "Material Design Spinner", "Spinner Using Material Library", "Material Spinner Example"};
 
+    ListView listview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +34,10 @@ public class BookDistributionActivity extends AppCompatActivity {
 
         materialDesignSpinner.setAdapter(arrayAdapter);
         materialDesignSpinner1.setAdapter(arrayAdapter);
+
+        listview = (ListView) findViewById(R.id.mobile_list);
+        listview.setAdapter(new DistributeBooktoTeacherCustomList(this, new String[] { "data1",
+                "data2" }));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

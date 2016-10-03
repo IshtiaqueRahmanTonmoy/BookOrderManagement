@@ -32,22 +32,22 @@
         android:text="Button" />
 
     <TextView
-        android:text="TextView"
+        android:text="Bookname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/button1"
         android:layout_alignLeft="@+id/textView1"
         android:layout_alignStart="@+id/textView1"
-        android:id="@+id/textView10" />
+        android:id="@+id/bookname" />
 
     <TextView
-        android:text="TextView"
+        android:text="CurrentStock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView10"
+        android:layout_alignTop="@+id/bookname"
         android:layout_alignLeft="@+id/textView2"
         android:layout_alignStart="@+id/textView2"
-        android:id="@+id/textView17" />
+        android:id="@+id/currentstock" />
 
 
 </RelativeLayout>
