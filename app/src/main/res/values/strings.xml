@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Dikdorshon</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_book_requistion">BookRequistionActivity</string>
+    <string name="title_activity_book_distribution">BookDistributionActivity</string>
+    <string name="title_activity_donationrequistion">Donationrequistion</string>
+    <string name="title_activity_donationdistribution">DonationdistributionActivity</string>
+    <string name="title_activity_addnewexpense">AddnewexpenseActivit</string>
+
+    <string name="Bookname">Book name</string>
+    <string name="Bookcode">Book code</string>
+    <string name="Bookprice">Book price</string>
+    <string name="Currentstock">Current stock</string>
+    <string name="Transferquantity">Transfer quantity</string>
+</resources>
