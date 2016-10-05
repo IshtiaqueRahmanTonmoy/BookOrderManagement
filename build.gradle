@@ -12,6 +12,10 @@ buildscript {
     }
 }
 
+configurations {
+    compile.exclude group: "org.apache.httpcomponents", module: "httpclient"
+}
+
 allprojects {
     repositories {
         jcenter()

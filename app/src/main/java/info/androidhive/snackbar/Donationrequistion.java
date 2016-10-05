@@ -1,5 +1,7 @@
 package info.androidhive.snackbar;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -52,7 +54,7 @@ public class Donationrequistion extends AppCompatActivity {
     Spinner instspinner,teacherspinner,subjectnamespinner,classnamespinner,booknamespinner;
     private ArrayList<String> instlist,teacherlist,subjectlist,classlist,booklist;
     private static String url_institute = "http://192.168.0.106/dikpl/android/home/getCollegeForDonationInsert";
-
+    private static String baseurl="http://192.168.0.106/dikpl/android/home/getInfoWhere";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_INSID = "id";
     private static final String TAG_INSNAME = "name";
@@ -67,7 +69,8 @@ public class Donationrequistion extends AppCompatActivity {
     private static final String TAG_BOOKID = "id";
     private static final String TAG_BOOKNAME = "book_name";
     String insid,insname,teachername,cid,sids,subjid,classid,teacherid,subjectid,subjectname,classname,bookid,bookname,onudanamount,nostudent,possbook,amountk;
-
+    private ProgressDialog pDialog;
+    private JSONParser jsonparser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,14 +179,18 @@ public class Donationrequistion extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
                 nostudent = Noofstudent.getText().toString();
                 possbook = possiblebooks.getText().toString();
                 amountk = amountoftk.getText().toString();
                 onudanamount = onudan.getText().toString();
 
-                Toast.makeText(getApplicationContext(),"no of student"+onudanamount,Toast.LENGTH_LONG).show();
-                insert(cid,teacherid,subjectid,classid,nostudent,possbook,onudanamount,bookid,amountk);
+                //Toast.makeText(getApplicationContext(),"no of student"+onudanamount,Toast.LENGTH_LONG).show();
+                //insert(cid,teacherid,subjectid,classid,nostudent,possbook,onudanamount,bookid,amountk);
                 //String cid,teacherid,subjectid,classid,noofstudent,possiblebooks,onudan,bookid,amountoftk;
+
+
+                new InsertintoDatabase().execute();
             }
         });
 
@@ -199,63 +206,7 @@ public class Donationrequistion extends AppCompatActivity {
             }
         });
 
-        
-    }
 
-    private void insert(String cid,String tid, String subid,String clid,String nostu,String posbook,String onduans,String booksid,String amtk){
-        class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
-            @Override
-            protected String doInBackground(String... params) {
-                String paramtid1 = params[0];
-                String paramtid2 = params[1];
-                String paramtid3 = params[2];
-                String paramtid4 = params[3];
-                String paramtid5 = params[4];
-                String paramtid6 = params[5];
-                String paramtid7 = params[6];
-                String paramtid8 = params[7];
-                String paramtid9 = params[8];
-
-             /*
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                nameValuePairs.add(new BasicNameValuePair("name", name));
-                nameValuePairs.add(new BasicNameValuePair("address", add));
-                nameValuePairs.add(new BasicNameValuePair("address", add));
-                nameValuePairs.add(new BasicNameValuePair("address", add));
-                nameValuePairs.add(new BasicNameValuePair("address", add));
-                nameValuePairs.add(new BasicNameValuePair("address", add));
-                nameValuePairs.add(new BasicNameValuePair("address", add));
-                nameValuePairs.add(new BasicNameValuePair("address", add));
-                nameValuePairs.add(new BasicNameValuePair("address", add));
-             */
-
-                try {
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpPost httpPost = new HttpPost("http://simplifiedcoding.16mb.com/insert-db.php");
-                    //httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                    HttpResponse response = httpClient.execute(httpPost);
-
-                    HttpEntity entity = response.getEntity();
-
-
-                } catch (ClientProtocolException e) {
-
-                } catch (IOException e) {
-
-                }
-                return "success";
-            }
-
-            @Override
-            protected void onPostExecute(String result) {
-                super.onPostExecute(result);
-
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
-            }
-        }
-        SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
-        sendPostReqAsyncTask.execute(cid,tid,subid,clid,nostu,posbook,onduans,booksid,amtk);
     }
 
 
@@ -270,10 +221,10 @@ public class Donationrequistion extends AppCompatActivity {
                 public void run() {
                     try {
 
-                        JSONParser jP = new JSONParser();
+                        jsonparser = new JSONParser();
 
                         List<NameValuePair> param = new ArrayList<NameValuePair>();
-                        JSONObject json = jP.makeHttpRequest(url_institute, "GET", param);
+                        JSONObject json = jsonparser.makeHttpRequest(url_institute, "GET", param);
                         // Checking for SUCCESS TAG
                         int success = json.getInt(TAG_SUCCESS);
 
@@ -328,15 +279,15 @@ public class Donationrequistion extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    JSONParser jP = new JSONParser();
+                    jsonparser = new JSONParser();
                     List<NameValuePair> param = new ArrayList<NameValuePair>();
 
                     //String val = insid;
                     //Toast.makeText(getApplicationContext(),""+val,Toast.LENGTH_LONG).show();
 
-                    String url_teacher = "http://192.168.0.106/dikpl/android/home/getInfoWhere/teachers/college_id/"+cid+"/id-name";
+                    String url_teacher = ""+baseurl+"/teachers/college_id/"+cid+"/id-name";
                     //param.add(new BasicNameValuePair(TAG_COLLEGEID, insid));
-                    JSONObject json = jP.makeHttpRequest(url_teacher, "GET", param);
+                    JSONObject json = jsonparser.makeHttpRequest(url_teacher, "GET", param);
 
                     Log.e("Response: ", "> " + json);
 
@@ -385,15 +336,15 @@ public class Donationrequistion extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    JSONParser jP = new JSONParser();
+                    jsonparser = new JSONParser();
                     List<NameValuePair> param = new ArrayList<NameValuePair>();
 
                     //String val = insid;
                     //Toast.makeText(getApplicationContext(),""+val,Toast.LENGTH_LONG).show();
 
-                    String url_teacher = "http://192.168.0.106/dikpl/android/home/getInfoWhere/department/id/"+sids+"/id-name";
+                    String url_teacher = ""+baseurl+"/department/id/"+sids+"/id-name";
                     //param.add(new BasicNameValuePair(TAG_COLLEGEID, insid));
-                    JSONObject json = jP.makeHttpRequest(url_teacher, "GET", param);
+                    JSONObject json = jsonparser.makeHttpRequest(url_teacher, "GET", param);
 
                     Log.e("Response: ", "> " + json);
 
@@ -442,15 +393,15 @@ public class Donationrequistion extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    JSONParser jP = new JSONParser();
+                    jsonparser = new JSONParser();
                     List<NameValuePair> param = new ArrayList<NameValuePair>();
 
                     //String val = insid;
                     //Toast.makeText(getApplicationContext(),""+val,Toast.LENGTH_LONG).show();
 
-                    String url_teacher = "http://192.168.0.106/dikpl/android/home/getInfoWhere/tbl_class/id/"+subjid+"/id-name";
+                    String url_teacher = ""+baseurl+"/tbl_class/id/"+subjid+"/id-name";
                     //param.add(new BasicNameValuePair(TAG_COLLEGEID, insid));
-                    JSONObject json = jP.makeHttpRequest(url_teacher, "GET", param);
+                    JSONObject json = jsonparser.makeHttpRequest(url_teacher, "GET", param);
 
                     Log.e("Response: ", "> " + json);
 
@@ -500,15 +451,15 @@ public class Donationrequistion extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    JSONParser jP = new JSONParser();
+                    jsonparser = new JSONParser();
                     List<NameValuePair> param = new ArrayList<NameValuePair>();
 
                     //String val = insid;
                     //Toast.makeText(getApplicationContext(),""+val,Toast.LENGTH_LONG).show();
 
-                    String url_teacher = "http://192.168.0.106/dikpl/android/home/getInfoWhere/books/class_id/"+classid+"/id-book_name";
+                    String url_teacher = ""+baseurl+"/books/class_id/"+classid+"/id-book_name";
                     //param.add(new BasicNameValuePair(TAG_COLLEGEID, insid));
-                    JSONObject json = jP.makeHttpRequest(url_teacher, "GET", param);
+                    JSONObject json = jsonparser.makeHttpRequest(url_teacher, "GET", param);
 
                     Log.e("Response: ", "> " + json);
 
@@ -551,4 +502,43 @@ public class Donationrequistion extends AppCompatActivity {
         }
     }
 
+    private class InsertintoDatabase extends AsyncTask<String,String,String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+
+            //Toast.makeText(getApplicationContext(),"possible book"+possbook,Toast.LENGTH_LONG).show();
+            //insert(cid,teacherid,subjectid,classid,nostudent,possbook,onudanamount,bookid,amountk);
+
+
+
+            String urlsubmidata = "http://192.168.0.106/dikpl/android/donation/add/";
+            //String urlsubmidata = ""+url+"/";
+            List<NameValuePair> paramss = new ArrayList<NameValuePair>();
+            paramss.add(new  BasicNameValuePair("college_id",cid));
+            paramss.add(new  BasicNameValuePair("teacher_id",teacherid));
+            paramss.add(new  BasicNameValuePair("department_id",subjectid));
+            paramss.add(new  BasicNameValuePair("class_id",classid));
+            paramss.add(new  BasicNameValuePair("student_quantity",nostudent));
+            paramss.add(new  BasicNameValuePair("possible_book",possbook));
+            paramss.add(new BasicNameValuePair("duration", onudanamount));
+            paramss.add(new  BasicNameValuePair("book_id",bookid));
+            paramss.add(new  BasicNameValuePair("money_amount",amountk));
+
+            JSONObject json = jsonparser.makeHttpRequest(urlsubmidata,
+                    "POST", paramss);
+
+            // check log cat fro response
+            Log.d("Create Response", json.toString());
+
+            // check for success tag
+            //Toast.makeText(getApplicationContext(),"Successfully inserted..",Toast.LENGTH_LONG).show();
+
+                    // closing this screen
+
+            return null;
+
+        }
+    }
 }
