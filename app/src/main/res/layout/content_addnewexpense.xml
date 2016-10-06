@@ -103,6 +103,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="3dip"
         android:textStyle="bold"
+        android:text="Transport cost"
+        android:layout_marginBottom="5dp"/>
+
+    <EditText
+        android:id="@+id/Transportcost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Transport cost.."
+        android:textCursorDrawable="@drawable/text_cursor_cyan"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dip"
+        android:textStyle="bold"
         android:text="Mobile rent"
         android:layout_marginBottom="5dp"/>
 

@@ -17,9 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -31,10 +29,10 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
     Spinner spinner;
     private ArrayList<String> expenselist;
-    String distancefr,distancet,nameofvehic,distancekm,packetdrawal,othercosts,type;
-    EditText distancefrom,distanceto,nameofvehicle,cost,distanceinkm,mobilerent,packetwithdraw,othercost,total;
+    String distancefr,distancet,nameofvehic,distancekm,type;
+    EditText distancefrom,distanceto,nameofvehicle,cost,distanceinkm,mobilerent,Transportcost,Compensations,packetwithdraw,othercost,total;
     Button submit;
-    int costs =0,mobrent=0,totals=0,valuecost=0,byvalue=0;
+    int costs =0,mobrent=0,totals=0,byvalue=0,compensations=0,packetwidthdraw=0,othercosts=0;
     JSONParser jsonParser;
 
     @Override
@@ -52,6 +50,8 @@ public class AddnewexpenseActivity extends AppCompatActivity {
         cost = (EditText) findViewById(R.id.cost);
         distanceinkm = (EditText) findViewById(R.id.Distanceinkm);
         mobilerent = (EditText) findViewById(R.id.Mobilerent);
+        Compensations = (EditText) findViewById(R.id.Compensation);
+        Transportcost = (EditText) findViewById(R.id.Transportcost);
         packetwithdraw = (EditText) findViewById(R.id.Packetwithdraw);
         othercost = (EditText) findViewById(R.id.Othercost);
         total = (EditText) findViewById(R.id.Totalamount);
@@ -81,30 +81,25 @@ public class AddnewexpenseActivity extends AppCompatActivity {
             }
         });
 
-
         cost.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                  costs = Integer.parseInt(cost.getText().toString());
+                  Transportcost.setText(""+costs);
+                  Toast.makeText(getApplicationContext(),""+costs+""+mobrent,Toast.LENGTH_LONG).show();
+                  giveMeSum(costs);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 cost.removeTextChangedListener(this);
-                costs = Integer.parseInt(cost.getText().toString());
+                if (costs!=Integer.parseInt(cost.getText().toString())) {
 
-                if(byvalue == 0){
-                    total.setText(""+costs);
-                    byvalue = Integer.parseInt(total.getText().toString());
-                    //total.setText(""+byvalue);
-                }
-                else {
-                    totals = costs + byvalue;
-                    //valuecost = costs + totals;
-                    total.setText(""+totals);
                 }
             }
         });
@@ -117,23 +112,68 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                  mobrent = Integer.parseInt(mobilerent.getText().toString());
+                  giveMeSum(mobrent);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 mobilerent.removeTextChangedListener(this);
-                mobrent = Integer.parseInt(mobilerent.getText().toString());
+            }
+        });
 
-                if(byvalue == 0){
-                    total.setText(""+mobrent);
-                    byvalue = Integer.parseInt(total.getText().toString());
-                    //total.setText(""+byvalue);
-                }
-                else {
-                    totals = mobrent + byvalue;
-                    //valuecost = mobrent + totals;
-                    total.setText(""+totals);
-                }
+
+        Compensations.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                compensations = Integer.parseInt(Compensations.getText().toString());
+                giveMeSum(compensations);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Compensations.removeTextChangedListener(this);
+            }
+        });
+
+        packetwithdraw.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                packetwidthdraw = Integer.parseInt(packetwithdraw.getText().toString());
+                giveMeSum(packetwidthdraw);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                packetwithdraw.removeTextChangedListener(this);
+            }
+        });
+
+        othercost.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                othercosts = Integer.parseInt(othercost.getText().toString());
+                giveMeSum(othercosts);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                 othercost.removeTextChangedListener(this);
             }
         });
 
@@ -164,6 +204,10 @@ public class AddnewexpenseActivity extends AppCompatActivity {
         });
     }
 
+    private void giveMeSum(int value) {
+        totals+=value;
+        total.setText(""+totals);
+    }
 
     private class InsertintoDB extends AsyncTask<String,String,String> {
 
