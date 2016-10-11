@@ -183,8 +183,23 @@ public class AddnewexpenseActivity extends AppCompatActivity {
                 alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Do something with value!
-                    }
-                });
+                                distancefr = distancefrom.getText().toString();
+                                distancet = distanceto.getText().toString();
+                                nameofvehic = nameofvehicle.getText().toString();
+                                //costs = Integer.parseInt(cost.getText().toString());
+                                distancekm = distanceinkm.getText().toString();
+                                transportcost = Integer.parseInt(Transportcost.getText().toString());
+                                mobrent = Integer.parseInt(mobilerent.getText().toString());
+                                packetdrawal = Integer.parseInt(packetwithdraw.getText().toString());
+                                othercosts = Integer.parseInt(othercost.getText().toString());
+                                totals = Integer.parseInt(total.getText().toString());
+
+                                distotal = Integer.parseInt(input2.getText().toString());
+                                officeuse = Integer.parseInt(input4.getText().toString());
+                                kmrent = Integer.parseInt(input5.getText().toString());
+                                new InsertintoDB().execute();
+                         }
+                   });
 
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -293,26 +308,7 @@ public class AddnewexpenseActivity extends AppCompatActivity {
             }
         });
 
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                distancefr = distancefrom.getText().toString();
-                distancet = distanceto.getText().toString();
-                nameofvehic = nameofvehicle.getText().toString();
-                //costs = Integer.parseInt(cost.getText().toString());
-                distancekm = distanceinkm.getText().toString();
-                transportcost = Integer.parseInt(Transportcost.getText().toString());
-                mobrent = Integer.parseInt(mobilerent.getText().toString());
-                packetdrawal = Integer.parseInt(packetwithdraw.getText().toString());
-                othercosts = Integer.parseInt(othercost.getText().toString());
-                totals = Integer.parseInt(total.getText().toString());
 
-                distotal = Integer.parseInt(input2.getText().toString());
-                officeuse = Integer.parseInt(input4.getText().toString());
-                kmrent = Integer.parseInt(input5.getText().toString());
-                new InsertintoDB().execute();
-            }
-        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -322,6 +318,10 @@ public class AddnewexpenseActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+
+
     }
 
     private void giveMeSum(int value) {
@@ -340,27 +340,28 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
             jsonParser = new JSONParser();
 
-            String urlsubmidata = "http://192.168.0.106/dikpl/android/Home/ExpenseAdd/";
+            String urlsubmidata = "http://192.168.0.106/dikpl/android/Expense/add_expense/";
             //String urlsubmidata = ""+url+"/";
             List<NameValuePair> paramss = new ArrayList<NameValuePair>();
 
-            paramss.add(new BasicNameValuePair("",distancefr));
-            paramss.add(new  BasicNameValuePair("",distancet));
-            paramss.add(new  BasicNameValuePair("",nameofvehic));
-            paramss.add(new  BasicNameValuePair("",String.valueOf(costs)));
-            paramss.add(new  BasicNameValuePair("",distancekm));
-            paramss.add(new  BasicNameValuePair("",String.valueOf(transportcost)));
-            paramss.add(new  BasicNameValuePair("",String.valueOf(mobrent)));
-            paramss.add(new BasicNameValuePair("", String.valueOf(packetdrawal)));
-            paramss.add(new  BasicNameValuePair("",String.valueOf(othercosts)));
-            paramss.add(new  BasicNameValuePair("",String.valueOf(totals)));
-            paramss.add(new  BasicNameValuePair("",type));
-            paramss.add(new  BasicNameValuePair("",String.valueOf(calculateusedkm)));
-            paramss.add(new  BasicNameValuePair("",String.valueOf(calculatesumkm2)));
-            paramss.add(new  BasicNameValuePair("",String.valueOf(distotal)));
-            paramss.add(new  BasicNameValuePair("",String.valueOf(personaluse)));
-            paramss.add(new  BasicNameValuePair("",String.valueOf(officeuse)));
-            paramss.add(new  BasicNameValuePair("",String.valueOf(kmrent)));
+            paramss.add(new BasicNameValuePair("destination_from",distancefr));
+            paramss.add(new  BasicNameValuePair("destination_to",distancet));
+            paramss.add(new  BasicNameValuePair("vicle_name",nameofvehic));
+            paramss.add(new  BasicNameValuePair("transport_fee",String.valueOf(transportcost)));
+            paramss.add(new  BasicNameValuePair("approximate_kilometer",distancekm));
+            paramss.add(new  BasicNameValuePair("journey_cost",String.valueOf(costs)));
+            paramss.add(new  BasicNameValuePair("mobile_cost",String.valueOf(mobrent)));
+            paramss.add(new  BasicNameValuePair("entertainment_cost",String.valueOf(compensations)));
+            paramss.add(new BasicNameValuePair("packet_lift", String.valueOf(packetdrawal)));
+            paramss.add(new  BasicNameValuePair("others_cost",String.valueOf(othercosts)));
+            paramss.add(new  BasicNameValuePair("total_cost",String.valueOf(totals)));
+            paramss.add(new  BasicNameValuePair("expense_type",type));
+            paramss.add(new  BasicNameValuePair("start_journey_km",String.valueOf(calculateusedkm)));
+            paramss.add(new  BasicNameValuePair("end_journey_km",String.valueOf(calculatesumkm2)));
+            paramss.add(new  BasicNameValuePair("total_journey_km",String.valueOf(distotal)));
+            paramss.add(new  BasicNameValuePair("personal_use_km",String.valueOf(personaluse)));
+            paramss.add(new  BasicNameValuePair("office_use_km",String.valueOf(officeuse)));
+            paramss.add(new  BasicNameValuePair("kilomitter_rate",String.valueOf(kmrent)));
 
             JSONObject json = jsonParser.makeHttpRequest(urlsubmidata,
                     "POST", paramss);
