@@ -34,8 +34,7 @@ public class DonationdistributionActivity extends AppCompatActivity {
         materialDesignSpinner1.setAdapter(arrayAdapter);
 
         listview = (ListView) findViewById(R.id.mobile_list);
-        listview.setAdapter(new DistributeBooktoTeacherCustomList(this, new String[] { "data1",
-                "data2" },new String[] {"value1","value2"}));
+        listview.setAdapter(new DistributeBooktoTeacherCustomList(this, new String[] {"data1"},new String[] {"value1"}));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
