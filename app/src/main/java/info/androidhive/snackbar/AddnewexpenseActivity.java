@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.text.TextWatcher;
 import android.text.method.MovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Interpolator;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -36,7 +38,14 @@ public class AddnewexpenseActivity extends AppCompatActivity {
     String distancefr,distancet,nameofvehic,distancekm,type;
     EditText distancefrom,distanceto,nameofvehicle,cost,distanceinkm,mobilerent,Transportcost,Compensations,packetwithdraw,othercost,total;
     Button submit;
-    int costs =0,mobrent=0,totals=0,byvalue=0,compensations=0,packetwidthdraw=0,othercosts=0,packetdrawal=0,transportcost=0;
+    int costs=0,mobrent=0,compensations=0,transportcost=0;
+    String costsstring,mobrentstring,compensationsstring,transportcoststring,packetwithdrawstring,othercoststring,totalstring,startjournstring,endjourneystring,totaljourneystring,personalusestring,officestring,kmrentstring;
+    int totals=0;
+    int byvalue=0;
+    int packetwidthdraw=0;
+    int othercosts=0;
+    int packetdrawal=0;
+
     int calculateusedkm = 0,calculatesumkm2 = 0,distotal = 0,personaluse = 0,officeuse = 0,kmrent = 0;
     JSONParser jsonParser;
     EditText input,input1,input2,input3,input4,input5;
@@ -45,6 +54,13 @@ public class AddnewexpenseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_addnewexpense);
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        //jsonParser = new JSONParser();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,7 +91,6 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
 
         spinner.setSelection(Adapter.NO_SELECTION, false);
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -183,22 +198,14 @@ public class AddnewexpenseActivity extends AppCompatActivity {
                 alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Do something with value!
-                                distancefr = distancefrom.getText().toString();
-                                distancet = distanceto.getText().toString();
-                                nameofvehic = nameofvehicle.getText().toString();
-                                //costs = Integer.parseInt(cost.getText().toString());
-                                distancekm = distanceinkm.getText().toString();
-                                transportcost = Integer.parseInt(Transportcost.getText().toString());
-                                mobrent = Integer.parseInt(mobilerent.getText().toString());
-                                packetdrawal = Integer.parseInt(packetwithdraw.getText().toString());
-                                othercosts = Integer.parseInt(othercost.getText().toString());
-                                totals = Integer.parseInt(total.getText().toString());
 
-                                distotal = Integer.parseInt(input2.getText().toString());
-                                officeuse = Integer.parseInt(input4.getText().toString());
-                                kmrent = Integer.parseInt(input5.getText().toString());
-                                new InsertintoDB().execute();
-                         }
+
+
+
+                            //passTheValues(calculateusedkm,calculatesumkm2,distotal,personaluse,officeuse,kmrent);
+                        //Toast.makeText(getApplicationContext(),"transport"+transportcost+"costs"+costs,Toast.LENGTH_LONG).show();
+
+                       }
                    });
 
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -216,6 +223,8 @@ public class AddnewexpenseActivity extends AppCompatActivity {
             }
         });
 
+
+
         cost.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -224,15 +233,14 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                  costs = Integer.parseInt(cost.getText().toString());
-                  Transportcost.setText(""+costs);
-                  Toast.makeText(getApplicationContext(),""+costs+""+mobrent,Toast.LENGTH_LONG).show();
-                  giveMeSum(costs);
+                costs = Integer.parseInt(cost.getText().toString());
+                Transportcost.setText(""+costs);
+                giveMeSum(costs);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                cost.removeTextChangedListener(this);
+                //Toast.makeText(getApplicationContext(),""+costs+""+mobrent,Toast.LENGTH_LONG).show();
             }
         });
 
@@ -244,13 +252,12 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                  mobrent = Integer.parseInt(mobilerent.getText().toString());
-                  giveMeSum(mobrent);
+                mobrent = Integer.parseInt(mobilerent.getText().toString());
+                giveMeSum(mobrent);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                mobilerent.removeTextChangedListener(this);
             }
         });
 
@@ -269,7 +276,6 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Compensations.removeTextChangedListener(this);
             }
         });
 
@@ -287,7 +293,6 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                packetwithdraw.removeTextChangedListener(this);
             }
         });
 
@@ -304,11 +309,39 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                 othercost.removeTextChangedListener(this);
             }
         });
 
 
+       submit.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+
+
+               distancefr = distancefrom.getText().toString();
+               distancet = distanceto.getText().toString();
+               nameofvehic = nameofvehicle.getText().toString();
+               transportcoststring = Transportcost.getText().toString();
+               distancekm = distanceinkm.getText().toString();
+               costsstring = cost.getText().toString();
+               mobrentstring = mobilerent.getText().toString();
+               compensationsstring = Compensations.getText().toString();
+               packetwithdrawstring = packetwithdraw.getText().toString();
+               othercoststring = othercost.getText().toString();
+               totalstring = total.getText().toString();
+
+               startjournstring = input.getText().toString();
+               endjourneystring = input1.getText().toString();
+               totaljourneystring = input2.getText().toString();
+               personalusestring = input3.getText().toString();
+               officestring = input4.getText().toString();
+               kmrentstring = input5.getText().toString();
+
+               //Toast.makeText(getApplicationContext(),"costs"+distancefr+"mobrent"+distancet+"total"+totals, Toast.LENGTH_LONG).show();
+               new InsertintoDB().execute();
+               Toast.makeText(getApplicationContext(),"called", Toast.LENGTH_LONG).show();
+           }
+       });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -318,11 +351,23 @@ public class AddnewexpenseActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-
-
-
     }
+
+    /*
+    private void passTheValues(final int calculateusedkm, final int calculatesumkm2, final int distotal, final int personaluse, final int officeuse, final int kmrent) {
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getApplicationContext(),"sum"+String.valueOf(calculateusedkm)+"sum2",Toast.LENGTH_LONG).show();
+                new InsertintoDB().execute();
+                //Log.d("distance from",String.valueOf(calculateusedkm)+"distance to"+String.valueOf(calculatesumkm2));
+            }
+        });
+    }
+
+   */
+
 
     private void giveMeSum(int value) {
         totals+=value;
@@ -335,39 +380,77 @@ public class AddnewexpenseActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
 
-            //Toast.makeText(getApplicationContext(),"possible book"+possbook,Toast.LENGTH_LONG).show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    jsonParser = new JSONParser();
+                    String urlsubmidata = "http://192.168.0.106/dikpl/android/expense/add_expense/";
+                    List<NameValuePair> paramss = new ArrayList<NameValuePair>();
+
+                    paramss.add(new BasicNameValuePair("destination_from",distancet));
+                    paramss.add(new  BasicNameValuePair("destination_to",distancet));
+                    paramss.add(new  BasicNameValuePair("vicle_name",nameofvehic));
+                    paramss.add(new  BasicNameValuePair("transport_fee",transportcoststring));
+                    paramss.add(new  BasicNameValuePair("approximate_kilometer",distancekm));
+                    paramss.add(new  BasicNameValuePair("journey_cost",costsstring));
+                    paramss.add(new  BasicNameValuePair("mobile_cost",mobrentstring));
+                    paramss.add(new  BasicNameValuePair("entertainment_cost",costsstring));
+                    paramss.add(new BasicNameValuePair("packet_lift",packetwithdrawstring));
+                    paramss.add(new  BasicNameValuePair("others_cost",othercoststring));
+                    paramss.add(new  BasicNameValuePair("total_cost",totalstring));
+                    paramss.add(new  BasicNameValuePair("expense_type",type));
+
+                    paramss.add(new  BasicNameValuePair("start_journey_km",String.valueOf(calculateusedkm)));
+                    paramss.add(new  BasicNameValuePair("end_journey_km",String.valueOf(calculatesumkm2)));
+                    paramss.add(new  BasicNameValuePair("total_journey_km",String.valueOf(distotal)));
+                    paramss.add(new  BasicNameValuePair("personal_use_km",String.valueOf(personaluse)));
+                    paramss.add(new  BasicNameValuePair("office_use_km",String.valueOf(officeuse)));
+                    paramss.add(new  BasicNameValuePair("kilomitter_rate",String.valueOf(kmrent)));
+
+                    JSONObject json = jsonParser.makeHttpRequest(urlsubmidata, "POST", paramss);
+                    //Log.d("Create Response", json.toString());
+
+
+                }
+            });
             //insert(cid,teacherid,subjectid,classid,nostudent,possbook,onudanamount,bookid,amountk);
 
-            jsonParser = new JSONParser();
 
-            String urlsubmidata = "http://192.168.0.106/dikpl/android/Expense/add_expense/";
-            //String urlsubmidata = ""+url+"/";
-            List<NameValuePair> paramss = new ArrayList<NameValuePair>();
+            //Toast.makeText(getApplicationContext(),"transport"+transportcost+"costs"+costs,Toast.LENGTH_LONG).show();
 
-            paramss.add(new BasicNameValuePair("destination_from",distancefr));
+
+            //paramss.add(new BasicNameValuePair("destination_from",distancet));
+
+           /*
             paramss.add(new  BasicNameValuePair("destination_to",distancet));
             paramss.add(new  BasicNameValuePair("vicle_name",nameofvehic));
-            paramss.add(new  BasicNameValuePair("transport_fee",String.valueOf(transportcost)));
+            paramss.add(new  BasicNameValuePair("transport_fee",transportcoststring));
             paramss.add(new  BasicNameValuePair("approximate_kilometer",distancekm));
-            paramss.add(new  BasicNameValuePair("journey_cost",String.valueOf(costs)));
-            paramss.add(new  BasicNameValuePair("mobile_cost",String.valueOf(mobrent)));
-            paramss.add(new  BasicNameValuePair("entertainment_cost",String.valueOf(compensations)));
-            paramss.add(new BasicNameValuePair("packet_lift", String.valueOf(packetdrawal)));
-            paramss.add(new  BasicNameValuePair("others_cost",String.valueOf(othercosts)));
-            paramss.add(new  BasicNameValuePair("total_cost",String.valueOf(totals)));
+            paramss.add(new  BasicNameValuePair("journey_cost",costsstring));
+            paramss.add(new  BasicNameValuePair("mobile_cost",mobrentstring));
+            paramss.add(new  BasicNameValuePair("entertainment_cost",costsstring));
+            paramss.add(new BasicNameValuePair("packet_lift",packetwithdrawstring));
+            paramss.add(new  BasicNameValuePair("others_cost",othercoststring));
+            paramss.add(new  BasicNameValuePair("total_cost",totalstring));
             paramss.add(new  BasicNameValuePair("expense_type",type));
+            */
+
+            //Toast.makeText(getApplicationContext(),""+paramss.toString(),Toast.LENGTH_LONG).show();
+           // Log.d("params",paramss.toString());
+
+           /*
             paramss.add(new  BasicNameValuePair("start_journey_km",String.valueOf(calculateusedkm)));
             paramss.add(new  BasicNameValuePair("end_journey_km",String.valueOf(calculatesumkm2)));
             paramss.add(new  BasicNameValuePair("total_journey_km",String.valueOf(distotal)));
             paramss.add(new  BasicNameValuePair("personal_use_km",String.valueOf(personaluse)));
             paramss.add(new  BasicNameValuePair("office_use_km",String.valueOf(officeuse)));
             paramss.add(new  BasicNameValuePair("kilomitter_rate",String.valueOf(kmrent)));
+           */
 
-            JSONObject json = jsonParser.makeHttpRequest(urlsubmidata,
-                    "POST", paramss);
+            //Toast.makeText(getApplicationContext(),"distance from"+distancefr,Toast.LENGTH_LONG).show();
+            //Log.d("all params",paramss.toString());
 
-            // check log cat fro response
-            Log.d("Create Response", json.toString());
 
             // check for success tag
             //Toast.makeText(getApplicationContext(),"Successfully inserted..",Toast.LENGTH_LONG).show();

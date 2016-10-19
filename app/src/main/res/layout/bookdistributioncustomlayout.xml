@@ -1,27 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <TextView
-        android:id="@+id/textView1"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dip"
+    android:id="@+id/relativelayout">
+    <!-- ListRow Left sied Thumbnail image -->
+    <LinearLayout
+        android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="33dp"
-        android:layout_marginTop="20dp"
-        android:text="Book Name" />
+        android:layout_marginRight="5dip"
+        android:padding="3dip" >
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dip"
+            android:layout_centerHorizontal="true"
+            android:text="Book Name"
+            android:textStyle="bold"
+            android:textSize="15dip" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dname"
+            android:paddingTop="5dip"
+            android:layout_centerHorizontal="true"
+            android:text="Current Stock"
+            android:textStyle="bold"
+            android:textSize="15dip" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_marginTop="20dp"
+    </LinearLayout>
+    <!-- Rightend Arrow -->
+    <Button
+        android:contentDescription="@string/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView1"
-        android:layout_centerHorizontal="true"
-        android:text="Current Stock" />
+        android:id="@+id/submitButton"
+        android:text="Submit"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="53dp"
+        android:layout_marginEnd="53dp"
+        android:layout_marginTop="39dp" />
 
+    <ListView
+        android:id="@+id/listviews"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/submitButton"
+        android:layout_marginTop="188dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toLeftOf="@+id/submitButton" />
 
 </RelativeLayout>
