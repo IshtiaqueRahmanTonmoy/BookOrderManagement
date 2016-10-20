@@ -27,7 +27,6 @@ dependencies {
     compile 'com.weiwangcn.betterspinner:library-material:1.1.0'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'com.mcxiaoke.volley:library:1.0.19'
-
     compile 'com.google.http-client:google-http-client-android:+'
     compile 'com.google.api-client:google-api-client-android:+'
     compile 'com.google.api-client:google-api-client-gson:+'

@@ -38,7 +38,8 @@
         <activity
             android:name=".AddnewexpenseActivity"
             android:label="@string/title_activity_addnewexpense"
-            android:theme="@style/MyMaterialTheme"></activity>
+            android:theme="@style/MyMaterialTheme" />
+        <activity android:name=".ListCartActivity"></activity>
     </application>
 
 </manifest>
