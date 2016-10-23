@@ -16,6 +16,10 @@ public class Customlistadding
         this.stock = stock;
     }
 
+    public Customlistadding() {
+
+    }
+
     public String getName() {
         return name;
     }

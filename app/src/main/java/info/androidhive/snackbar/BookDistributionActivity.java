@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -26,6 +27,7 @@ import com.google.gson.Gson;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class BookDistributionActivity extends AppCompatActivity {
@@ -36,9 +38,9 @@ public class BookDistributionActivity extends AppCompatActivity {
     TableRow tablerow2,tablerow3,tablerow4;
     Intent intent;
     String bookname,stock;
-
-    SharedPreferences prefs;
-    SharedPreferences.Editor edit;
+    CartSavingSqlite sqlite_obj;
+    Button button;
+    List<Customlistadding> listget = new ArrayList<Customlistadding>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +50,30 @@ public class BookDistributionActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        prefs = this.getSharedPreferences("yourPrefsKey",Context.MODE_PRIVATE);
-        edit = prefs.edit();
+        sqlite_obj = new CartSavingSqlite(BookDistributionActivity.this);
 
         itemList = new ArrayList<Customlistadding>();
+
+        button = (Button) findViewById(R.id.button1);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listget = sqlite_obj.getAllItems();
+                for(int b=0;b<listget.size();b++){
+                    Customlistadding fi = listget.get(b);
+                    String id = fi.getCode();
+                    String qu = fi.getName();
+                    String sd = fi.getPrice();
+                    String co = fi.getCode();
+                    String so = fi.getStock();
+                    Toast.makeText(getApplicationContext(),""+id+""+qu+""+sd+""+co+""+so, Toast.LENGTH_SHORT).show();
+                    break;
+                    //Log.i("idv",id);
+                    //Log.i("qv",qu);
+                }
+            }
+        });
 
         spinner = (Spinner) findViewById(R.id.spinner2);
         spinner2 = (Spinner) findViewById(R.id.spinner3);
@@ -67,9 +89,9 @@ public class BookDistributionActivity extends AppCompatActivity {
                 TextView secondTextView = (TextView) t.getChildAt(1);
                 bookname = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
-
-                itemList.add(new Customlistadding(bookname,"price","code",stock));
-                saveintoCart(itemList);
+                sqlite_obj.addToCart(bookname,"price","code",stock);
+                //itemList.add(new Customlistadding(bookname,"price","code",stock));
+                //saveintoCart(bookname,stock);
 
              /*
                 intent = new Intent(BookDistributionActivity.this, ListCartActivity.class);
@@ -92,9 +114,10 @@ public class BookDistributionActivity extends AppCompatActivity {
                 TextView secondTextView = (TextView) t.getChildAt(1);
                 bookname = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
+                sqlite_obj.addToCart(bookname,"price","code",stock);
 
-                itemList.add(new Customlistadding(bookname,"price","code",stock));
-                saveintoCart(itemList);
+                //itemList.add(new Customlistadding(bookname,"price","code",stock));
+                //saveintoCart(bookname,stock);
              /*
                 intent = new Intent(BookDistributionActivity.this, ListCartActivity.class);
                 Bundle extras = new Bundle();
@@ -117,11 +140,14 @@ public class BookDistributionActivity extends AppCompatActivity {
                 TextView secondTextView = (TextView) t.getChildAt(1);
                 bookname = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
-                itemList.add(new Customlistadding(bookname,"price","code",stock));
-                saveintoCart(itemList);
+                sqlite_obj.addToCart(bookname,"price","code",stock);
+
+               // itemList.add(new Customlistadding(bookname,"price","code",stock));
+                //saveintoCart(bookname,stock);
                 //Toast.makeText(BookDistributionActivity.this, ""+firstText+""+secondText, Toast.LENGTH_SHORT).show();
             }
         });
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -133,12 +159,9 @@ public class BookDistributionActivity extends AppCompatActivity {
         });
     }
 
-    private void saveintoCart(List<Customlistadding> itemList) {
+    private void saveintoCart(String bookname, String stock) {
 
-        Gson gson = new Gson();
-        String json = gson.toJson(itemList);
-        edit.putString("list", json);
-        edit.commit();
+        Toast.makeText(BookDistributionActivity.this, "added successfully..", Toast.LENGTH_SHORT).show();
     }
 
     @Override
