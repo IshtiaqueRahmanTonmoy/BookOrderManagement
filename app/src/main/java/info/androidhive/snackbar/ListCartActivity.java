@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ public class ListCartActivity extends AppCompatActivity {
     Context context;
     String booknames,stocks;
     public static final String PREFS_NAME = "MyPrefsFile";
+    DynamicAddCustomlist dynamicadd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +30,14 @@ public class ListCartActivity extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.listview);
 
         Bundle extras = getIntent().getExtras();
-        booknames = extras.getString("BOOKNAME");
-        stocks = extras.getString("STOCK");
+        String name = extras.getString("name");
+        String price = extras.getString("price");
+        String code = extras.getString("code");
+        String stock = extras.getString("stock");
 
-        itemList.add(new Customlistadding(booknames,"price","code",stocks));
+        itemList.add(new Customlistadding(name,price,code,stock));
+        dynamicadd = new DynamicAddCustomlist(ListCartActivity.this,itemList);
+        listview.setAdapter(dynamicadd);
+        //Toast.makeText(ListCartActivity.this, ""+name+""+stock, Toast.LENGTH_SHORT).show();
     }
 }

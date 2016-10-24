@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +42,8 @@ public class BookDistributionActivity extends AppCompatActivity {
     CartSavingSqlite sqlite_obj;
     Button button;
     List<Customlistadding> listget = new ArrayList<Customlistadding>();
+    CartAddinglist cartadding;
+    Intent myIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,26 +55,41 @@ public class BookDistributionActivity extends AppCompatActivity {
 
         sqlite_obj = new CartSavingSqlite(BookDistributionActivity.this);
 
+        cartadding = new CartAddinglist();
         itemList = new ArrayList<Customlistadding>();
 
         button = (Button) findViewById(R.id.button1);
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listget = sqlite_obj.getAllItems();
-                for(int b=0;b<listget.size();b++){
-                    Customlistadding fi = listget.get(b);
-                    String id = fi.getCode();
-                    String qu = fi.getName();
-                    String sd = fi.getPrice();
-                    String co = fi.getCode();
-                    String so = fi.getStock();
-                    Toast.makeText(getApplicationContext(),""+id+""+qu+""+sd+""+co+""+so, Toast.LENGTH_SHORT).show();
-                    break;
-                    //Log.i("idv",id);
-                    //Log.i("qv",qu);
-                }
+
+                int size = cartadding.getCart().size();
+                for(int i=0;i<size;i++){
+                    String name = cartadding.getCart().get(i).getName();
+                    String price = cartadding.getCart().get(i).getPrice();
+                    String code = cartadding.getCart().get(i).getCode();
+                    String stock = cartadding.getCart().get(i).getStock();
+
+                    myIntent = new Intent(BookDistributionActivity.this, ListCartActivity.class);
+                    myIntent.putExtra("name", name);
+                    myIntent.putExtra("price", price);
+                    myIntent.putExtra("code", code);
+                    myIntent.putExtra("stock", stock);
+                    startActivity(myIntent);
+
+                    //Toast.makeText(BookDistributionActivity.this, ""+name+""+stock, Toast.LENGTH_SHORT).show();;
+                 }
+                /*
+                for(Customlistadding custom : cartadding.getCart()){
+                   String name = custom.getName();
+                   String price = custom.getPrice();
+                   String code = custom.getCode();
+                   String stock = custom.getStock();
+
+
+                   Toast.makeText(BookDistributionActivity.this, ""+name, Toast.LENGTH_SHORT).show();
+               }
+               */
             }
         });
 
@@ -89,8 +107,9 @@ public class BookDistributionActivity extends AppCompatActivity {
                 TextView secondTextView = (TextView) t.getChildAt(1);
                 bookname = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
-                sqlite_obj.addToCart(bookname,"price","code",stock);
-                //itemList.add(new Customlistadding(bookname,"price","code",stock));
+                //sqlite_obj.addToCart(bookname,"price","code",stock);
+                itemList.add(new Customlistadding(bookname,"price","code",stock));
+                cartadding.addCart(itemList);
                 //saveintoCart(bookname,stock);
 
              /*
@@ -114,9 +133,10 @@ public class BookDistributionActivity extends AppCompatActivity {
                 TextView secondTextView = (TextView) t.getChildAt(1);
                 bookname = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
-                sqlite_obj.addToCart(bookname,"price","code",stock);
+                //sqlite_obj.addToCart(bookname,"price","code",stock);
 
-                //itemList.add(new Customlistadding(bookname,"price","code",stock));
+                itemList.add(new Customlistadding(bookname,"price","code",stock));
+                cartadding.addCart(itemList);
                 //saveintoCart(bookname,stock);
              /*
                 intent = new Intent(BookDistributionActivity.this, ListCartActivity.class);
@@ -140,9 +160,10 @@ public class BookDistributionActivity extends AppCompatActivity {
                 TextView secondTextView = (TextView) t.getChildAt(1);
                 bookname = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
-                sqlite_obj.addToCart(bookname,"price","code",stock);
+                //sqlite_obj.addToCart(bookname,"price","code",stock);
 
-               // itemList.add(new Customlistadding(bookname,"price","code",stock));
+                itemList.add(new Customlistadding(bookname,"price","code",stock));
+                cartadding.addCart(itemList);
                 //saveintoCart(bookname,stock);
                 //Toast.makeText(BookDistributionActivity.this, ""+firstText+""+secondText, Toast.LENGTH_SHORT).show();
             }
@@ -157,11 +178,6 @@ public class BookDistributionActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-    }
-
-    private void saveintoCart(String bookname, String stock) {
-
-        Toast.makeText(BookDistributionActivity.this, "added successfully..", Toast.LENGTH_SHORT).show();
     }
 
     @Override
