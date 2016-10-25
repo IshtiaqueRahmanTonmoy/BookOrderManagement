@@ -1,5 +1,7 @@
 package info.androidhive.snackbar;
 
+import java.io.Serializable;
+
 /**
  * Created by tonmoy on 10/19/16.
  */

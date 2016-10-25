@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,12 +39,13 @@ public class BookDistributionActivity extends AppCompatActivity {
     List<Customlistadding> itemList;
     TableRow tablerow2,tablerow3,tablerow4;
     Intent intent;
-    String bookname,stock;
     CartSavingSqlite sqlite_obj;
     Button button;
     List<Customlistadding> listget = new ArrayList<Customlistadding>();
     CartAddinglist cartadding;
     Intent myIntent;
+    int i;
+    String name,price,code,stock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,21 +66,32 @@ public class BookDistributionActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 int size = cartadding.getCart().size();
-                for(int i=0;i<size;i++){
-                    String name = cartadding.getCart().get(i).getName();
-                    String price = cartadding.getCart().get(i).getPrice();
-                    String code = cartadding.getCart().get(i).getCode();
-                    String stock = cartadding.getCart().get(i).getStock();
 
-                    myIntent = new Intent(BookDistributionActivity.this, ListCartActivity.class);
-                    myIntent.putExtra("name", name);
-                    myIntent.putExtra("price", price);
-                    myIntent.putExtra("code", code);
-                    myIntent.putExtra("stock", stock);
-                    startActivity(myIntent);
+               /*
+                String id[] = new String[size];
+                String name[] = new String[size];
+                String rate[] = new String[size];
+               */
+
+                for(i=0;i<size;i++){
+
+                    name = cartadding.getCart().get(i).getName();
+                    price = cartadding.getCart().get(i).getPrice();
+                    code = cartadding.getCart().get(i).getCode();
+                    stock = cartadding.getCart().get(i).getStock();
+
+                    listget.add(i,new Customlistadding(name,price,code,stock));
 
                     //Toast.makeText(BookDistributionActivity.this, ""+name+""+stock, Toast.LENGTH_SHORT).show();;
-                 }
+                }
+
+                Intent intent = new Intent(BookDistributionActivity.this, ListCartActivity.class);
+                String listSerializedToJson = new Gson().toJson(listget);
+                intent.putExtra("listget", listSerializedToJson);
+                startActivity(intent);
+
+                //Log.d("values",listget.get(2).getCode());
+
                 /*
                 for(Customlistadding custom : cartadding.getCart()){
                    String name = custom.getName();
@@ -105,10 +118,10 @@ public class BookDistributionActivity extends AppCompatActivity {
                 TableRow t = (TableRow) v;
                 TextView firstTextView = (TextView) t.getChildAt(0);
                 TextView secondTextView = (TextView) t.getChildAt(1);
-                bookname = firstTextView.getText().toString();
+                name = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
                 //sqlite_obj.addToCart(bookname,"price","code",stock);
-                itemList.add(new Customlistadding(bookname,"price","code",stock));
+                itemList.add(new Customlistadding(name,"price","code",stock));
                 cartadding.addCart(itemList);
                 //saveintoCart(bookname,stock);
 
@@ -131,11 +144,11 @@ public class BookDistributionActivity extends AppCompatActivity {
                 TableRow t = (TableRow) v;
                 TextView firstTextView = (TextView) t.getChildAt(0);
                 TextView secondTextView = (TextView) t.getChildAt(1);
-                bookname = firstTextView.getText().toString();
+                name = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
                 //sqlite_obj.addToCart(bookname,"price","code",stock);
 
-                itemList.add(new Customlistadding(bookname,"price","code",stock));
+                itemList.add(new Customlistadding(name,"price","code",stock));
                 cartadding.addCart(itemList);
                 //saveintoCart(bookname,stock);
              /*
@@ -158,11 +171,11 @@ public class BookDistributionActivity extends AppCompatActivity {
                 TableRow t = (TableRow) v;
                 TextView firstTextView = (TextView) t.getChildAt(0);
                 TextView secondTextView = (TextView) t.getChildAt(1);
-                bookname = firstTextView.getText().toString();
+                name = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
                 //sqlite_obj.addToCart(bookname,"price","code",stock);
 
-                itemList.add(new Customlistadding(bookname,"price","code",stock));
+                itemList.add(new Customlistadding(name,"price","code",stock));
                 cartadding.addCart(itemList);
                 //saveintoCart(bookname,stock);
                 //Toast.makeText(BookDistributionActivity.this, ""+firstText+""+secondText, Toast.LENGTH_SHORT).show();

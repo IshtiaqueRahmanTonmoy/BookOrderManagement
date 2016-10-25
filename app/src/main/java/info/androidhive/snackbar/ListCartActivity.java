@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,15 +32,25 @@ public class ListCartActivity extends AppCompatActivity {
 
         listview = (ListView) findViewById(R.id.listview);
 
-        Bundle extras = getIntent().getExtras();
-        String name = extras.getString("name");
-        String price = extras.getString("price");
-        String code = extras.getString("code");
-        String stock = extras.getString("stock");
+        String carListAsString = getIntent().getStringExtra("listget");
+        //Log.i("list",carListAsString);
+        //Toast.makeText(ListCartActivity.this, ""+carListAsString, Toast.LENGTH_SHORT).show();
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Customlistadding>>(){}.getType();
+        List<Customlistadding> carsList = gson.fromJson(carListAsString, type);
 
-        itemList.add(new Customlistadding(name,price,code,stock));
-        dynamicadd = new DynamicAddCustomlist(ListCartActivity.this,itemList);
-        listview.setAdapter(dynamicadd);
+        DynamicAddCustomlist customAdapter = new DynamicAddCustomlist(context,carsList);
+        listview.setAdapter(customAdapter);
+        /*
+        for (Customlistadding customlist : carsList){
+            //Log.i("CarData", customlist.getName()+"-"+customlist.getStock());
+            Toast.makeText(ListCartActivity.this, ""+customlist.getName()+""+customlist.getStock(), Toast.LENGTH_SHORT).show();
+        }
+        */
+
+        //itemList.add(new Customlistadding(name,price,code,stock));
+        //dynamicadd = new DynamicAddCustomlist(ListCartActivity.this,itemList);
+        //listview.setAdapter(dynamicadd);
         //Toast.makeText(ListCartActivity.this, ""+name+""+stock, Toast.LENGTH_SHORT).show();
     }
 }
