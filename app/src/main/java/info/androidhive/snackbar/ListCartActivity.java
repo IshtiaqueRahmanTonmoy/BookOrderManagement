@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -24,13 +25,16 @@ public class ListCartActivity extends AppCompatActivity {
     String booknames,stocks;
     public static final String PREFS_NAME = "MyPrefsFile";
     DynamicAddCustomlist dynamicadd;
-
+    Button placeorder,total;
+    int stock = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_cart);
 
-        listview = (ListView) findViewById(R.id.listview);
+        listview = (ListView) findViewById(R.id.listView);
+        placeorder = (Button) findViewById(R.id.button1);
+        total = (Button) findViewById(R.id.button2);
 
         String carListAsString = getIntent().getStringExtra("listget");
         //Log.i("list",carListAsString);
@@ -39,14 +43,18 @@ public class ListCartActivity extends AppCompatActivity {
         Type type = new TypeToken<List<Customlistadding>>(){}.getType();
         List<Customlistadding> carsList = gson.fromJson(carListAsString, type);
 
-        DynamicAddCustomlist customAdapter = new DynamicAddCustomlist(context,carsList);
-        listview.setAdapter(customAdapter);
-        /*
+        dynamicadd = new DynamicAddCustomlist(context,carsList);
+        listview.setAdapter(dynamicadd);
+
+
         for (Customlistadding customlist : carsList){
             //Log.i("CarData", customlist.getName()+"-"+customlist.getStock());
-            Toast.makeText(ListCartActivity.this, ""+customlist.getName()+""+customlist.getStock(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(ListCartActivity.this, ""+customlist.getName()+""+customlist.getStock(), Toast.LENGTH_SHORT).show();
+            stock = stock + Integer.parseInt(customlist.getStock());
+            total.setText(""+stock);
+
         }
-        */
+
 
         //itemList.add(new Customlistadding(name,price,code,stock));
         //dynamicadd = new DynamicAddCustomlist(ListCartActivity.this,itemList);

@@ -88,5 +88,6 @@ public class DynamicAddCustomlist extends BaseAdapter {
     private static class ViewHolder {
         public TextView name,price,code,stock,number;
         public ImageView buttonplus,buttonminus;
+        public TextView stockcount,placeorder;
     }
 }

@@ -89,6 +89,7 @@ public class BookDistributionActivity extends AppCompatActivity {
                 String listSerializedToJson = new Gson().toJson(listget);
                 intent.putExtra("listget", listSerializedToJson);
                 startActivity(intent);
+                finish();
 
                 //Log.d("values",listget.get(2).getCode());
 
