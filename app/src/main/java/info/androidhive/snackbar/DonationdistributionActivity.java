@@ -8,8 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
+import android.widget.Spinner;
 
 public class DonationdistributionActivity extends AppCompatActivity {
 
@@ -25,9 +24,9 @@ public class DonationdistributionActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
 
-        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
+        Spinner materialDesignSpinner = (Spinner)
                 findViewById(R.id.spinner2);
-        MaterialBetterSpinner materialDesignSpinner1 = (MaterialBetterSpinner)
+        Spinner materialDesignSpinner1 = (Spinner)
                 findViewById(R.id.spinner3);
 
         materialDesignSpinner.setAdapter(arrayAdapter);

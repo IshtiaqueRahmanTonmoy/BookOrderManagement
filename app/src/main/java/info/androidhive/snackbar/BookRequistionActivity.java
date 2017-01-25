@@ -8,11 +8,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 //import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,13 +44,13 @@ public class BookRequistionActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
 
-        MaterialEditText commentEditText = (MaterialEditText) findViewById(R.id.commentsEdit);
+        EditText commentEditText = (EditText) findViewById(R.id.commentsEdit);
 
-        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
+        Spinner materialDesignSpinner = (Spinner)
                 findViewById(R.id.spinner11);
-        MaterialBetterSpinner materialDesignSpinner1 = (MaterialBetterSpinner)
+        Spinner materialDesignSpinner1 = (Spinner)
                 findViewById(R.id.Spinner);
-        MaterialBetterSpinner materialDesignSpinner2 = (MaterialBetterSpinner)
+        Spinner materialDesignSpinner2 = (Spinner)
                 findViewById(R.id.stateSpinner);
 
         materialDesignSpinner.setAdapter(arrayAdapter);

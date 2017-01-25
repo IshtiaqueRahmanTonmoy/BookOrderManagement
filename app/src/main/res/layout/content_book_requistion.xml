@@ -32,12 +32,11 @@
         android:text="Department Name"
         android:layout_marginBottom="5dp"/>
 
-    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+    <Spinner
         android:id="@+id/Spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Department name.."
-        app:met_floatingLabel="normal" />
+        android:hint="Department name.."/>
 
     <TextView
         android:layout_width="fill_parent"
@@ -47,12 +46,11 @@
         android:text="Class Name"
         android:layout_marginBottom="5dp"/>
 
-    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+    <Spinner
         android:id="@+id/stateSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Class name.."
-        app:met_floatingLabel="normal" />
+        android:hint="Class name.." />
 
     <TextView
         android:layout_width="fill_parent"
@@ -70,12 +68,11 @@
         android:hint="Select BookType" />
 -->
 
-    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+    <Spinner
         android:id="@+id/spinner11"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Book type.."
-        app:met_floatingLabel="normal" />
+        android:hint="Book type.."/>
 
     <TextView
         android:layout_width="fill_parent"
@@ -85,12 +82,11 @@
         android:text="Book Name"
         android:layout_marginBottom="5dp"/>
 
-    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+    <Spinner
         android:id="@+id/citySpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Book name.."
-        app:met_floatingLabel="normal" />
+        android:hint="Book name.."/>
 
 
     <TextView
@@ -130,15 +126,12 @@
             android:text="+" />
     </LinearLayout>
 
-        <com.rengwuxian.materialedittext.MaterialEditText
+        <EditText
             android:id="@+id/commentsEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Add Comments Here.."
-            android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:met_baseColor="@android:color/black"
-            app:met_maxCharacters="20"
-            app:met_primaryColor="?colorAccent" />
+            android:textCursorDrawable="@drawable/text_cursor_cyan"/>
         <!--
      <EditText
          android:id="@+id/editText1"

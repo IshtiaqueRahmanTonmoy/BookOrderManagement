@@ -2,6 +2,7 @@ package info.androidhive.snackbar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -9,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,14 +20,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -41,6 +35,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,19 +44,26 @@ public class Donationrequistion extends AppCompatActivity {
     //String[] SPINNERLIST = {"Android Material Design", "Material Design Spinner", "Spinner Using Material Library", "Material Spinner Example"};
     Button button,noofstudentplus,noofstudentminus,possiblebookplus,possiblebookminus,amountoftkplus,amountoftkminus;
     EditText onudan;
+    JSONArray college;
     TextView Noofstudent,possiblebooks,amountoftk;
     static int numofstudent,numofpossible,noofamount=0;
     Spinner instspinner,teacherspinner,subjectnamespinner,classnamespinner,booknamespinner;
     private ArrayList<String> instlist,teacherlist,subjectlist,classlist,booklist;
-    private static String url_institute = "http://192.168.0.106/dikpl/android/home/getCollegeForDonationInsert";
-    private static String baseurl="http://192.168.0.106/dikpl/android/home/getInfoWhere";
+    private static String url_institute = "http://dik-pl.com/dikpl/college.php";
+    private static String baseurl="http://dik-pl.com/dikpl/teachers.php";
+    private static String getdepartment="http://dik-pl.com/dikpl/department.php";
+    private static String url_teacher="http://dik-pl.com/dikpl/tblclass.php";
+    private static String url_book="http://dik-pl.com/dikpl/books.php";
+
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_INSID = "id";
     private static final String TAG_INSNAME = "name";
     private static final String TAG_COLLEGEID = "college_id";
     private static final String TAG_TEACHERNAME = "name";
     private static final String TAG_TABLETEACHER = "teachers";
+    private static final String TAG_COLLEGEIDARRAY = "college";
     private static final String TAG_TEACHERID = "id";
+    private static final String TAG_CID = "class_id";
     private static final String TAG_SUBJECTID = "id";
     private static final String TAG_CLASSID = "id";
     private static final String TAG_CLASSNAME = "name";
@@ -71,6 +73,14 @@ public class Donationrequistion extends AppCompatActivity {
     String insid,insname,teachername,cid,sids,subjid,classid,teacherid,subjectid,subjectname,classname,bookid,bookname,onudanamount,nostudent,possbook,amountk;
     private ProgressDialog pDialog;
     private JSONParser jsonparser;
+
+
+    private JSONArray jsonarray;
+    private static final String TAG_PHONE = "phone";
+    private static final String TAG_DOCTORLIST = "patientdetail";
+    private static final String TAG_NAME = "name";
+    String namevalue;
+    private static final String DOCTORDETAILGET_URL = "http://darumadhaka.com/patientmanagement/searchallpatientinfo.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +94,7 @@ public class Donationrequistion extends AppCompatActivity {
         }
 
         new Instituionname().execute();
+
         //new Teachername().execute();
         //new Subjectname().execute();
         //new Classname().execute();
@@ -189,7 +200,6 @@ public class Donationrequistion extends AppCompatActivity {
                 //insert(cid,teacherid,subjectid,classid,nostudent,possbook,onudanamount,bookid,amountk);
                 //String cid,teacherid,subjectid,classid,noofstudent,possiblebooks,onudan,bookid,amountoftk;
 
-
                 new InsertintoDatabase().execute();
             }
         });
@@ -219,26 +229,32 @@ public class Donationrequistion extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    jsonparser = new JSONParser();
+                    List<NameValuePair> param = new ArrayList<NameValuePair>();
+                    // getting JSON string from URL
+                    JSONObject json = jsonparser.makeHttpRequest(url_institute, "GET", param);
+
+                    // Check your log cat for JSON reponse
+                    Log.d("All Products: ", json.toString());
+
                     try {
-
-                        jsonparser = new JSONParser();
-
-                        List<NameValuePair> param = new ArrayList<NameValuePair>();
-                        JSONObject json = jsonparser.makeHttpRequest(url_institute, "GET", param);
                         // Checking for SUCCESS TAG
                         int success = json.getInt(TAG_SUCCESS);
 
                         if (success == 1) {
+                            // products found
+                            // Getting Array of Products
+                            college = json.getJSONArray(TAG_COLLEGEIDARRAY);
 
-                            for (int x = 0; x <= 512; x++) {
-                                // JSONArray jsonArray = new JSONArray(json);
-                                JSONObject jsonArray = json.getJSONObject("" + x);
+                            // looping through All Products
+                            for (int i = 0; i < college.length(); i++) {
+                                JSONObject c = college.getJSONObject(i);
 
-                                insid = jsonArray.getString(TAG_INSID);
-                                insname = jsonArray.getString(TAG_INSNAME);
-
-                                //Toast.makeText(getApplicationContext(),""+insid,Toast.LENGTH_LONG);
-                                instlist.add(insname);
+                                // Storing each json item in variable
+                                String id = c.getString(TAG_INSID);
+                                String name = c.getString(TAG_INSNAME);
+                                //BengaliUnicodeString.getBengaliUTF(getActivity(),head,text);
+                                instlist.add(name);
                                 ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(Donationrequistion.this, android.R.layout.simple_spinner_item, instlist);
                                 spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 instspinner.setAdapter(spinnerAdapter);
@@ -260,14 +276,13 @@ public class Donationrequistion extends AppCompatActivity {
 
                             }
                         } else {
-                        }
 
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             });
-
             return null;
         }
     }
@@ -284,10 +299,8 @@ public class Donationrequistion extends AppCompatActivity {
 
                     //String val = insid;
                     //Toast.makeText(getApplicationContext(),""+val,Toast.LENGTH_LONG).show();
-
-                    String url_teacher = ""+baseurl+"/teachers/college_id/"+cid+"/id-name";
-                    //param.add(new BasicNameValuePair(TAG_COLLEGEID, insid));
-                    JSONObject json = jsonparser.makeHttpRequest(url_teacher, "GET", param);
+                    param.add(new BasicNameValuePair(TAG_COLLEGEID, cid));
+                    JSONObject json = jsonparser.makeHttpRequest(baseurl, "GET", param);
 
                     Log.e("Response: ", "> " + json);
 
@@ -341,10 +354,8 @@ public class Donationrequistion extends AppCompatActivity {
 
                     //String val = insid;
                     //Toast.makeText(getApplicationContext(),""+val,Toast.LENGTH_LONG).show();
-
-                    String url_teacher = ""+baseurl+"/department/id/"+sids+"/id-name";
-                    //param.add(new BasicNameValuePair(TAG_COLLEGEID, insid));
-                    JSONObject json = jsonparser.makeHttpRequest(url_teacher, "GET", param);
+                    param.add(new BasicNameValuePair(TAG_SUBJECTID,sids));
+                    JSONObject json = jsonparser.makeHttpRequest(getdepartment, "GET", param);
 
                     Log.e("Response: ", "> " + json);
 
@@ -398,9 +409,7 @@ public class Donationrequistion extends AppCompatActivity {
 
                     //String val = insid;
                     //Toast.makeText(getApplicationContext(),""+val,Toast.LENGTH_LONG).show();
-
-                    String url_teacher = ""+baseurl+"/tbl_class/id/"+subjid+"/id-name";
-                    //param.add(new BasicNameValuePair(TAG_COLLEGEID, insid));
+                    param.add(new BasicNameValuePair(TAG_CLASSID , subjid));
                     JSONObject json = jsonparser.makeHttpRequest(url_teacher, "GET", param);
 
                     Log.e("Response: ", "> " + json);
@@ -456,10 +465,8 @@ public class Donationrequistion extends AppCompatActivity {
 
                     //String val = insid;
                     //Toast.makeText(getApplicationContext(),""+val,Toast.LENGTH_LONG).show();
-
-                    String url_teacher = ""+baseurl+"/books/class_id/"+classid+"/id-book_name";
-                    //param.add(new BasicNameValuePair(TAG_COLLEGEID, insid));
-                    JSONObject json = jsonparser.makeHttpRequest(url_teacher, "GET", param);
+                    param.add(new BasicNameValuePair(TAG_CID,classid));
+                    JSONObject json = jsonparser.makeHttpRequest(url_book, "GET", param);
 
                     Log.e("Response: ", "> " + json);
 
@@ -510,35 +517,39 @@ public class Donationrequistion extends AppCompatActivity {
 
             //Toast.makeText(getApplicationContext(),"possible book"+possbook,Toast.LENGTH_LONG).show();
             //insert(cid,teacherid,subjectid,classid,nostudent,possbook,onudanamount,bookid,amountk);
+         runOnUiThread(new Runnable() {
+             @Override
+             public void run() {
+                 String urlsubmidata = "http://dik-pl.com/dikpl/donation.php";
+                 //String urlsubmidata = ""+url+"/";
+                 List<NameValuePair> paramss = new ArrayList<NameValuePair>();
+                 paramss.add(new  BasicNameValuePair("college_id",cid));
+                 paramss.add(new  BasicNameValuePair("teacher_id",teacherid));
+                 paramss.add(new  BasicNameValuePair("department_id",subjectid));
+                 paramss.add(new  BasicNameValuePair("class_id",classid));
+                 paramss.add(new  BasicNameValuePair("student_quantity",nostudent));
+                 paramss.add(new  BasicNameValuePair("possible_book",possbook));
+                 paramss.add(new BasicNameValuePair("duration", onudanamount));
+                 paramss.add(new  BasicNameValuePair("book_id",bookid));
+                 paramss.add(new  BasicNameValuePair("money_amount",amountk));
+
+                 JSONObject json = jsonparser.makeHttpRequest(urlsubmidata,
+                         "POST", paramss);
+
+                 Toast.makeText(Donationrequistion.this, "Successfully inserted..", Toast.LENGTH_SHORT).show();
+                 // check log cat fro response
+                 Log.d("Create Response", json.toString());
+
+                 // check for success tag
+                 //Toast.makeText(getApplicationContext(),"Successfully inserted..",Toast.LENGTH_LONG).show();
+
+                 // closing this screen
 
 
-
-            String urlsubmidata = "http://192.168.0.106/dikpl/android/donation/add/";
-            //String urlsubmidata = ""+url+"/";
-            List<NameValuePair> paramss = new ArrayList<NameValuePair>();
-            paramss.add(new  BasicNameValuePair("college_id",cid));
-            paramss.add(new  BasicNameValuePair("teacher_id",teacherid));
-            paramss.add(new  BasicNameValuePair("department_id",subjectid));
-            paramss.add(new  BasicNameValuePair("class_id",classid));
-            paramss.add(new  BasicNameValuePair("student_quantity",nostudent));
-            paramss.add(new  BasicNameValuePair("possible_book",possbook));
-            paramss.add(new BasicNameValuePair("duration", onudanamount));
-            paramss.add(new  BasicNameValuePair("book_id",bookid));
-            paramss.add(new  BasicNameValuePair("money_amount",amountk));
-
-            JSONObject json = jsonparser.makeHttpRequest(urlsubmidata,
-                    "POST", paramss);
-
-            // check log cat fro response
-            Log.d("Create Response", json.toString());
-
-            // check for success tag
-            //Toast.makeText(getApplicationContext(),"Successfully inserted..",Toast.LENGTH_LONG).show();
-
-                    // closing this screen
+             }
+         });
 
             return null;
-
         }
     }
 }
