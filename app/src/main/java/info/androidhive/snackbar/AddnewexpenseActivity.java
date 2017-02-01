@@ -2,6 +2,7 @@ package info.androidhive.snackbar;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -25,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -44,7 +46,7 @@ public class AddnewexpenseActivity extends AppCompatActivity {
     int packetwidthdraw=0;
     int othercosts=0;
     int packetdrawal=0;
-
+    private static final String TAG_SUCCESS = "success";
     int calculateusedkm = 0,calculatesumkm2 = 0,distotal = 0,personaluse = 0,officeuse = 0,kmrent = 0;
     JSONParser jsonParser;
     EditText input,input1,input2,input3,input4,input5;
@@ -329,16 +331,19 @@ public class AddnewexpenseActivity extends AppCompatActivity {
                othercoststring = othercost.getText().toString();
                totalstring = total.getText().toString();
 
+            /*
                startjournstring = input.getText().toString();
                endjourneystring = input1.getText().toString();
                totaljourneystring = input2.getText().toString();
                personalusestring = input3.getText().toString();
                officestring = input4.getText().toString();
                kmrentstring = input5.getText().toString();
+             */
 
                //Toast.makeText(getApplicationContext(),"costs"+distancefr+"mobrent"+distancet+"total"+totals, Toast.LENGTH_LONG).show();
                new InsertintoDB().execute();
-               Toast.makeText(getApplicationContext(),"called", Toast.LENGTH_LONG).show();
+               //Toast.makeText(getApplicationContext(),"called", Toast.LENGTH_LONG).show();
+               //Toast.makeText(getApplicationContext(),"called", Toast.LENGTH_LONG).show();
            }
        });
 
@@ -384,7 +389,7 @@ public class AddnewexpenseActivity extends AppCompatActivity {
                 public void run() {
 
                     jsonParser = new JSONParser();
-                    String urlsubmidata = "http://192.168.0.106/dikpl/android/expense/add_expense/";
+                    String urlsubmidata = "http://dik-pl.com/dikpl/expense.php";
                     List<NameValuePair> paramss = new ArrayList<NameValuePair>();
 
                     paramss.add(new BasicNameValuePair("destination_from",distancet));
@@ -409,52 +414,32 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
                     JSONObject json = jsonParser.makeHttpRequest(urlsubmidata, "POST", paramss);
                     //Log.d("Create Response", json.toString());
+                    try {
 
+                        int success = json.getInt(TAG_SUCCESS);
+
+                        // Toast.makeText(RegistrationActivity.this, "" + success, Toast.LENGTH_SHORT).show();
+                        if (success == 1) {
+                            // successfully created product
+
+                            AddnewexpenseActivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(AddnewexpenseActivity.this.getBaseContext(), "Registration completed..", Toast.LENGTH_LONG).show();
+                                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(i);
+                                    finish();
+                                }
+                            });
+                        } else {
+                            // failed to create product
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                 }
             });
-            //insert(cid,teacherid,subjectid,classid,nostudent,possbook,onudanamount,bookid,amountk);
 
-
-            //Toast.makeText(getApplicationContext(),"transport"+transportcost+"costs"+costs,Toast.LENGTH_LONG).show();
-
-
-            //paramss.add(new BasicNameValuePair("destination_from",distancet));
-
-           /*
-            paramss.add(new  BasicNameValuePair("destination_to",distancet));
-            paramss.add(new  BasicNameValuePair("vicle_name",nameofvehic));
-            paramss.add(new  BasicNameValuePair("transport_fee",transportcoststring));
-            paramss.add(new  BasicNameValuePair("approximate_kilometer",distancekm));
-            paramss.add(new  BasicNameValuePair("journey_cost",costsstring));
-            paramss.add(new  BasicNameValuePair("mobile_cost",mobrentstring));
-            paramss.add(new  BasicNameValuePair("entertainment_cost",costsstring));
-            paramss.add(new BasicNameValuePair("packet_lift",packetwithdrawstring));
-            paramss.add(new  BasicNameValuePair("others_cost",othercoststring));
-            paramss.add(new  BasicNameValuePair("total_cost",totalstring));
-            paramss.add(new  BasicNameValuePair("expense_type",type));
-            */
-
-            //Toast.makeText(getApplicationContext(),""+paramss.toString(),Toast.LENGTH_LONG).show();
-           // Log.d("params",paramss.toString());
-
-           /*
-            paramss.add(new  BasicNameValuePair("start_journey_km",String.valueOf(calculateusedkm)));
-            paramss.add(new  BasicNameValuePair("end_journey_km",String.valueOf(calculatesumkm2)));
-            paramss.add(new  BasicNameValuePair("total_journey_km",String.valueOf(distotal)));
-            paramss.add(new  BasicNameValuePair("personal_use_km",String.valueOf(personaluse)));
-            paramss.add(new  BasicNameValuePair("office_use_km",String.valueOf(officeuse)));
-            paramss.add(new  BasicNameValuePair("kilomitter_rate",String.valueOf(kmrent)));
-           */
-
-            //Toast.makeText(getApplicationContext(),"distance from"+distancefr,Toast.LENGTH_LONG).show();
-            //Log.d("all params",paramss.toString());
-
-
-            // check for success tag
-            //Toast.makeText(getApplicationContext(),"Successfully inserted..",Toast.LENGTH_LONG).show();
-
-            // closing this screen
 
             return null;
 
