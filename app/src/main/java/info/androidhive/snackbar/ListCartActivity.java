@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.reflect.TypeToken;
@@ -72,7 +73,7 @@ public class ListCartActivity extends AppCompatActivity implements CustomButtonL
     }
 
     @Override
-    public void onButtonClickListener(int position, EditText editText, int value) {
+    public void onButtonClickListener(int position, TextView editText, int value) {
         int quantity = Integer.parseInt(editText.getText().toString());
         quantity = quantity+1*value;
         if(quantity<0)

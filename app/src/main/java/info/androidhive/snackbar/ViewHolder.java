@@ -2,6 +2,7 @@ package info.androidhive.snackbar;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -12,6 +13,6 @@ public class ViewHolder {
     public TextView name,price,code,stock,number;
     //public ImageView buttonplus,buttonminus;
     public TextView stockcount,placeorder;
-    public EditText quantity;
-    public Button buttonplus,buttonminus;
+    public TextView quantity;
+    public ImageView buttonplus,buttonminus;
 }

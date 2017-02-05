@@ -1,6 +1,7 @@
 package info.androidhive.snackbar;
 
 import android.content.Context;
+import android.media.Image;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,9 +85,9 @@ public class DynamicAddCustomlist extends BaseAdapter {
             viewholder.code = (TextView) convertView.findViewById(R.id.bookcode);
             viewholder.stock = (TextView) convertView.findViewById(R.id.currentstock);
             //viewholder.number = (TextView) convertView.findViewById(R.id.quantity_text_view);
-            viewholder.quantity = (EditText) convertView.findViewById(R.id.editext);
-            viewholder.buttonplus = (Button) convertView.findViewById(R.id.cart_plus_img);
-            viewholder.buttonminus = (Button) convertView.findViewById(R.id.cart_minus_img);
+            viewholder.quantity = (TextView) convertView.findViewById(R.id.cart_product_quantity_tv);
+            viewholder.buttonplus = (ImageView) convertView.findViewById(R.id.cart_plus_img);
+            viewholder.buttonminus = (ImageView) convertView.findViewById(R.id.cart_minus_img);
 
             convertView.setTag(viewholder);
         } else {
