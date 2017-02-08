@@ -184,8 +184,8 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                       personaluse = Integer.parseInt(input3.getText().toString()) - Integer.parseInt(input2.getText().toString());
-                       input4.setText(""+personaluse);
+                        personaluse = Integer.parseInt(input3.getText().toString()) - Integer.parseInt(input2.getText().toString());
+                        input4.setText(""+personaluse);
                     }
 
                     @Override
@@ -203,11 +203,11 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
 
 
-                            //passTheValues(calculateusedkm,calculatesumkm2,distotal,personaluse,officeuse,kmrent);
+                        //passTheValues(calculateusedkm,calculatesumkm2,distotal,personaluse,officeuse,kmrent);
                         //Toast.makeText(getApplicationContext(),"transport"+transportcost+"costs"+costs,Toast.LENGTH_LONG).show();
 
-                       }
-                   });
+                    }
+                });
 
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -300,6 +300,7 @@ public class AddnewexpenseActivity extends AppCompatActivity {
         othercost.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
@@ -314,22 +315,22 @@ public class AddnewexpenseActivity extends AppCompatActivity {
         });
 
 
-       submit.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
 
-               distancefr = distancefrom.getText().toString();
-               distancet = distanceto.getText().toString();
-               nameofvehic = nameofvehicle.getText().toString();
-               transportcoststring = Transportcost.getText().toString();
-               distancekm = distanceinkm.getText().toString();
-               costsstring = cost.getText().toString();
-               mobrentstring = mobilerent.getText().toString();
-               compensationsstring = Compensations.getText().toString();
-               packetwithdrawstring = packetwithdraw.getText().toString();
-               othercoststring = othercost.getText().toString();
-               totalstring = total.getText().toString();
+                distancefr = distancefrom.getText().toString();
+                distancet = distanceto.getText().toString();
+                nameofvehic = nameofvehicle.getText().toString();
+                transportcoststring = Transportcost.getText().toString();
+                distancekm = distanceinkm.getText().toString();
+                costsstring = cost.getText().toString();
+                mobrentstring = mobilerent.getText().toString();
+                compensationsstring = Compensations.getText().toString();
+                packetwithdrawstring = packetwithdraw.getText().toString();
+                othercoststring = othercost.getText().toString();
+                totalstring = total.getText().toString();
 
             /*
                startjournstring = input.getText().toString();
@@ -340,12 +341,12 @@ public class AddnewexpenseActivity extends AppCompatActivity {
                kmrentstring = input5.getText().toString();
              */
 
-               //Toast.makeText(getApplicationContext(),"costs"+distancefr+"mobrent"+distancet+"total"+totals, Toast.LENGTH_LONG).show();
-               new InsertintoDB().execute();
-               //Toast.makeText(getApplicationContext(),"called", Toast.LENGTH_LONG).show();
-               //Toast.makeText(getApplicationContext(),"called", Toast.LENGTH_LONG).show();
-           }
-       });
+                //Toast.makeText(getApplicationContext(),"costs"+distancefr+"mobrent"+distancet+"total"+totals, Toast.LENGTH_LONG).show();
+                new InsertintoDB().execute();
+                //Toast.makeText(getApplicationContext(),"called", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"called", Toast.LENGTH_LONG).show();
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -359,7 +360,6 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
     /*
     private void passTheValues(final int calculateusedkm, final int calculatesumkm2, final int distotal, final int personaluse, final int officeuse, final int kmrent) {
-
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -369,13 +369,11 @@ public class AddnewexpenseActivity extends AppCompatActivity {
             }
         });
     }
-
    */
 
 
     private void giveMeSum(int value) {
-        totals+=value;
-        total.setText(""+totals);
+        total.setText(""+value);
     }
 
     private class InsertintoDB extends AsyncTask<String,String,String> {

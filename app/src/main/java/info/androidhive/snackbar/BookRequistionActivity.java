@@ -51,7 +51,8 @@ public class BookRequistionActivity extends AppCompatActivity {
     private static final String TAG_CLASSID = "id";
     private static final String TAG_CLASNAME = "name";
     private static final String TAG_CLASSIDVAL = "class_id";
-    String cid,classvalid,class_id,bookname, bookselect_id,bookselect_type;
+    private static final String TAG_DEPTID = "department_id";
+    String cid,classvalid,class_id,bookname, bookselect_id,bookselect_type,vid,department_id;
     private ArrayList<String> instlist,classlist,booklist;
     String[] SPINNERLIST = {"Guide Book", "Text Book"};
     @Override
@@ -82,7 +83,7 @@ public class BookRequistionActivity extends AppCompatActivity {
 
         instlist = new ArrayList<String>();
         classlist = new ArrayList<String>();
-        booklist = new ArrayList<String>();
+
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
@@ -187,9 +188,10 @@ public class BookRequistionActivity extends AppCompatActivity {
                                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                     @Override
                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                        cid = String.valueOf(position+2);
-                                        Toast.makeText(getApplicationContext(),""+cid,Toast.LENGTH_LONG).show();
-                                        //new GetTeacheraname().execute();
+                                        department_id = String.valueOf(position+1);
+                                        //Toast.makeText(getApplicationContext(),""+vid,Toast.LENGTH_LONG).show();
+                                        //department_id = String.valueOf(position - 1);
+                                        new GetBookname().execute();
                                     }
 
                                     @Override
@@ -253,8 +255,8 @@ public class BookRequistionActivity extends AppCompatActivity {
                                     @Override
                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                         class_id = String.valueOf(position+2);
-                                        Toast.makeText(getApplicationContext(),""+classvalid,Toast.LENGTH_LONG).show();
-                                        new GetBookname().execute();
+                                        //Toast.makeText(getApplicationContext(),""+classvalid,Toast.LENGTH_LONG).show();
+                                        //new GetBookname().execute();
                                     }
 
                                     @Override
@@ -286,12 +288,14 @@ public class BookRequistionActivity extends AppCompatActivity {
             // updating UI from Background Thread
             runOnUiThread(new Runnable() {
                 public void run() {
+                    booklist = new ArrayList<String>();
                     // Check for success tag
                     int success;
                     try {
                         // Building Parameters
+                        //Toast.makeText(BookRequistionActivity.this, ""+department_id, Toast.LENGTH_SHORT).show();
                         List<NameValuePair> params = new ArrayList<NameValuePair>();
-                        params.add(new BasicNameValuePair(TAG_CLASSIDVAL, class_id));
+                        params.add(new BasicNameValuePair(TAG_DEPTID,department_id));
 
                         // getting product details by making HTTP request
                         // Note that product details url will use GET request
@@ -307,10 +311,15 @@ public class BookRequistionActivity extends AppCompatActivity {
                             // successfully received product details
                             JSONArray bookObj = json
                                     .getJSONArray(TAG_TH); // JSON Array
+                            for (int x = 0; x < bookObj.length(); x++) {
 
-                            JSONObject c = bookObj.getJSONObject(0);
-                            bookname = c.getString(TAG_BOOKNAME);
-                            booklist.add(bookname);
+
+                                JSONObject c = bookObj.getJSONObject(x);
+                                bookname = c.getString(TAG_BOOKNAME);
+                                //Toast.makeText(BookRequistionActivity.this, ""+bookname, Toast.LENGTH_SHORT).show();
+                                booklist.add(bookname);
+                            }
+
                             ArrayAdapter<String> spinnerAdapter2 = new ArrayAdapter<String>(BookRequistionActivity.this, android.R.layout.simple_spinner_item, booklist);
                             spinnerAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinnerbook.setAdapter(spinnerAdapter2);
@@ -320,13 +329,10 @@ public class BookRequistionActivity extends AppCompatActivity {
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     bookselect_id = String.valueOf(position);
                                     //Toast.makeText(getApplicationContext(),""+classvalid,Toast.LENGTH_LONG).show();
-
                                 }
 
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
-
-
                                 }
                             });
 
@@ -346,7 +352,6 @@ public class BookRequistionActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-
 
             runOnUiThread(new Runnable() {
                 @Override

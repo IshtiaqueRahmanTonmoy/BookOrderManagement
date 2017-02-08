@@ -104,7 +104,7 @@ public class Donationrequistion extends AppCompatActivity {
         //        android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
 
         instlist = new ArrayList<String>();
-        teacherlist = new ArrayList<String>();
+
         subjectlist = new ArrayList<String>();
         classlist = new ArrayList<String>();
         booklist = new ArrayList<String>();
@@ -262,7 +262,7 @@ public class Donationrequistion extends AppCompatActivity {
                                 instspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                     @Override
                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                        cid = String.valueOf(position+2);
+                                        cid = String.valueOf(position+3);
                                         Toast.makeText(getApplicationContext(),""+cid,Toast.LENGTH_LONG).show();
                                         new GetTeacheraname().execute();
                                     }
@@ -294,6 +294,7 @@ public class Donationrequistion extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    teacherlist = new ArrayList<String>();
                     jsonparser = new JSONParser();
                     List<NameValuePair> param = new ArrayList<NameValuePair>();
 
