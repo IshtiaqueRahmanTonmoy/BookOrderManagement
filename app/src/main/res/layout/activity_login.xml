@@ -27,20 +27,24 @@
         android:padding="40dp">
 
         <EditText
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:drawablePadding="10dp"
             android:textColorHint="@color/windowBackground"
             android:gravity="fill"
+            android:textColor="#eae5e5"
             android:hint="Your Name"
             android:paddingLeft="15dp"/>
 
         <EditText
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:textColorHint="@color/windowBackground"
             android:drawablePadding="10dp"
+            android:textColor="#eae5e5"
             android:gravity="fill"
             android:hint="Password"
             android:inputType="textPassword"

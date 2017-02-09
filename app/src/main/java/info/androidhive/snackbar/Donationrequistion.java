@@ -73,6 +73,7 @@ public class Donationrequistion extends AppCompatActivity {
     String insid,insname,teachername,cid,sids,subjid,classid,teacherid,subjectid,subjectname,classname,bookid,bookname,onudanamount,nostudent,possbook,amountk;
     private ProgressDialog pDialog;
     private JSONParser jsonparser;
+    String college_id;
 
 
     private JSONArray jsonarray;
@@ -104,11 +105,6 @@ public class Donationrequistion extends AppCompatActivity {
         //        android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
 
         instlist = new ArrayList<String>();
-
-        subjectlist = new ArrayList<String>();
-        classlist = new ArrayList<String>();
-        booklist = new ArrayList<String>();
-
         instspinner = (Spinner) findViewById(R.id.countrySpinner);
         teacherspinner = (Spinner) findViewById(R.id.stateSpinner);
         subjectnamespinner = (Spinner) findViewById(R.id.citySpinner);
@@ -262,7 +258,7 @@ public class Donationrequistion extends AppCompatActivity {
                                 instspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                     @Override
                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                        cid = String.valueOf(position+3);
+                                        college_id = String.valueOf(position+2);
                                         Toast.makeText(getApplicationContext(),""+cid,Toast.LENGTH_LONG).show();
                                         new GetTeacheraname().execute();
                                     }
@@ -300,7 +296,7 @@ public class Donationrequistion extends AppCompatActivity {
 
                     //String val = insid;
                     //Toast.makeText(getApplicationContext(),""+val,Toast.LENGTH_LONG).show();
-                    param.add(new BasicNameValuePair(TAG_COLLEGEID, cid));
+                    param.add(new BasicNameValuePair(TAG_COLLEGEID,  college_id));
                     JSONObject json = jsonparser.makeHttpRequest(baseurl, "GET", param);
 
                     Log.e("Response: ", "> " + json);
@@ -350,6 +346,7 @@ public class Donationrequistion extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    subjectlist = new ArrayList<String>();
                     jsonparser = new JSONParser();
                     List<NameValuePair> param = new ArrayList<NameValuePair>();
 
@@ -405,6 +402,7 @@ public class Donationrequistion extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    classlist = new ArrayList<String>();
                     jsonparser = new JSONParser();
                     List<NameValuePair> param = new ArrayList<NameValuePair>();
 
@@ -461,6 +459,7 @@ public class Donationrequistion extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    booklist = new ArrayList<String>();
                     jsonparser = new JSONParser();
                     List<NameValuePair> param = new ArrayList<NameValuePair>();
 

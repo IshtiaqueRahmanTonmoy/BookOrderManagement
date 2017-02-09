@@ -14,4 +14,9 @@
     <string name="Bookprice">Book price</string>
     <string name="Currentstock">Current stock</string>
     <string name="Transferquantity">Transfer quantity</string>
+
+    <string name="quit">Dikdorshon</string>
+    <string name="really_quit">Do really want to exit the application?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
