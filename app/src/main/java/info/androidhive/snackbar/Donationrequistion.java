@@ -1,6 +1,7 @@
 package info.androidhive.snackbar;
 
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -35,6 +37,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +46,7 @@ public class Donationrequistion extends AppCompatActivity {
 
     //String[] SPINNERLIST = {"Android Material Design", "Material Design Spinner", "Spinner Using Material Library", "Material Spinner Example"};
     Button button,noofstudentplus,noofstudentminus,possiblebookplus,possiblebookminus,amountoftkplus,amountoftkminus;
-    EditText onudan;
+    EditText onudan,amountoktk;
     JSONArray college;
     TextView Noofstudent,possiblebooks,amountoftk;
     static int numofstudent,numofpossible,noofamount=0;
@@ -74,8 +77,10 @@ public class Donationrequistion extends AppCompatActivity {
     private ProgressDialog pDialog;
     private JSONParser jsonparser;
     String college_id;
-
-
+    private int CalendarHour, CalendarMinute;
+    Calendar calendar;
+    String format;
+    TimePickerDialog timepickerdialog;
     private JSONArray jsonarray;
     private static final String TAG_PHONE = "phone";
     private static final String TAG_DOCTORLIST = "patientdetail";
@@ -116,13 +121,11 @@ public class Donationrequistion extends AppCompatActivity {
         noofstudentminus = (Button) findViewById(R.id.minusbtn);
         possiblebookplus = (Button) findViewById(R.id.plusbutton);
         possiblebookminus = (Button) findViewById(R.id.minusbutton);
-        amountoftkplus = (Button) findViewById(R.id.plus);
-        amountoftkminus = (Button) findViewById(R.id.minus);
         Noofstudent = (TextView) findViewById(R.id.noofstudents);
         possiblebooks = (TextView) findViewById(R.id.possiblebooks);
         amountoftk = (TextView) findViewById(R.id.amountoftk);
         onudan = (EditText) findViewById(R.id.onudanEdit);
-
+        amountoktk = (EditText) findViewById(R.id.amountoftk);
 
         //materialDesignSpinner.setAdapter(arrayAdapter);
         //materialDesignSpinner1.setAdapter(arrayAdapter);
@@ -131,6 +134,50 @@ public class Donationrequistion extends AppCompatActivity {
         //materialDesignSpinner4.setAdapter(arrayAdapter);
 
 
+        onudan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendar = Calendar.getInstance();
+                CalendarHour = calendar.get(Calendar.HOUR_OF_DAY);
+                CalendarMinute = calendar.get(Calendar.MINUTE);
+                timepickerdialog = new TimePickerDialog(Donationrequistion.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+
+                                if (hourOfDay == 0) {
+
+                                    hourOfDay += 12;
+
+                                    format = "AM";
+                                }
+                                else if (hourOfDay == 12) {
+
+                                    format = "PM";
+
+                                }
+                                else if (hourOfDay > 12) {
+
+                                    hourOfDay -= 12;
+
+                                    format = "PM";
+
+                                }
+                                else {
+
+                                    format = "AM";
+                                }
+
+
+                                onudan.setText(hourOfDay + ":" + minute + format);
+                            }
+                        }, CalendarHour, CalendarMinute, false);
+                timepickerdialog.show();
+
+            }
+        });
         noofstudentplus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,21 +211,6 @@ public class Donationrequistion extends AppCompatActivity {
         });
 
 
-        amountoftkplus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                noofamount=noofamount+1;
-                amountoftk.setText(""+noofamount);
-            }
-        });
-
-        amountoftkminus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                noofamount=noofamount-1;
-                amountoftk.setText(""+noofamount);
-            }
-        });
 
 
 
@@ -189,8 +221,9 @@ public class Donationrequistion extends AppCompatActivity {
 
                 nostudent = Noofstudent.getText().toString();
                 possbook = possiblebooks.getText().toString();
-                amountk = amountoftk.getText().toString();
+                amountk = amountoktk.getText().toString();
                 onudanamount = onudan.getText().toString();
+
 
                 //Toast.makeText(getApplicationContext(),"no of student"+onudanamount,Toast.LENGTH_LONG).show();
                 //insert(cid,teacherid,subjectid,classid,nostudent,possbook,onudanamount,bookid,amountk);
