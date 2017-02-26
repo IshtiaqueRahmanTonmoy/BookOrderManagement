@@ -1,8 +1,11 @@
 package info.androidhive.snackbar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +37,7 @@ public class DynamicAddCustomlist extends BaseAdapter {
     int g_quntity, g_price, g_minus;
     private String[] listViewItems, prices, static_price;
     static HashMap<String, String> map = new HashMap<>();
-
+    int mValue = 0;
     ViewHolder viewholder;
 
     public DynamicAddCustomlist(Context context, List<Customlistadding> list) {
@@ -110,27 +113,14 @@ public class DynamicAddCustomlist extends BaseAdapter {
         viewholder.buttonplus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (customButtonListener != null) {
-                    customButtonListener.onButtonClickListener(position, viewholder.quantity, 1);
-                    quantity.set(position, quantity.get(position) + 1);
 
-                    get_price = viewholder.price.getText().toString();
+                float total=0;
+                //int mValue = Integer.parseInt(viewholder.quantity.getText().toString());
+                //double rate = Double.parseDouble(viewholder.foodrate.getText().toString());
+                mValue++;
 
-                    g_price = Integer.valueOf(static_price[position]);
-
-                    get_quntity = viewholder.quantity.getText().toString();
-                    g_quntity = Integer.valueOf(get_quntity);
-
-                    map.put("" + viewholder.name.getText().toString(), " " + viewholder.quantity.getText().toString());
-//                    Log.d("A ", "" + a);
-//                    Toast.makeText(context, "A" + a, Toast.LENGTH_LONG).show();
-//                    Log.d("Position ", "" + position);
-//                    System.out.println(+position + " Values " + map.values());
-                    viewholder.price.getTag();
-                    viewholder.price.setText("" + g_price * g_quntity);
-                    ShowHashMapValue();
-                }
-
+                //total = Float.parseFloat(list.get(position).getFoodrate())* mValue;
+                viewholder.quantity.setText(mValue);
             }
         });
         //listViewHolder.edTextQuantity.setText("0");

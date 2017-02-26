@@ -360,10 +360,10 @@ public class BookRequistionActivity extends AppCompatActivity {
                     String urlsubmidata = "http://dik-pl.com/dikpl/requistion.php";
                     List<NameValuePair> paramss = new ArrayList<NameValuePair>();
 
-                    paramss.add(new BasicNameValuePair("department_id",cid));
+                    paramss.add(new BasicNameValuePair("department_id",department_id));
                     paramss.add(new  BasicNameValuePair("class_id",class_id));
                     paramss.add(new  BasicNameValuePair("book_type",bookselect_type));
-                    paramss.add(new  BasicNameValuePair("quantity",bookselect_id));
+                    paramss.add(new  BasicNameValuePair("quantity",quantity.getText().toString()));
 
                     JSONObject json = jsonparser.makeHttpRequest(urlsubmidata, "POST", paramss);
                     //Log.d("Create Response", json.toString());
