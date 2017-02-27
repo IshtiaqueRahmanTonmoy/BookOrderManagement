@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private CoordinatorLayout coordinatorLayout;
     private Button btnBookRequistion, btnBookDistribution, btnDonationRequistion,btnDontaionDistribution,btnExpense;
     private FloatingActionButton fab;
-
+    String name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +33,15 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(mToolbar);
+
+        Intent iin= getIntent();
+        Bundle b = iin.getExtras();
+
+        if(b!=null) {
+            name =(String) b.get("mobile");
+            Toast.makeText(MainActivity.this, ""+name, Toast.LENGTH_SHORT).show();
+
+        }
 
         btnBookRequistion = (Button) findViewById(R.id.btnRequistion);
         btnBookDistribution = (Button) findViewById(R.id.btnDistribute);

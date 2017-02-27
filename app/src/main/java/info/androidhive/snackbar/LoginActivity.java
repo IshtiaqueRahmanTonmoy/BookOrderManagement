@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                 {
                     Log.d("Successfully Login int!", json.toString());
                     Intent ii = new Intent(LoginActivity.this,MainActivity.class);
-                    //ii.putExtra("mobile",phone);
+                    ii.putExtra("mobile",email);
                     finish();
                     startActivity(ii);
 

@@ -32,6 +32,7 @@ import java.util.List;
 
 public class BookRequistionActivity extends AppCompatActivity {
 
+    String id,finalgetid,book_name;
     Spinner spinner,spinner2,spinner11,spinnerbook;
     Button plus,minus,submit,cancel;
     TextView quantity;
@@ -41,9 +42,11 @@ public class BookRequistionActivity extends AppCompatActivity {
     private static String url_institute = "http://dik-pl.com/dikpl/departmentget.php";
     private static String url_classanem = "http://dik-pl.com/dikpl/classget.php";
     private static String url_getbook = "http://dik-pl.com/dikpl/getbookname.php";
+    private static String url_getbookname = "http://dik-pl.com/dikpl/getbookidbyname.php";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_DEPARTMENT = "department";
     private static final String TAG_TH = "th";
+    private static final String TAG_BOOKID = "id";
     private static final String TAG_CLASSNAME = "tbl_class";
     private static final String TAG_DEPID = "id";
     private static final String TAG_DEPNAME = "name";
@@ -136,6 +139,7 @@ public class BookRequistionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new InsertData().execute();
+                //new InsertDataIntoReq().execute();
             }
         });
 
@@ -315,8 +319,9 @@ public class BookRequistionActivity extends AppCompatActivity {
 
 
                                 JSONObject c = bookObj.getJSONObject(x);
+                                id = c.getString(TAG_BOOKID);
                                 bookname = c.getString(TAG_BOOKNAME);
-                                //Toast.makeText(BookRequistionActivity.this, ""+bookname, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(BookRequistionActivity.this, ""+id, Toast.LENGTH_SHORT).show();
                                 booklist.add(bookname);
                             }
 
@@ -327,8 +332,10 @@ public class BookRequistionActivity extends AppCompatActivity {
                             spinnerbook.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    bookselect_id = String.valueOf(position);
-                                    //Toast.makeText(getApplicationContext(),""+classvalid,Toast.LENGTH_LONG).show();
+                                    book_name = spinnerbook.getSelectedItem().toString();
+                                    //bookselect_id = String.valueOf(position) + 1;
+                                    new getBookid().execute();
+                                    //Toast.makeText(getApplicationContext(),""+b,Toast.LENGTH_LONG).show();
                                 }
 
                                 @Override
@@ -398,4 +405,103 @@ public class BookRequistionActivity extends AppCompatActivity {
 
         }
     }
+
+    private class getBookid extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            // updating UI from Background Thread
+            final JSONParser jp = new JSONParser();
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    // Check for success tag
+                    int success;
+                    try {
+                        // Building Parameters
+                        //Toast.makeText(BookRequistionActivity.this, ""+department_id, Toast.LENGTH_SHORT).show();
+                        List<NameValuePair> paramsss = new ArrayList<NameValuePair>();
+                        paramsss.add(new BasicNameValuePair(TAG_BOOKNAME,"Six%20Eng%20Handbook"));
+                        Log.d("params",paramsss.toString());
+
+                        // getting product details by making HTTP request
+                        // Note that product details url will use GET request
+                        JSONObject json = jp.makeHttpRequest(
+                                url_getbookname, "GET", paramsss);
+
+                        // check your log for json response
+                        Log.d("Single Product Details", json.toString());
+
+                        // json success tag
+                        success = json.getInt(TAG_SUCCESS);
+                        if (success == 1) {
+                            // successfully received product details
+                            JSONArray bookObj = json
+                                    .getJSONArray(TAG_TH); // JSON Array
+
+                            JSONObject c = bookObj.getJSONObject(0);
+                                finalgetid = c.getString(TAG_BOOKID);
+                                //new getrate().execute();
+                                Toast.makeText(BookRequistionActivity.this, ""+finalgetid, Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            // product with pid not found
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            return null;
+        }
+    }
+
+
+    /*
+    private class getrate extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            // updating UI from Background Thread
+            final JSONParser jp = new JSONParser();
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    // Check for success tag
+                    int success;
+                    try {
+                        // Building Parameters
+                        //Toast.makeText(BookRequistionActivity.this, ""+department_id, Toast.LENGTH_SHORT).show();
+                        List<NameValuePair> paramsss = new ArrayList<NameValuePair>();
+                        paramsss.add(new BasicNameValuePair(TAG_BOOKNAME,"মধুসুদনের%20কাব্য%20পাঠের%20ভুমিকা"));
+                        Log.d("params",book_name);
+
+                        // getting product details by making HTTP request
+                        // Note that product details url will use GET request
+                        JSONObject json = jp.makeHttpRequest(
+                                url_getbookBYNBAME, "GET", paramsss);
+
+                        // check your log for json response
+                        Log.d("Single Product Details", json.toString());
+
+                        // json success tag
+                        success = json.getInt(TAG_SUCCESS);
+                        if (success == 1) {
+                            // successfully received product details
+                            JSONArray bookObj = json
+                                    .getJSONArray(TAG_TH); // JSON Array
+                            JSONObject c = bookObj.getJSONObject(0);
+                            finalgetid = c.getString(TAG_BOOKID);
+                            Toast.makeText(BookRequistionActivity.this, ""+finalgetid, Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            // product with pid not found
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            return null;
+        }
+    }
+    */
 }
