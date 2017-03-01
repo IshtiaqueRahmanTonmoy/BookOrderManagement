@@ -27,12 +27,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookRequistionActivity extends AppCompatActivity {
 
-    String id,finalgetid,book_name;
+    String id,finalgetid,book_name,rate;
     Spinner spinner,spinner2,spinner11,spinnerbook;
     Button plus,minus,submit,cancel;
     TextView quantity;
@@ -43,6 +45,7 @@ public class BookRequistionActivity extends AppCompatActivity {
     private static String url_classanem = "http://dik-pl.com/dikpl/classget.php";
     private static String url_getbook = "http://dik-pl.com/dikpl/getbookname.php";
     private static String url_getbookname = "http://dik-pl.com/dikpl/getbookidbyname.php";
+    private static String url_getrate = "http://dik-pl.com/dikpl/getrate.php";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_DEPARTMENT = "department";
     private static final String TAG_TH = "th";
@@ -54,6 +57,8 @@ public class BookRequistionActivity extends AppCompatActivity {
     private static final String TAG_CLASSID = "id";
     private static final String TAG_CLASNAME = "name";
     private static final String TAG_CLASSIDVAL = "class_id";
+    private static final String TAG_BOOKRate = "sell_price";
+    private static final String TAG_BOOKN = "book_name";
     private static final String TAG_DEPTID = "department_id";
     String cid,classvalid,class_id,bookname, bookselect_id,bookselect_type,vid,department_id;
     private ArrayList<String> instlist,classlist,booklist;
@@ -70,6 +75,7 @@ public class BookRequistionActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
 
         new Department().execute();
         new Classname().execute();
@@ -195,7 +201,7 @@ public class BookRequistionActivity extends AppCompatActivity {
                                         department_id = String.valueOf(position+1);
                                         //Toast.makeText(getApplicationContext(),""+vid,Toast.LENGTH_LONG).show();
                                         //department_id = String.valueOf(position - 1);
-                                        new GetBookname().execute();
+                                        //new GetBookname().execute();
                                     }
 
                                     @Override
@@ -260,7 +266,7 @@ public class BookRequistionActivity extends AppCompatActivity {
                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                         class_id = String.valueOf(position+2);
                                         //Toast.makeText(getApplicationContext(),""+classvalid,Toast.LENGTH_LONG).show();
-                                        //new GetBookname().execute();
+                                        new GetBookname().execute();
                                     }
 
                                     @Override
@@ -333,9 +339,12 @@ public class BookRequistionActivity extends AppCompatActivity {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     book_name = spinnerbook.getSelectedItem().toString();
-                                    //bookselect_id = String.valueOf(position) + 1;
-                                    new getBookid().execute();
-                                    //Toast.makeText(getApplicationContext(),""+b,Toast.LENGTH_LONG).show();
+                                    bookselect_id = String.valueOf(position) + 1;
+
+                                    //new getrate().execute();
+                                    new getBookid().execute(book_name);
+
+                                    //Toast.makeText(getApplicationContext(),""+book_name,Toast.LENGTH_LONG).show();
                                 }
 
                                 @Override
@@ -411,7 +420,11 @@ public class BookRequistionActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             // updating UI from Background Thread
+            final String s = params[0];
+
+
             final JSONParser jp = new JSONParser();
+
             runOnUiThread(new Runnable() {
                 public void run() {
                     // Check for success tag
@@ -420,8 +433,8 @@ public class BookRequistionActivity extends AppCompatActivity {
                         // Building Parameters
                         //Toast.makeText(BookRequistionActivity.this, ""+department_id, Toast.LENGTH_SHORT).show();
                         List<NameValuePair> paramsss = new ArrayList<NameValuePair>();
-                        paramsss.add(new BasicNameValuePair(TAG_BOOKNAME,"Six%20Eng%20Handbook"));
-                        Log.d("params",paramsss.toString());
+                        paramsss.add(new BasicNameValuePair(TAG_BOOKNAME, s));
+                        //Log.d("params",finalQuery);
 
                         // getting product details by making HTTP request
                         // Note that product details url will use GET request
@@ -429,7 +442,7 @@ public class BookRequistionActivity extends AppCompatActivity {
                                 url_getbookname, "GET", paramsss);
 
                         // check your log for json response
-                        Log.d("Single Product Details", json.toString());
+                        Log.d("Single Book Details", paramsss.toString());
 
                         // json success tag
                         success = json.getInt(TAG_SUCCESS);
@@ -438,10 +451,12 @@ public class BookRequistionActivity extends AppCompatActivity {
                             JSONArray bookObj = json
                                     .getJSONArray(TAG_TH); // JSON Array
 
-                            JSONObject c = bookObj.getJSONObject(0);
+
+                                JSONObject c = bookObj.getJSONObject(0);
                                 finalgetid = c.getString(TAG_BOOKID);
                                 //new getrate().execute();
                                 Toast.makeText(BookRequistionActivity.this, ""+finalgetid, Toast.LENGTH_SHORT).show();
+                                new getrate().execute();
 
                         } else {
                             // product with pid not found
@@ -456,7 +471,7 @@ public class BookRequistionActivity extends AppCompatActivity {
     }
 
 
-    /*
+
     private class getrate extends AsyncTask<String, String, String> {
 
         @Override
@@ -471,13 +486,13 @@ public class BookRequistionActivity extends AppCompatActivity {
                         // Building Parameters
                         //Toast.makeText(BookRequistionActivity.this, ""+department_id, Toast.LENGTH_SHORT).show();
                         List<NameValuePair> paramsss = new ArrayList<NameValuePair>();
-                        paramsss.add(new BasicNameValuePair(TAG_BOOKNAME,"মধুসুদনের%20কাব্য%20পাঠের%20ভুমিকা"));
-                        Log.d("params",book_name);
+                        paramsss.add(new BasicNameValuePair(TAG_BOOKID,finalgetid));
+                        //Log.d("params",book_name);
 
                         // getting product details by making HTTP request
                         // Note that product details url will use GET request
                         JSONObject json = jp.makeHttpRequest(
-                                url_getbookBYNBAME, "GET", paramsss);
+                                url_getrate, "GET", paramsss);
 
                         // check your log for json response
                         Log.d("Single Product Details", json.toString());
@@ -489,8 +504,8 @@ public class BookRequistionActivity extends AppCompatActivity {
                             JSONArray bookObj = json
                                     .getJSONArray(TAG_TH); // JSON Array
                             JSONObject c = bookObj.getJSONObject(0);
-                            finalgetid = c.getString(TAG_BOOKID);
-                            Toast.makeText(BookRequistionActivity.this, ""+finalgetid, Toast.LENGTH_SHORT).show();
+                            rate = c.getString(TAG_BOOKRate);
+                            Toast.makeText(BookRequistionActivity.this, ""+rate, Toast.LENGTH_SHORT).show();
 
                         } else {
                             // product with pid not found
@@ -503,5 +518,5 @@ public class BookRequistionActivity extends AppCompatActivity {
             return null;
         }
     }
-    */
+
 }
