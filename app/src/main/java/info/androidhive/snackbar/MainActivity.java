@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private CoordinatorLayout coordinatorLayout;
     private Button btnBookRequistion, btnBookDistribution, btnDonationRequistion,btnDontaionDistribution,btnExpense;
     private FloatingActionButton fab;
-    String name;
+    String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         Bundle b = iin.getExtras();
 
         if(b!=null) {
-            name =(String) b.get("mobile");
-            Toast.makeText(MainActivity.this, ""+name, Toast.LENGTH_SHORT).show();
+            email =(String) b.get("mobile");
+            Toast.makeText(MainActivity.this, ""+email, Toast.LENGTH_SHORT).show();
 
         }
 
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //snackbar.show();
                 Intent intent = new Intent(MainActivity.this,BookRequistionActivity.class);
+                intent.putExtra("mobile",email);
                 startActivity(intent);
 
             }

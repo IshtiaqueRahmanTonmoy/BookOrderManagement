@@ -29,7 +29,10 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BookRequistionActivity extends AppCompatActivity {
@@ -46,6 +49,7 @@ public class BookRequistionActivity extends AppCompatActivity {
     private static String url_getbook = "http://dik-pl.com/dikpl/getbookname.php";
     private static String url_getbookname = "http://dik-pl.com/dikpl/getbookidbyname.php";
     private static String url_getrate = "http://dik-pl.com/dikpl/getrate.php";
+    private static String url_getiuserid = "http://dik-pl.com/dikpl/getuserid.php";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_DEPARTMENT = "department";
     private static final String TAG_TH = "th";
@@ -56,6 +60,8 @@ public class BookRequistionActivity extends AppCompatActivity {
     private static final String TAG_BOOKNAME = "book_name";
     private static final String TAG_CLASSID = "id";
     private static final String TAG_CLASNAME = "name";
+    private static final String TAG_EMAIL = "email";
+    private static final String TAG_ID = "id";
     private static final String TAG_CLASSIDVAL = "class_id";
     private static final String TAG_BOOKRate = "sell_price";
     private static final String TAG_BOOKN = "book_name";
@@ -63,6 +69,15 @@ public class BookRequistionActivity extends AppCompatActivity {
     String cid,classvalid,class_id,bookname, bookselect_id,bookselect_type,vid,department_id;
     private ArrayList<String> instlist,classlist,booklist;
     String[] SPINNERLIST = {"Guide Book", "Text Book"};
+    String requisition_by,email;
+    double r,total;
+    EditText commentEditText;
+    int q;
+    DateFormat dateFormat;
+    String invoice_no;
+    Date dates;
+    String total_amount,total_quantity,comment,date,date2,status;
+    int i=10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +89,18 @@ public class BookRequistionActivity extends AppCompatActivity {
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
+        }
+
+        dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        dates = new Date();
+
+        Intent iin= getIntent();
+        Bundle b = iin.getExtras();
+        if(b!=null) {
+            email =(String) b.get("mobile");
+            //Toast.makeText(BookRequistionActivity.this, ""+email, Toast.LENGTH_SHORT).show();
+            new getuser().execute();
+
         }
 
 
@@ -113,15 +140,7 @@ public class BookRequistionActivity extends AppCompatActivity {
         });
 
 
-        EditText commentEditText = (EditText) findViewById(R.id.commentsEdit);
-
-        Spinner materialDesignSpinner = (Spinner)
-                findViewById(R.id.spinner11);
-        Spinner materialDesignSpinner1 = (Spinner)
-                findViewById(R.id.Spinner);
-        Spinner materialDesignSpinner2 = (Spinner)
-                findViewById(R.id.stateSpinner);
-
+        commentEditText = (EditText) findViewById(R.id.commentsEdit);
 
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,17 +163,25 @@ public class BookRequistionActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new InsertData().execute();
-                //new InsertDataIntoReq().execute();
-            }
-        });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                i = i + 1;
+                invoice_no = "2017-02-0"+i;
+                Toast.makeText(BookRequistionActivity.this, ""+invoice_no, Toast.LENGTH_SHORT).show();
+                total_amount = String.valueOf(total);
+                total_quantity = quantity.getText().toString();
+                comment = commentEditText.getText().toString();
+                date = dateFormat.format(dates);
+                date2 = dateFormat.format(dates);
+                status = ""+1;
+
+                r = Double.parseDouble(rate);
+                q = Integer.parseInt(quantity.getText().toString());
+                //Log.d("total", r,q);
+                total = r*q;
+                Log.d("total", String.valueOf(total));
+
+               // new InsertData().execute();
+                new InsertintoReq().execute();
             }
         });
     }
@@ -433,7 +460,7 @@ public class BookRequistionActivity extends AppCompatActivity {
                         // Building Parameters
                         //Toast.makeText(BookRequistionActivity.this, ""+department_id, Toast.LENGTH_SHORT).show();
                         List<NameValuePair> paramsss = new ArrayList<NameValuePair>();
-                        paramsss.add(new BasicNameValuePair(TAG_BOOKNAME, s));
+                        paramsss.add(new BasicNameValuePair(TAG_BOOKNAME, '"'+s+'"'));
                         //Log.d("params",finalQuery);
 
                         // getting product details by making HTTP request
@@ -454,8 +481,9 @@ public class BookRequistionActivity extends AppCompatActivity {
 
                                 JSONObject c = bookObj.getJSONObject(0);
                                 finalgetid = c.getString(TAG_BOOKID);
+                               // Log.d("valuesfd",finalgetid);
                                 //new getrate().execute();
-                                Toast.makeText(BookRequistionActivity.this, ""+finalgetid, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(BookRequistionActivity.this, ""+finalgetid, Toast.LENGTH_SHORT).show();
                                 new getrate().execute();
 
                         } else {
@@ -505,7 +533,9 @@ public class BookRequistionActivity extends AppCompatActivity {
                                     .getJSONArray(TAG_TH); // JSON Array
                             JSONObject c = bookObj.getJSONObject(0);
                             rate = c.getString(TAG_BOOKRate);
-                            Toast.makeText(BookRequistionActivity.this, ""+rate, Toast.LENGTH_SHORT).show();
+
+                            Log.d("total", String.valueOf(total));
+                            //Toast.makeText(BookRequistionActivity.this, ""+rate, Toast.LENGTH_SHORT).show();
 
                         } else {
                             // product with pid not found
@@ -516,6 +546,121 @@ public class BookRequistionActivity extends AppCompatActivity {
                 }
             });
             return null;
+        }
+    }
+
+
+
+    private class getuser extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            // updating UI from Background Thread
+            final JSONParser jp = new JSONParser();
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    // Check for success tag
+                    int success;
+
+                    try {
+                        // Building Parameters
+                        //Toast.makeText(BookRequistionActivity.this, ""+department_id, Toast.LENGTH_SHORT).show();
+                        List<NameValuePair> paramsss = new ArrayList<NameValuePair>();
+                        paramsss.add(new BasicNameValuePair(TAG_EMAIL,'"'+email+'"'));
+                        Log.d("params",paramsss.toString());
+
+                        // getting product details by making HTTP request
+                        // Note that product details url will use GET request
+                        JSONObject json = jp.makeHttpRequest(
+                                url_getiuserid, "GET", paramsss);
+
+                        // check your log for json response
+                        Log.d("Single id Details", json.toString());
+
+                        // json success tag
+                        success = json.getInt(TAG_SUCCESS);
+                        if (success == 1) {
+                            // successfully received product details
+                            JSONArray bookObj = json
+                                    .getJSONArray(TAG_TH); // JSON Array
+                            JSONObject c = bookObj.getJSONObject(0);
+                            requisition_by = c.getString(TAG_ID);
+                            Toast.makeText(BookRequistionActivity.this, "requistion by"+requisition_by, Toast.LENGTH_SHORT).show();
+
+                          /*
+                            double r = Double.parseDouble(rate);
+                            int q = Integer.parseInt(quantity.getText().toString());
+                            double v = r * q;
+                            Toast.makeText(BookRequistionActivity.this, ""+v, Toast.LENGTH_SHORT).show();
+                           */
+
+                        } else {
+                            // product with pid not found
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            return null;
+        }
+    }
+
+    private class InsertintoReq extends AsyncTask<String,String,String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            final JSONParser jp = new JSONParser();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    String urlsubmidata1 = "http://dik-pl.com/dikpl/inserttablerequistion.php";
+                    List<NameValuePair> paramss = new ArrayList<NameValuePair>();
+
+
+                    Log.d("allvalues",invoice_no+total_amount+total_quantity+comment+date+date2+status);
+                    paramss.add(new BasicNameValuePair("requisition_by",requisition_by));
+                    paramss.add(new BasicNameValuePair("invoice_no",invoice_no));
+                    paramss.add(new  BasicNameValuePair("total_amount",total_amount));
+                    paramss.add(new  BasicNameValuePair("total_quantity",total_quantity));
+                    paramss.add(new  BasicNameValuePair("comment",comment));
+                    paramss.add(new  BasicNameValuePair("date",date));
+                    paramss.add(new  BasicNameValuePair("date2",date2));
+                    paramss.add(new  BasicNameValuePair("status",status));
+
+                    JSONObject json = jp.makeHttpRequest(urlsubmidata1, "POST", paramss);
+                    //Log.d("Create Response", json.toString());
+                    try {
+
+                        int success = json.getInt(TAG_SUCCESS);
+
+                        // Toast.makeText(RegistrationActivity.this, "" + success, Toast.LENGTH_SHORT).show();
+                        if (success == 1) {
+                            // successfully created product
+
+                            BookRequistionActivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(BookRequistionActivity.this.getBaseContext(), "Successfully inserted..", Toast.LENGTH_LONG).show();
+                                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(i);
+                                    finish();
+                                }
+                            });
+                        } else {
+                            // failed to create product
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
+
+            return null;
+
         }
     }
 
