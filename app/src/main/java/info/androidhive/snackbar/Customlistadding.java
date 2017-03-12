@@ -8,10 +8,17 @@ import java.io.Serializable;
 
 public class Customlistadding
 {
-    String name,price,code,stock,quantity;
+    int id;
+    String name;
+    String price;
+    String code;
+    String stock;
+    String quantity;
+    String totalsvalue;
 
-    Customlistadding(String name,String price,String code,String stock)
+    Customlistadding(int id,String name,String price,String code,String stock)
     {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.code = code;
@@ -19,6 +26,15 @@ public class Customlistadding
     }
 
     public Customlistadding() {
+
+    }
+
+    public Customlistadding(String name, String code, String stock, String quantity, String totalsvalue) {
+        this.name = name;
+        this.code = code;
+        this.stock = stock;
+        this.quantity = quantity;
+        this.totalsvalue = totalsvalue;
 
     }
 

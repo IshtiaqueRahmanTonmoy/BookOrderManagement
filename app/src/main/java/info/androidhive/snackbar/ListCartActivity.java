@@ -1,7 +1,11 @@
 package info.androidhive.snackbar;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +24,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListCartActivity extends AppCompatActivity implements CustomButtonListener{
+public class ListCartActivity extends AppCompatActivity {
 
     List<Customlistadding> itemList = new ArrayList<Customlistadding>();
     ListView listview;
@@ -30,6 +34,10 @@ public class ListCartActivity extends AppCompatActivity implements CustomButtonL
     DynamicAddCustomlist dynamicadd;
     Button placeorder,total;
     int stock = 0;
+    String id,code,stockvalue,quantity,totalsvalue,name;
+    List<Customlistadding> lists;
+    int i=8;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +46,7 @@ public class ListCartActivity extends AppCompatActivity implements CustomButtonL
         listview = (ListView) findViewById(R.id.listView);
         placeorder = (Button) findViewById(R.id.button1);
         total = (Button) findViewById(R.id.button2);
+        lists = new ArrayList<Customlistadding>();
 
         String carListAsString = getIntent().getStringExtra("listget");
         //Log.i("list",carListAsString);
@@ -46,9 +55,12 @@ public class ListCartActivity extends AppCompatActivity implements CustomButtonL
         Type type = new TypeToken<List<Customlistadding>>(){}.getType();
         List<Customlistadding> carsList = gson.fromJson(carListAsString, type);
 
-        dynamicadd = new DynamicAddCustomlist(context,carsList);
+        dynamicadd = new DynamicAddCustomlist(this, R.layout.activity_list_cart,carsList);
         listview.setAdapter(dynamicadd);
 
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("custom-message"));
 
         for (Customlistadding customlist : carsList){
             //Log.i("CarData", customlist.getName()+"-"+customlist.getStock());
@@ -61,7 +73,21 @@ public class ListCartActivity extends AppCompatActivity implements CustomButtonL
         placeorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for(Customlistadding s : lists){
+                    String name = s.getName().toString();
+                    String code = s.getCode().toString();
+                    String stock = s.getStock().toString();
+                    //Log.d("pr",price);
+                    String qtys = s.getQuantity().toString();
 
+                    Log.d("id"+i+"name",name+"code"+code+"stock"+stock+"quantity"+qtys);
+                    //String tot = s.getFoodrate().toString();
+
+                    //Insertdata insert = new Insertdata(id,name,price,qtys,tot);
+                    //insert.execute("",null);
+                    //Log.d("idval",id);
+                    i++;
+                }
             }
         });
 
@@ -72,12 +98,19 @@ public class ListCartActivity extends AppCompatActivity implements CustomButtonL
         //Toast.makeText(ListCartActivity.this, ""+name+""+stock, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onButtonClickListener(int position, TextView editText, int value) {
-        int quantity = Integer.parseInt(editText.getText().toString());
-        quantity = quantity+1*value;
-        if(quantity<0)
-            quantity=0;
-        editText.setText(quantity+"");
-    }
+
+    BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            name = intent.getStringExtra("name");
+            code = intent.getStringExtra("code");
+            stockvalue = intent.getStringExtra("stock");
+            quantity = intent.getStringExtra("qty");
+            totalsvalue = intent.getStringExtra("total");
+
+            Log.d("quant",quantity);
+            lists.add(new Customlistadding(name,code,stockvalue,quantity,totalsvalue));
+        }
+    };
 }

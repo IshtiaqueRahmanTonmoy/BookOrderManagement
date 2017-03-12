@@ -1,5 +1,6 @@
 package info.androidhive.snackbar;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -9,12 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,144 +29,132 @@ import java.util.Set;
  * Created by tonmoy on 10/19/16.
  */
 
-public class DynamicAddCustomlist extends BaseAdapter {
+public class DynamicAddCustomlist extends ArrayAdapter<Customlistadding> {
 
     Context context;
     List<Customlistadding> list;
-    public ArrayList<HashMap<String, String>> listQuantity;
-    public ArrayList<Integer> quantity = new ArrayList<Integer>();
-    CustomButtonListener customButtonListener;
-    static String get_price, get_quntity;
-    int g_quntity, g_price, g_minus;
-    private String[] listViewItems, prices, static_price;
-    static HashMap<String, String> map = new HashMap<>();
-    int mValue = 0;
-    ViewHolder viewholder;
+    double total=0;
 
-    public DynamicAddCustomlist(Context context, List<Customlistadding> list) {
+    public DynamicAddCustomlist(Context context, int resource, List<Customlistadding> list) {
+
+        super(context, resource, list);
         this.context = context;
         this.list = list;
+        //intent = new Intent();
 
-        for (int i = 0; i < list.size(); i++) {
-            quantity.add(0);
-            //quantity[i]=0;
-        }
+        //this.mCallback = listener;
+
+        //count.setFoods(list.get);
     }
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
         return list.size();
     }
 
     @Override
     public Customlistadding getItem(int position) {
-        // TODO Auto-generated method stub
         return list.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
+        final ViewHolder viewholder;
+
+        final Customlistadding items = list.get(position);
+        final int temp = position;
+
+        LayoutInflater mInflater = (LayoutInflater) context
+                .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+
         if (convertView == null) {
 
+            convertView = mInflater.inflate(R.layout.custom_lista_dding, null);
             viewholder = new ViewHolder();
-
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            convertView = inflater.inflate(R.layout.custom_lista_dding, parent, false);
-
-            convertView.setClickable(true);
-            convertView.setFocusable(true);
-
-            //convertView = inflater.inflate(R.layout.bookdistributioncustomlayout, null);
-
-            viewholder.name = (TextView) convertView.findViewById(R.id.bookname);
-            viewholder.price = (TextView) convertView.findViewById(R.id.bookprice);
-            viewholder.code = (TextView) convertView.findViewById(R.id.bookcode);
-            viewholder.stock = (TextView) convertView.findViewById(R.id.currentstock);
-            //viewholder.number = (TextView) convertView.findViewById(R.id.quantity_text_view);
+            viewholder.bookname = (TextView) convertView.findViewById(R.id.bookname);
+            viewholder.bookcode = (TextView) convertView.findViewById(R.id.bookcode);
+            viewholder.bookstock = (TextView) convertView.findViewById(R.id.bookrate);
             viewholder.quantity = (TextView) convertView.findViewById(R.id.cart_product_quantity_tv);
-            viewholder.buttonplus = (ImageView) convertView.findViewById(R.id.cart_plus_img);
-            viewholder.buttonminus = (ImageView) convertView.findViewById(R.id.cart_minus_img);
+            //viewholder.edit = (EditText) convertView.findViewById(R.id.price);
+            viewholder.plusbutton = (ImageView) convertView.findViewById(R.id.cart_plus_img);
+            viewholder.minusbutton = (ImageView) convertView.findViewById(R.id.cart_minus_img);
+            //viewholder.delete = (Button) convertView.findViewById(R.id.deleteorder);
 
             convertView.setTag(viewholder);
-        } else {
-            viewholder = (ViewHolder) convertView.getTag();
         }
 
-        Customlistadding items = list.get(position);
-        viewholder.name.setText(items.getName());
-        viewholder.price.setText(items.getPrice());
-        viewholder.code.setText(items.getCode());
-        viewholder.stock.setText(items.getStock());
+        else  {
 
-        try {
-
-            viewholder.quantity.setText(quantity.get(position) + "");
-        } catch (Exception e) {
-            e.printStackTrace();
+            viewholder = (ViewHolder)convertView.getTag();
         }
 
-        viewholder.buttonplus.setOnClickListener(new View.OnClickListener() {
+        viewholder.bookname.setText(items.getName());
+        viewholder.bookcode.setText(items.getCode());
+        viewholder.bookstock.setText(items.getStock());
+
+        viewholder.plusbutton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
 
-                float total=0;
-                //int mValue = Integer.parseInt(viewholder.quantity.getText().toString());
+                int mValue = Integer.parseInt(viewholder.quantity.getText().toString());
                 //double rate = Double.parseDouble(viewholder.foodrate.getText().toString());
                 mValue++;
 
-                //total = Float.parseFloat(list.get(position).getFoodrate())* mValue;
-                viewholder.quantity.setText(mValue);
+                total = Float.parseFloat(list.get(position).getStock())* mValue;
+
+                viewholder.quantity.setText(String.valueOf(mValue));
+
+                Intent intentplus = new Intent("custom-message");
+                //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+                intentplus.putExtra("name",viewholder.bookname.getText().toString());
+                intentplus.putExtra("code",items.getCode());
+                intentplus.putExtra("stock",items.getStock());
+                intentplus.putExtra("total",total);
+
+                //Log.d("ratess",items.getFoodrate());
+                intentplus.putExtra("qty",viewholder.quantity.getText().toString());
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intentplus);
+
+
             }
         });
-        //listViewHolder.edTextQuantity.setText("0");
-        viewholder.buttonminus.setOnClickListener(new View.OnClickListener() {
+
+        viewholder.minusbutton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (customButtonListener != null) {
-                    customButtonListener.onButtonClickListener(position, viewholder.quantity, -1);
-                    if (quantity.get(position) > 0)
-                        quantity.set(position, quantity.get(position) - 1);
-                }
+            public void onClick(View view) {
+
+
+                int mValue = Integer.parseInt(viewholder.quantity.getText().toString());
+                //double rate = Double.parseDouble(viewholder.foodrate.getText().toString());
+                mValue--;
+
+                total = Float.parseFloat(list.get(position).getStock())* mValue;
+                viewholder.quantity.setText(String.valueOf(mValue));
+
+                Intent intentminus = new Intent("custom-message");
+                //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+                intentminus.putExtra("name",viewholder.bookname.getText().toString());
+                intentminus.putExtra("code",items.getCode());
+                intentminus.putExtra("stock",items.getStock());
+                intentminus.putExtra("total",total);
+
+                //Log.d("ratess",items.getFoodrate());
+                intentminus.putExtra("qty",viewholder.quantity.getText().toString());
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intentminus);
             }
         });
 
         return convertView;
     }
 
-    private void ShowHashMapValue() {
-        Set setOfKeys = map.keySet();
-
-/**
- * get the Iterator instance from Set
- */
-        Iterator iterator = setOfKeys.iterator();
-
-/**
- * Loop the iterator until we reach the last element of the HashMap
- */
-        while (iterator.hasNext()) {
-/**
- * next() method returns the next key from Iterator instance.
- * return type of next() method is Object so we need to do DownCasting to String
- */
-            String key = (String) iterator.next();
-
-/**
- * once we know the 'key', we can get the value from the HashMap
- * by calling get() method
- */
-            String value = map.get(key);
-
-            System.out.println("Key: " + key + ", Value: " + value);
-        }
-
+    private static class ViewHolder {
+        public TextView bookname,bookcode,bookstock,quantity;
+        public ImageView plusbutton,minusbutton;
     }
 }

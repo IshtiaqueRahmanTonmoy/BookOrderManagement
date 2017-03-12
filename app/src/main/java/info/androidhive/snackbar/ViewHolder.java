@@ -10,7 +10,7 @@ import android.widget.TextView;
  */
 
 public class ViewHolder {
-    public TextView name,price,code,stock,number;
+    public TextView name,price,code,stock,number,testing;
     //public ImageView buttonplus,buttonminus;
     public TextView stockcount,placeorder;
     public TextView quantity;

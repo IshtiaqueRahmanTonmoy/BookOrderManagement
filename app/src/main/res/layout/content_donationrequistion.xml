@@ -84,34 +84,13 @@
             android:textStyle="bold"
             android:textAllCaps="true" />
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/noofstudents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:hint="Enter noof student"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"/>
 
-            <Button
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:id="@+id/minusbtn"
-                android:text="-" />
-
-            <TextView
-                android:id="@+id/noofstudents"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:text="0"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:textSize="16sp" />
-
-            <Button
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:id="@+id/plusbtn"
-                android:text="+" />
-        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -121,34 +100,12 @@
             android:textStyle="bold"
             android:textAllCaps="true" />
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/possiblebooks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:id="@+id/minusbutton"
-                android:text="-" />
-
-            <TextView
-                android:id="@+id/possiblebooks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:text="0"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:textSize="16sp" />
-
-            <Button
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:id="@+id/plusbutton"
-                android:text="+" />
-        </LinearLayout>
+            android:hint="Enter possible books"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"/>
 
         <EditText
             android:id="@+id/onudanEdit"

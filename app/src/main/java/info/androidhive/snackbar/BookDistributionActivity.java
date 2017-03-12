@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -53,7 +54,8 @@ public class BookDistributionActivity extends AppCompatActivity {
     Intent myIntent;
     private static final String TAG_DEPARTMENT = "department";
     int i;
-    Spinner spinner1,spinner2;
+    Spinner spinner1,spinner2,schoolspinner,collegespinner;
+    EditText comment;
     private static final String TAG_CLASNAME = "name";
     private static final String TAG_CLASSNAME = "tbl_class";
     private static final String TAG_SUCCESS = "success";
@@ -85,6 +87,9 @@ public class BookDistributionActivity extends AppCompatActivity {
 
         spinner1 = (Spinner) findViewById(R.id.spinner2);
         spinner2 = (Spinner) findViewById(R.id.spinner3);
+        schoolspinner = (Spinner) findViewById(R.id.schoolspinner);
+        collegespinner = (Spinner) findViewById(R.id.collegespinner);
+        comment = (EditText) findViewById(R.id.txtComment);
 
         sqlite_obj = new CartSavingSqlite(BookDistributionActivity.this);
 
@@ -111,7 +116,7 @@ public class BookDistributionActivity extends AppCompatActivity {
                     code = cartadding.getCart().get(i).getCode();
                     stock = cartadding.getCart().get(i).getStock();
 
-                    listget.add(i,new Customlistadding(name,price,code,stock));
+                    listget.add(i,new Customlistadding(null,name,price,code,stock));
 
                     //Toast.makeText(BookDistributionActivity.this, ""+name+""+stock, Toast.LENGTH_SHORT).show();;
                 }
@@ -147,13 +152,14 @@ public class BookDistributionActivity extends AppCompatActivity {
         tablerow2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int i=1;
                 TableRow t = (TableRow) v;
                 TextView firstTextView = (TextView) t.getChildAt(0);
                 TextView secondTextView = (TextView) t.getChildAt(1);
                 name = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
                 //sqlite_obj.addToCart(bookname,"price","code",stock);
-                itemList.add(new Customlistadding(name,"price","code",stock));
+                itemList.add(new Customlistadding(i,name,"price","code",stock));
                 cartadding.addCart(itemList);
                 //saveintoCart(bookname,stock);
 
@@ -173,6 +179,7 @@ public class BookDistributionActivity extends AppCompatActivity {
         tablerow3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int i=2;
                 TableRow t = (TableRow) v;
                 TextView firstTextView = (TextView) t.getChildAt(0);
                 TextView secondTextView = (TextView) t.getChildAt(1);
@@ -180,7 +187,7 @@ public class BookDistributionActivity extends AppCompatActivity {
                 stock = secondTextView.getText().toString();
                 //sqlite_obj.addToCart(bookname,"price","code",stock);
 
-                itemList.add(new Customlistadding(name,"price","code",stock));
+                itemList.add(new Customlistadding(i,name,"price","code",stock));
                 cartadding.addCart(itemList);
                 //saveintoCart(bookname,stock);
              /*
@@ -200,6 +207,7 @@ public class BookDistributionActivity extends AppCompatActivity {
         tablerow4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int i=3;
                 TableRow t = (TableRow) v;
                 TextView firstTextView = (TextView) t.getChildAt(0);
                 TextView secondTextView = (TextView) t.getChildAt(1);
@@ -207,7 +215,7 @@ public class BookDistributionActivity extends AppCompatActivity {
                 stock = secondTextView.getText().toString();
                 //sqlite_obj.addToCart(bookname,"price","code",stock);
 
-                itemList.add(new Customlistadding(name,"price","code",stock));
+                itemList.add(new Customlistadding(i,name,"price","code",stock));
                 cartadding.addCart(itemList);
                 //saveintoCart(bookname,stock);
                 //Toast.makeText(BookDistributionActivity.this, ""+firstText+""+secondText, Toast.LENGTH_SHORT).show();

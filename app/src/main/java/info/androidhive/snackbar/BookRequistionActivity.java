@@ -66,6 +66,14 @@ public class BookRequistionActivity extends AppCompatActivity {
     private static final String TAG_BOOKRate = "sell_price";
     private static final String TAG_BOOKN = "book_name";
     private static final String TAG_DEPTID = "department_id";
+
+    private static final String TAG_DIVISIONID = "division_id";
+    private static final String TAG_JONALID = "jonal_id";
+    private static final String TAG_DISTRICTID = "district_id";
+    private static final String TAG_THANAID = "thana_id";
+
+
+
     String cid,classvalid,class_id,bookname, bookselect_id,bookselect_type,vid,department_id;
     private ArrayList<String> instlist,classlist,booklist;
     String[] SPINNERLIST = {"Guide Book", "Text Book"};
@@ -76,7 +84,7 @@ public class BookRequistionActivity extends AppCompatActivity {
     DateFormat dateFormat;
     String invoice_no;
     Date dates;
-    String total_amount,total_quantity,comment,date,date2,status;
+    String total_amount,total_quantity,comment,date,date2,status,division_id,jonal_id,district_id,thana_id;
     int i=10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +107,9 @@ public class BookRequistionActivity extends AppCompatActivity {
         if(b!=null) {
             email =(String) b.get("mobile");
             //Toast.makeText(BookRequistionActivity.this, ""+email, Toast.LENGTH_SHORT).show();
-            new getuser().execute();
 
         }
+        new getuser().execute();
 
 
         new Department().execute();
@@ -111,8 +119,7 @@ public class BookRequistionActivity extends AppCompatActivity {
         spinner2 = (Spinner) findViewById(R.id.stateSpinner);
         spinner11 = (Spinner) findViewById(R.id.spinner11);
         spinnerbook = (Spinner) findViewById(R.id.citySpinner);
-        plus = (Button) findViewById(R.id.buttonplus);
-        minus = (Button) findViewById(R.id.buttonminus);
+
         quantity = (TextView) findViewById(R.id.quantity_text_view);
         submit = (Button) findViewById(R.id.button1);
         cancel = (Button) findViewById(R.id.cancel);
@@ -142,31 +149,13 @@ public class BookRequistionActivity extends AppCompatActivity {
 
         commentEditText = (EditText) findViewById(R.id.commentsEdit);
 
-        plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                num=num+1;
-                quantity.setText(""+num);
-            }
-        });
-
-        minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                num=num-1;
-                quantity.setText(""+num);
-            }
-        });
-
-
-
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 i = i + 1;
                 invoice_no = "2017-02-0"+i;
-                Toast.makeText(BookRequistionActivity.this, ""+invoice_no, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(BookRequistionActivity.this, ""+invoice_no, Toast.LENGTH_SHORT).show();
                 total_amount = String.valueOf(total);
                 total_quantity = quantity.getText().toString();
                 comment = commentEditText.getText().toString();
@@ -177,13 +166,77 @@ public class BookRequistionActivity extends AppCompatActivity {
                 r = Double.parseDouble(rate);
                 q = Integer.parseInt(quantity.getText().toString());
                 //Log.d("total", r,q);
+                // Toast.makeText(BookRequistionActivity.this, "rate"+r+"quantity"+q, Toast.LENGTH_SHORT).show();
                 total = r*q;
-                Log.d("total", String.valueOf(total));
+                total_amount = String.valueOf(total);
+                //Toast.makeText(BookRequistionActivity.this, "total"+total, Toast.LENGTH_SHORT).show();
+                //Log.d("total", String.valueOf(total));
 
-               // new InsertData().execute();
+                new InsertData().execute();
                 new InsertintoReq().execute();
             }
         });
+    }
+
+    private class getuser extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            // updating UI from Background Thread
+            final JSONParser jp = new JSONParser();
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    // Check for success tag
+                    int success;
+
+                    try {
+                        // Building Parameters
+                        //Toast.makeText(BookRequistionActivity.this, ""+department_id, Toast.LENGTH_SHORT).show();
+                        List<NameValuePair> paramsss = new ArrayList<NameValuePair>();
+                        paramsss.add(new BasicNameValuePair(TAG_EMAIL,'"'+email+'"'));
+                        Log.d("params",paramsss.toString());
+
+                        // getting product details by making HTTP request
+                        // Note that product details url will use GET request
+                        JSONObject json = jp.makeHttpRequest(
+                                url_getiuserid, "GET", paramsss);
+
+                        // check your log for json response
+                        Log.d("Single id Details", json.toString());
+
+                        // json success tag
+                        success = json.getInt(TAG_SUCCESS);
+                        if (success == 1) {
+                            // successfully received product details
+                            JSONArray bookObj = json
+                                    .getJSONArray(TAG_TH); // JSON Array
+                            JSONObject c = bookObj.getJSONObject(0);
+                            requisition_by = c.getString(TAG_ID);
+                            division_id = c.getString(TAG_DIVISIONID);
+                            jonal_id = c.getString(TAG_JONALID);
+                            district_id = c.getString(TAG_DISTRICTID);
+                            thana_id = c.getString(TAG_THANAID);
+
+
+                            Toast.makeText(BookRequistionActivity.this, "requistion by"+requisition_by, Toast.LENGTH_SHORT).show();
+
+                          /*
+                            double r = Double.parseDouble(rate);
+                            int q = Integer.parseInt(quantity.getText().toString());
+                            double v = r * q;
+                            Toast.makeText(BookRequistionActivity.this, ""+v, Toast.LENGTH_SHORT).show();
+                           */
+
+                        } else {
+                            // product with pid not found
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            return null;
+        }
     }
 
     public class Department extends AsyncTask<Void,Void,Void> {
@@ -281,7 +334,7 @@ public class BookRequistionActivity extends AppCompatActivity {
                                 // Storing each json item in variable
                                 String classid = c.getString(TAG_CLASSID);
                                 String classname = c.getString(TAG_CLASNAME);
-                               // Toast.makeText(BookRequistionActivity.this, ""+classname, Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(BookRequistionActivity.this, ""+classname, Toast.LENGTH_SHORT).show();
                                 //BengaliUnicodeString.getBengaliUTF(getActivity(),head,text);
                                 classlist.add(classname);
                                 ArrayAdapter<String> spinnerAdapter1 = new ArrayAdapter<String>(BookRequistionActivity.this, android.R.layout.simple_spinner_item, classlist);
@@ -479,12 +532,12 @@ public class BookRequistionActivity extends AppCompatActivity {
                                     .getJSONArray(TAG_TH); // JSON Array
 
 
-                                JSONObject c = bookObj.getJSONObject(0);
-                                finalgetid = c.getString(TAG_BOOKID);
-                               // Log.d("valuesfd",finalgetid);
-                                //new getrate().execute();
-                                //Toast.makeText(BookRequistionActivity.this, ""+finalgetid, Toast.LENGTH_SHORT).show();
-                                new getrate().execute();
+                            JSONObject c = bookObj.getJSONObject(0);
+                            finalgetid = c.getString(TAG_BOOKID);
+                            // Log.d("valuesfd",finalgetid);
+                            //new getrate().execute();
+                            //Toast.makeText(BookRequistionActivity.this, ""+finalgetid, Toast.LENGTH_SHORT).show();
+                            new getrate().execute();
 
                         } else {
                             // product with pid not found
@@ -549,63 +602,6 @@ public class BookRequistionActivity extends AppCompatActivity {
         }
     }
 
-
-
-    private class getuser extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            // updating UI from Background Thread
-            final JSONParser jp = new JSONParser();
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    // Check for success tag
-                    int success;
-
-                    try {
-                        // Building Parameters
-                        //Toast.makeText(BookRequistionActivity.this, ""+department_id, Toast.LENGTH_SHORT).show();
-                        List<NameValuePair> paramsss = new ArrayList<NameValuePair>();
-                        paramsss.add(new BasicNameValuePair(TAG_EMAIL,'"'+email+'"'));
-                        Log.d("params",paramsss.toString());
-
-                        // getting product details by making HTTP request
-                        // Note that product details url will use GET request
-                        JSONObject json = jp.makeHttpRequest(
-                                url_getiuserid, "GET", paramsss);
-
-                        // check your log for json response
-                        Log.d("Single id Details", json.toString());
-
-                        // json success tag
-                        success = json.getInt(TAG_SUCCESS);
-                        if (success == 1) {
-                            // successfully received product details
-                            JSONArray bookObj = json
-                                    .getJSONArray(TAG_TH); // JSON Array
-                            JSONObject c = bookObj.getJSONObject(0);
-                            requisition_by = c.getString(TAG_ID);
-                            Toast.makeText(BookRequistionActivity.this, "requistion by"+requisition_by, Toast.LENGTH_SHORT).show();
-
-                          /*
-                            double r = Double.parseDouble(rate);
-                            int q = Integer.parseInt(quantity.getText().toString());
-                            double v = r * q;
-                            Toast.makeText(BookRequistionActivity.this, ""+v, Toast.LENGTH_SHORT).show();
-                           */
-
-                        } else {
-                            // product with pid not found
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            return null;
-        }
-    }
-
     private class InsertintoReq extends AsyncTask<String,String,String> {
 
         @Override
@@ -620,9 +616,14 @@ public class BookRequistionActivity extends AppCompatActivity {
                     List<NameValuePair> paramss = new ArrayList<NameValuePair>();
 
 
-                    Log.d("allvalues",invoice_no+total_amount+total_quantity+comment+date+date2+status);
+                    Log.d("allvalues",requisition_by+invoice_no+total_amount+total_quantity+comment+date+date2+status);
                     paramss.add(new BasicNameValuePair("requisition_by",requisition_by));
+
                     paramss.add(new BasicNameValuePair("invoice_no",invoice_no));
+                    paramss.add(new BasicNameValuePair("division_id",division_id));
+                    paramss.add(new BasicNameValuePair("jonal_id",jonal_id));
+                    paramss.add(new BasicNameValuePair("district_id",district_id));
+                    paramss.add(new BasicNameValuePair("thana_id",thana_id));
                     paramss.add(new  BasicNameValuePair("total_amount",total_amount));
                     paramss.add(new  BasicNameValuePair("total_quantity",total_quantity));
                     paramss.add(new  BasicNameValuePair("comment",comment));

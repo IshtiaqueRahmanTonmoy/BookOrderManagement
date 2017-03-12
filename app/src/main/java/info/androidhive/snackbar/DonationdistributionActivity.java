@@ -105,7 +105,7 @@ public class DonationdistributionActivity extends AppCompatActivity {
                     code = cartadding.getCart().get(i).getCode();
                     stock = cartadding.getCart().get(i).getStock();
 
-                    listget.add(i,new Customlistadding(name,price,code,stock));
+                    listget.add(i,new Customlistadding(null,name,price,code,stock));
 
                     //Toast.makeText(BookDistributionActivity.this, ""+name+""+stock, Toast.LENGTH_SHORT).show();;
                 }
@@ -162,7 +162,7 @@ public class DonationdistributionActivity extends AppCompatActivity {
                 names = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
                 //sqlite_obj.addToCart(bookname,"price","code",stock);
-                itemList.add(new Customlistadding(names,"price","code",stock));
+                itemList.add(new Customlistadding(null,names,"price","code",stock));
                 cartadding.addCart(itemList);
                 //saveintoCart(bookname,stock);
 
@@ -189,7 +189,7 @@ public class DonationdistributionActivity extends AppCompatActivity {
                 stock = secondTextView.getText().toString();
                 //sqlite_obj.addToCart(bookname,"price","code",stock);
 
-                itemList.add(new Customlistadding(names,"price","code",stock));
+                itemList.add(new Customlistadding(null,names,"price","code",stock));
                 cartadding.addCart(itemList);
                 //saveintoCart(bookname,stock);
              /*
@@ -216,7 +216,7 @@ public class DonationdistributionActivity extends AppCompatActivity {
                 stock = secondTextView.getText().toString();
                 //sqlite_obj.addToCart(bookname,"price","code",stock);
 
-                itemList.add(new Customlistadding(names,"price","code",stock));
+                itemList.add(new Customlistadding(null,names,"price","code",stock));
                 cartadding.addCart(itemList);
                 //saveintoCart(bookname,stock);
                 //Toast.makeText(BookDistributionActivity.this, ""+firstText+""+secondText, Toast.LENGTH_SHORT).show();

@@ -96,9 +96,9 @@ public class DistributeBooktoTeacherCustomList extends BaseAdapter{
                 stock = viewholder.currentstock.getText().toString();
 
                 addList = new ArrayList<Customlistadding>();
-                addList.add(new Customlistadding(name,"rateTk","code",stock));
+                addList.add(new Customlistadding(null,name,"rateTk","code",stock));
 
-                viewholder.listview.setAdapter(new DynamicAddCustomlist(context ,addList));
+                //viewholder.listview.setAdapter(new DynamicAddCustomlist(context ,addList));
                 //Toast.makeText(context,"Bookname"+bookname+"Currentstock"+stock,Toast.LENGTH_LONG).show();
                 //String title = ((TextView) v.findViewById(R.id.textView1)).getText().toString();
 

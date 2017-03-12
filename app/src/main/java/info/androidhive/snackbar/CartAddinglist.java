@@ -11,8 +11,8 @@ import java.util.List;
 public class CartAddinglist implements Serializable{
     ArrayList<Customlistadding> list = new ArrayList<Customlistadding>();
 
-    public CartAddinglist(String name,String price,String code,String stock){
-        list.add(new Customlistadding(name,price,code,stock));
+    public CartAddinglist(int id,String name,String price,String code,String stock){
+        list.add(new Customlistadding(id,name,price,code,stock));
     }
 
     public CartAddinglist() {
