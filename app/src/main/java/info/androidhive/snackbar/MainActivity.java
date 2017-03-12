@@ -66,19 +66,7 @@ public class MainActivity extends AppCompatActivity {
         btnBookDistribution.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, "Message is deleted", Snackbar.LENGTH_LONG)
-                        .setAction("UNDO", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Snackbar snackbar1 = Snackbar.make(coordinatorLayout, "Message is restored!", Snackbar.LENGTH_SHORT);
-                                snackbar1.show();
-                            }
-                        });
 
-                snackbar.show();
-               */
                 Intent intent = new Intent(MainActivity.this,BookDistributionActivity.class);
                 startActivity(intent);
 
@@ -88,26 +76,9 @@ public class MainActivity extends AppCompatActivity {
         btnDonationRequistion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               /*
-                Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_LONG)
-                        .setAction("RETRY", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                            }
-                        });
 
-                // Changing message text color
-                snackbar.setActionTextColor(Color.RED);
-
-                // Changing action button text color
-                View sbView = snackbar.getView();
-                TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setTextColor(Color.YELLOW);
-
-                snackbar.show();
-                */
                 Intent intent = new Intent(MainActivity.this,Donationrequistion.class);
+                intent.putExtra("mobile",email);
                 startActivity(intent);
             }
         });
