@@ -189,7 +189,7 @@
                     android:background="@drawable/my_drawable"
                     android:gravity="center"
                     android:padding="15dip"
-                    android:text="9" />
+                    android:text="13" />
             </TableRow>
 
             <TableRow
@@ -212,6 +212,28 @@
                     android:gravity="center"
                     android:padding="15dip"
                     android:text="13" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tablerow5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/my_drawable"
+                    android:gravity="center"
+                    android:padding="15dip"
+                    android:text="বাংলা-২২১০০৭ (নাটক-১)" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/my_drawable"
+                    android:gravity="center"
+                    android:padding="15dip"
+                    android:text="4" />
             </TableRow>
 
         </TableLayout>

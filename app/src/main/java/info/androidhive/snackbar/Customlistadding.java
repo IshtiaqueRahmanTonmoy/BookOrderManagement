@@ -16,8 +16,14 @@ public class Customlistadding
     String quantity;
     String totalsvalue;
 
-    Customlistadding(int id,String name,String price,String code,String stock)
-    {
+        public Customlistadding(String name, String price, String code, String stock) {
+        this.name = name;
+        this.price = price;
+        this.code = code;
+        this.stock = stock;
+    }
+
+    public Customlistadding(int id, String name, String price, String code, String stock) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -25,17 +31,41 @@ public class Customlistadding
         this.stock = stock;
     }
 
-    public Customlistadding() {
-
-    }
-
-    public Customlistadding(String name, String code, String stock, String quantity, String totalsvalue) {
+    public Customlistadding(int id, String name, String code, String stock, String quantity, String totalsvalue) {
+        this.id = id;
         this.name = name;
         this.code = code;
         this.stock = stock;
         this.quantity = quantity;
         this.totalsvalue = totalsvalue;
+    }
 
+    public Customlistadding() {
+
+    }
+
+    public Customlistadding(String name, String price, String code, String stock, String quantity) {
+        this.name = name;
+        this.price = price;
+        this.code = code;
+        this.stock = stock;
+        this.quantity = quantity;
+    }
+
+    public String getTotalsvalue() {
+        return totalsvalue;
+    }
+
+    public void setTotalsvalue(String totalsvalue) {
+        this.totalsvalue = totalsvalue;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

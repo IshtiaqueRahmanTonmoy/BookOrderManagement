@@ -34,6 +34,8 @@ public class DynamicAddCustomlist extends ArrayAdapter<Customlistadding> {
     Context context;
     List<Customlistadding> list;
     double total=0;
+    int pos;
+    private int[] counters;
 
     public DynamicAddCustomlist(Context context, int resource, List<Customlistadding> list) {
 
@@ -69,6 +71,7 @@ public class DynamicAddCustomlist extends ArrayAdapter<Customlistadding> {
 
         final Customlistadding items = list.get(position);
         final int temp = position;
+        pos = getItemViewType(position);
 
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -82,8 +85,8 @@ public class DynamicAddCustomlist extends ArrayAdapter<Customlistadding> {
             viewholder.bookstock = (TextView) convertView.findViewById(R.id.bookrate);
             viewholder.quantity = (TextView) convertView.findViewById(R.id.cart_product_quantity_tv);
             //viewholder.edit = (EditText) convertView.findViewById(R.id.price);
-            viewholder.plusbutton = (ImageView) convertView.findViewById(R.id.cart_plus_img);
-            viewholder.minusbutton = (ImageView) convertView.findViewById(R.id.cart_minus_img);
+            //viewholder.plusbutton = (ImageView) convertView.findViewById(R.id.cart_plus_img);
+           // viewholder.minusbutton = (ImageView) convertView.findViewById(R.id.cart_minus_img);
             //viewholder.delete = (Button) convertView.findViewById(R.id.deleteorder);
 
             convertView.setTag(viewholder);
@@ -95,9 +98,11 @@ public class DynamicAddCustomlist extends ArrayAdapter<Customlistadding> {
         }
 
         viewholder.bookname.setText(items.getName());
-        viewholder.bookcode.setText(items.getCode());
+        viewholder.bookcode.setText("code");
         viewholder.bookstock.setText(items.getStock());
+        viewholder.quantity.setText(items.getQuantity());
 
+        /*
         viewholder.plusbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,50 +111,55 @@ public class DynamicAddCustomlist extends ArrayAdapter<Customlistadding> {
                 //double rate = Double.parseDouble(viewholder.foodrate.getText().toString());
                 mValue++;
 
-                total = Float.parseFloat(list.get(position).getStock())* mValue;
+                //total = Double.parseDouble(list.get(position).getStock()) * mValue;
 
                 viewholder.quantity.setText(String.valueOf(mValue));
 
                 Intent intentplus = new Intent("custom-message");
                 //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
                 intentplus.putExtra("name",viewholder.bookname.getText().toString());
+                intentplus.putExtra("id",items.getId());
                 intentplus.putExtra("code",items.getCode());
                 intentplus.putExtra("stock",items.getStock());
                 intentplus.putExtra("total",total);
 
                 //Log.d("ratess",items.getFoodrate());
                 intentplus.putExtra("qty",viewholder.quantity.getText().toString());
+
+                notifyDataSetChanged();
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intentplus);
-
-
             }
         });
 
         viewholder.minusbutton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
 
 
                 int mValue = Integer.parseInt(viewholder.quantity.getText().toString());
                 //double rate = Double.parseDouble(viewholder.foodrate.getText().toString());
                 mValue--;
 
-                total = Float.parseFloat(list.get(position).getStock())* mValue;
+                //total = Double.parseDouble(list.get(position).getStock()) * mValue;
                 viewholder.quantity.setText(String.valueOf(mValue));
 
                 Intent intentminus = new Intent("custom-message");
                 //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
                 intentminus.putExtra("name",viewholder.bookname.getText().toString());
+                intentminus.putExtra("id",items.getId());
                 intentminus.putExtra("code",items.getCode());
                 intentminus.putExtra("stock",items.getStock());
                 intentminus.putExtra("total",total);
 
                 //Log.d("ratess",items.getFoodrate());
                 intentminus.putExtra("qty",viewholder.quantity.getText().toString());
+
+                notifyDataSetChanged();
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intentminus);
+
             }
         });
-
+        */
         return convertView;
     }
 

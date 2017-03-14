@@ -5,20 +5,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -29,64 +39,115 @@ public class ListCartActivity extends AppCompatActivity {
     List<Customlistadding> itemList = new ArrayList<Customlistadding>();
     ListView listview;
     Context context;
-    String booknames,stocks;
+    String booknames,stocks,college_id;
     public static final String PREFS_NAME = "MyPrefsFile";
     DynamicAddCustomlist dynamicadd;
     Button placeorder,total;
     int stock = 0;
-    String id,code,stockvalue,quantity,totalsvalue,name;
+    String id,code,stockvalue,totalsvalue,name,quantityplus,quantityminus;
     List<Customlistadding> lists;
-    int i=8;
+    int distribute_id=8;
+    int idval;
+
+    String quantity;
+    JSONParser jsonParser = new JSONParser();
+    List<Customlistadding> carsList;
+    private static String url_institute = "http://dik-pl.com/dikpl/college.php";
+
+
+
+    private static final String TAG_SUCCESS = "success";
+    Spinner collegesp,teacher;
+    public static final String KEY_DISTRIBUTEID = "distribute_id";
+    public static final String KEY_BOOKID = "book_id";
+    public static final String KEY_QUANTITY = "quantity";
+    public static final String KEY_PRICE = "price";
+    public static final String KEY_LINENO = "line_no";
+    public static final String KEY_STATUS = "status";
+    public static final String REGISTER_URL = "http://dik-pl.com/dikpl/distributebooks.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_cart);
 
+
         listview = (ListView) findViewById(R.id.listView);
         placeorder = (Button) findViewById(R.id.button1);
         total = (Button) findViewById(R.id.button2);
         lists = new ArrayList<Customlistadding>();
+
+
+
 
         String carListAsString = getIntent().getStringExtra("listget");
         //Log.i("list",carListAsString);
         //Toast.makeText(ListCartActivity.this, ""+carListAsString, Toast.LENGTH_SHORT).show();
         Gson gson = new Gson();
         Type type = new TypeToken<List<Customlistadding>>(){}.getType();
-        List<Customlistadding> carsList = gson.fromJson(carListAsString, type);
+        carsList = gson.fromJson(carListAsString, type);
 
         dynamicadd = new DynamicAddCustomlist(this, R.layout.activity_list_cart,carsList);
         listview.setAdapter(dynamicadd);
 
 
+
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-message"));
 
+        /*
         for (Customlistadding customlist : carsList){
             //Log.i("CarData", customlist.getName()+"-"+customlist.getStock());
             //Toast.makeText(ListCartActivity.this, ""+customlist.getName()+""+customlist.getStock(), Toast.LENGTH_SHORT).show();
             stock = stock + Integer.parseInt(customlist.getStock());
             total.setText(""+stock);
-
         }
+        */
 
         placeorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(Customlistadding s : lists){
+                int book_id = 0;
+                int price = 0;
+                distribute_id++;
+                for(Customlistadding s : carsList){
+                    int id = s.getId();
                     String name = s.getName().toString();
+
+                    if(name.equals("!")){
+                        book_id = 1;
+                        price = 250;
+                        Log.d("v", String.valueOf(book_id)+String.valueOf(distribute_id));
+                    }
+                    else if(name.equals("মধুসুদনের কাব্য পাঠের ভুমিকা | হোসনেয়ারা খাতুন বাংলা অনার্স ১ম বর্ষ")){
+                        book_id = 2;
+                        price = 750;
+                        Log.d("v", String.valueOf(book_id)+String.valueOf(distribute_id));
+                    }
+                    else if(name.equals("বাংলাদেশ এবং বাঙালির ইতিহাস ও সংস্কৃতি")){
+                        book_id = 3;
+                        price = 333;
+                        Log.d("v", String.valueOf(book_id)+String.valueOf(distribute_id));
+                    }
+                    else {
+                        book_id = 4;
+                        price = 450;
+                        Log.d("v", String.valueOf(book_id)+String.valueOf(distribute_id));
+                    }
+
                     String code = s.getCode().toString();
                     String stock = s.getStock().toString();
                     //Log.d("pr",price);
-                    String qtys = s.getQuantity().toString();
-
-                    Log.d("id"+i+"name",name+"code"+code+"stock"+stock+"quantity"+qtys);
+                    quantity = s.getQuantity().toString();
+                    //qtym = s.getQuantityminus().toString();
+                    //Log.d(""+id"+i+"name"+name+"code"+code+"stock"+stock+"quantity"+qtys);
                     //String tot = s.getFoodrate().toString();
 
-                    //Insertdata insert = new Insertdata(id,name,price,qtys,tot);
-                    //insert.execute("",null);
+                    Insertdata insert = new Insertdata(String.valueOf(distribute_id),String.valueOf(book_id),quantity,String.valueOf(price),"1","1");
+                    insert.execute("",null);
+
                     //Log.d("idval",id);
-                    i++;
+                    //Toast.makeText(ListCartActivity.this, "quantity"+qtys, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -103,14 +164,91 @@ public class ListCartActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
+            idval = intent.getIntExtra("id",0);
             name = intent.getStringExtra("name");
             code = intent.getStringExtra("code");
             stockvalue = intent.getStringExtra("stock");
-            quantity = intent.getStringExtra("qty");
+            quantityplus = intent.getStringExtra("qty");
+            //quantityminus = intent.getStringExtra("qtyminus");
             totalsvalue = intent.getStringExtra("total");
 
-            Log.d("quant",quantity);
-            lists.add(new Customlistadding(name,code,stockvalue,quantity,totalsvalue));
+            Log.d("quant",quantityplus);
+            lists.add(new Customlistadding(idval,name,code,stockvalue,quantityplus,totalsvalue));
         }
     };
+
+    private class Insertdata extends AsyncTask<String,String,String > {
+
+        String z = "";
+        Boolean isSuccess = false;
+        String distribute_id,book_id,quantity,price,line_no,status;
+
+        public Insertdata(String distribute_id, String book_id, String quantity, String price, String line_no, String status) {
+            this.distribute_id = distribute_id;
+            this.book_id = book_id;
+            this.quantity = quantity;
+            this.price = price;
+            this.line_no = line_no;
+            this.status = status;
+
+            Log.d("price",price);
+            //Log.d("p",tot);
+            //Log.d("debug",id+name+price+qty);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            List<NameValuePair> param = new ArrayList<NameValuePair>();
+
+            param.add(new BasicNameValuePair(KEY_DISTRIBUTEID, distribute_id));
+            param.add(new BasicNameValuePair(KEY_BOOKID, book_id));
+            param.add(new BasicNameValuePair(KEY_QUANTITY, quantity));
+            param.add(new BasicNameValuePair(KEY_PRICE, price));
+            param.add(new BasicNameValuePair(KEY_LINENO, line_no));
+            param.add(new BasicNameValuePair(KEY_STATUS, status));
+
+            JSONObject json = jsonParser.makeHttpRequest(REGISTER_URL, "POST", param);
+
+            try {
+                int success = json.getInt(TAG_SUCCESS);
+
+                //Toast.makeText(DoctorRegistrationActivity.this, "" + success, Toast.LENGTH_SHORT).show();
+                if (success == 1) {
+                    // successfully created product
+
+                    ListCartActivity.this.runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(ListCartActivity.this.getBaseContext(), "Data insertion completed..", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
+                    // failed to create product
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String success) {
+
+            //pbbar.setVisibility(View.GONE);
+            Toast.makeText(ListCartActivity.this, success, Toast.LENGTH_SHORT).show();
+            if (isSuccess) {
+                Log.d("Success", z);
+                Intent i = new Intent(ListCartActivity.this, ListCartActivity.class);
+                startActivity(i);
+                finish();
+            } else {
+                Log.d("Error", z);
+            }
+        }
+    }
+
+
+
+
 }
