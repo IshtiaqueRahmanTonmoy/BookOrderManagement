@@ -332,6 +332,8 @@ public class AddnewexpenseActivity extends AppCompatActivity {
                 othercoststring = othercost.getText().toString();
                 totalstring = total.getText().toString();
 
+               Log.d("ouputs","from"+distancefr+"to"+distancet+"nameofvehic"+nameofvehic+"transportcost"+transportcoststring+"distancekm"+distancekm+"cost"+costsstring+"mobile"+mobrentstring+"compnesation"+compensations+"packet"+packetdrawal+"othercost"+othercosts+"total"+totalstring);
+               Log.d("values","startjourfr"+String.valueOf(calculateusedkm)+"endjourneykm"+String.valueOf(calculatesumkm2)+"totaljourkm"+String.valueOf(distotal)+"personalusekm"+String.valueOf(personaluse)+"officeuse"+String.valueOf(officeuse)+"kmerent"+String.valueOf(kmrent));
             /*
                startjournstring = input.getText().toString();
                endjourneystring = input1.getText().toString();
@@ -342,7 +344,10 @@ public class AddnewexpenseActivity extends AppCompatActivity {
              */
 
                 //Toast.makeText(getApplicationContext(),"costs"+distancefr+"mobrent"+distancet+"total"+totals, Toast.LENGTH_LONG).show();
+
                 new InsertintoDB().execute();
+
+
                 //Toast.makeText(getApplicationContext(),"called", Toast.LENGTH_LONG).show();
                 //Toast.makeText(getApplicationContext(),"called", Toast.LENGTH_LONG).show();
             }
@@ -380,7 +385,6 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-
 
             runOnUiThread(new Runnable() {
                 @Override

@@ -63,7 +63,7 @@ public class BookRequistionActivity extends AppCompatActivity {
     private static final String TAG_EMAIL = "email";
     private static final String TAG_ID = "id";
     private static final String TAG_CLASSIDVAL = "class_id";
-    private static final String TAG_BOOKRate = "sell_price";
+    private static final String TAG_BOOKRate = "regular_price";
     private static final String TAG_BOOKN = "book_name";
     private static final String TAG_DEPTID = "department_id";
 
@@ -74,7 +74,7 @@ public class BookRequistionActivity extends AppCompatActivity {
 
 
 
-    String cid,classvalid,class_id,bookname, bookselect_id,bookselect_type,vid,department_id;
+    String cid,classvalid,class_id,bookname, bookselect_id,book_type,vid,department_id;
     private ArrayList<String> instlist,classlist,booklist;
     String[] SPINNERLIST = {"Guide Book", "Text Book"};
     String requisition_by,email;
@@ -84,7 +84,7 @@ public class BookRequistionActivity extends AppCompatActivity {
     DateFormat dateFormat;
     String invoice_no;
     Date dates;
-    String total_amount,total_quantity,comment,date,date2,status,division_id,jonal_id,district_id,thana_id;
+    String total_amount,total_quantity,comment,date,date2,status,division_id,jonal_id,district_id,thana_id,total_transfer_book_quantity,price;
     int i=10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +134,7 @@ public class BookRequistionActivity extends AppCompatActivity {
         spinner11.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                bookselect_type = String.valueOf(position);
+                book_type = String.valueOf(position);
                 //Toast.makeText(getApplicationContext(),""+classvalid,Toast.LENGTH_LONG).show();
 
             }
@@ -158,12 +158,13 @@ public class BookRequistionActivity extends AppCompatActivity {
                 //Toast.makeText(BookRequistionActivity.this, ""+invoice_no, Toast.LENGTH_SHORT).show();
                 total_amount = String.valueOf(total);
                 total_quantity = quantity.getText().toString();
+                total_transfer_book_quantity = quantity.getText().toString();
                 comment = commentEditText.getText().toString();
                 date = dateFormat.format(dates);
                 date2 = dateFormat.format(dates);
                 status = ""+1;
 
-                r = Double.parseDouble(rate);
+                r = Integer.parseInt(price);
                 q = Integer.parseInt(quantity.getText().toString());
                 //Log.d("total", r,q);
                 // Toast.makeText(BookRequistionActivity.this, "rate"+r+"quantity"+q, Toast.LENGTH_SHORT).show();
@@ -218,7 +219,7 @@ public class BookRequistionActivity extends AppCompatActivity {
                             thana_id = c.getString(TAG_THANAID);
 
 
-                            Toast.makeText(BookRequistionActivity.this, "requistion by"+requisition_by, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BookRequistionActivity.this, "requistion by"+division_id, Toast.LENGTH_SHORT).show();
 
                           /*
                             double r = Double.parseDouble(rate);
@@ -458,11 +459,14 @@ public class BookRequistionActivity extends AppCompatActivity {
 
                     paramss.add(new BasicNameValuePair("department_id",department_id));
                     paramss.add(new  BasicNameValuePair("class_id",class_id));
-                    paramss.add(new  BasicNameValuePair("book_type",bookselect_type));
+                    paramss.add(new  BasicNameValuePair("book_type",book_type));
                     paramss.add(new  BasicNameValuePair("quantity",quantity.getText().toString()));
+                    paramss.add(new  BasicNameValuePair("transfer_quantity",quantity.getText().toString()));
+                    paramss.add(new  BasicNameValuePair("price",price));
 
                     JSONObject json = jsonparser.makeHttpRequest(urlsubmidata, "POST", paramss);
-                    //Log.d("Create Response", json.toString());
+                    Log.d("Create Response","departmentid"+department_id+"classid"+class_id+"booktype"+book_type+"quantity"+quantity.getText().toString()+"transfer"+quantity.getText().toString()+"price"+price);
+                    //Toast.makeText(BookRequistionActivity.this, "departmentid"+department_id+"classid"+class_id+"booktype"+book_type+"quantity"+quantity.getText().toString()+"transfer"+quantity.getText().toString()+"price"+price, Toast.LENGTH_SHORT).show();
                     try {
 
                         int success = json.getInt(TAG_SUCCESS);
@@ -536,7 +540,7 @@ public class BookRequistionActivity extends AppCompatActivity {
                             finalgetid = c.getString(TAG_BOOKID);
                             // Log.d("valuesfd",finalgetid);
                             //new getrate().execute();
-                            //Toast.makeText(BookRequistionActivity.this, ""+finalgetid, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BookRequistionActivity.this, "final id get"+finalgetid, Toast.LENGTH_SHORT).show();
                             new getrate().execute();
 
                         } else {
@@ -585,10 +589,10 @@ public class BookRequistionActivity extends AppCompatActivity {
                             JSONArray bookObj = json
                                     .getJSONArray(TAG_TH); // JSON Array
                             JSONObject c = bookObj.getJSONObject(0);
-                            rate = c.getString(TAG_BOOKRate);
+                            price = c.getString(TAG_BOOKRate);
 
                             Log.d("total", String.valueOf(total));
-                            //Toast.makeText(BookRequistionActivity.this, ""+rate, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BookRequistionActivity.this, "price value"+rate, Toast.LENGTH_SHORT).show();
 
                         } else {
                             // product with pid not found
@@ -626,6 +630,8 @@ public class BookRequistionActivity extends AppCompatActivity {
                     paramss.add(new BasicNameValuePair("thana_id",thana_id));
                     paramss.add(new  BasicNameValuePair("total_amount",total_amount));
                     paramss.add(new  BasicNameValuePair("total_quantity",total_quantity));
+                    paramss.add(new  BasicNameValuePair("total_transfer_book_quantity",total_transfer_book_quantity));
+                   // paramss.add(new  BasicNameValuePair("price",price));
                     paramss.add(new  BasicNameValuePair("comment",comment));
                     paramss.add(new  BasicNameValuePair("date",date));
                     paramss.add(new  BasicNameValuePair("date2",date2));

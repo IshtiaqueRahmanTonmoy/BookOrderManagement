@@ -76,7 +76,7 @@ public class BookDistributionActivity extends AppCompatActivity {
     private static String url_instituteg = "http://dik-pl.com/dikpl/college.php";
     private static String url_classanem = "http://dik-pl.com/dikpl/classget.php";
     private static String baseurl="http://dik-pl.com/dikpl/teachers.php";
-    String college_id,teacherid,teachername;
+    String college_id,teacherid,teachername,email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +91,15 @@ public class BookDistributionActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
+        Intent iin= getIntent();
+        Bundle b = iin.getExtras();
+        if(b!=null) {
+            email =(String) b.get("mobile");
+            //Toast.makeText(BookRequistionActivity.this, ""+email, Toast.LENGTH_SHORT).show();
+
+        }
+
+        //new getuser().execute();
         new Department().execute();
         new Classname().execute();
         new getInstituionname().execute();
