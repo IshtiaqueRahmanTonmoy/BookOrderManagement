@@ -76,7 +76,7 @@ public class BookDistributionActivity extends AppCompatActivity {
     private static String url_instituteg = "http://dik-pl.com/dikpl/college.php";
     private static String url_classanem = "http://dik-pl.com/dikpl/classget.php";
     private static String baseurl="http://dik-pl.com/dikpl/teachers.php";
-    String college_id,teacherid,teachername,email;
+    String college_id,teacher_id,teachername,email,department_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +107,10 @@ public class BookDistributionActivity extends AppCompatActivity {
 
         spinner1 = (Spinner) findViewById(R.id.spinner2);
         spinner2 = (Spinner) findViewById(R.id.spinner3);
+
         schoolspinner = (Spinner) findViewById(R.id.schoolspinner);
         teacher = (Spinner) findViewById(R.id.teacher);
+
         comment = (EditText) findViewById(R.id.txtComment);
 
         sqlite_obj = new CartSavingSqlite(BookDistributionActivity.this);
@@ -122,13 +124,6 @@ public class BookDistributionActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 int size = cartadding.getCart().size();
-
-               /*
-                String id[] = new String[size];
-                String name[] = new String[size];
-                String rate[] = new String[size];
-               */
-
                 for(i=0;i<size;i++){
 
                     name = cartadding.getCart().get(i).getName();
@@ -137,7 +132,7 @@ public class BookDistributionActivity extends AppCompatActivity {
                     stock = cartadding.getCart().get(i).getStock();
                     quantity = cartadding.getCart().get(i).getQuantity();
 
-                    listget.add(i,new Customlistadding(name,price,code,stock,quantity));
+                    listget.add(i,new Customlistadding(name,price,code,stock,quantity,college_id,teacher_id,department_id,comment.getText().toString()));
 
                     //Toast.makeText(BookDistributionActivity.this, ""+name+""+stock, Toast.LENGTH_SHORT).show();;
                 }
@@ -148,19 +143,6 @@ public class BookDistributionActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
 
-                //Log.d("values",listget.get(2).getCode());
-
-                /*
-                for(Customlistadding custom : cartadding.getCart()){
-                   String name = custom.getName();
-                   String price = custom.getPrice();
-                   String code = custom.getCode();
-                   String stock = custom.getStock();
-
-
-                   Toast.makeText(BookDistributionActivity.this, ""+name, Toast.LENGTH_SHORT).show();
-               }
-               */
             }
         });
 
@@ -182,21 +164,11 @@ public class BookDistributionActivity extends AppCompatActivity {
                 name = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
                 quantity = qty.getText().toString();
-                //sqlite_obj.addToCart(bookname,"price","code",stock);
-                itemList.add(new Customlistadding(name,"price","code",stock,quantity));
-                cartadding.addCart(itemList);
-                //saveintoCart(bookname,stock);
 
-             /*
-                intent = new Intent(BookDistributionActivity.this, ListCartActivity.class);
-                Bundle extras = new Bundle();
-                extras.putString("BOOKNAME",bookname);
-                extras.putString("STOCK",stock);
-                intent.putExtras(extras);
-                startActivity(intent);
-              */
-                //listview.setAdapter(new DynamicAddCustomlist(context,itemList));
-                //Toast.makeText(BookDistributionActivity.this, ""+firstText+""+secondText, Toast.LENGTH_SHORT).show();
+                Log.d("val",college_id+teacher_id+department_id);
+                //sqlite_obj.addToCart(bookname,"price","code",stock);
+                itemList.add(new Customlistadding(name,"price","code",stock,quantity,college_id,teacher_id,department_id,comment.getText().toString()));
+                cartadding.addCart(itemList);
             }
         });
 
@@ -211,21 +183,11 @@ public class BookDistributionActivity extends AppCompatActivity {
                 name = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
                 quantity = qty.getText().toString();
+                Log.d("val",college_id+teacher_id+department_id);
                 //sqlite_obj.addToCart(bookname,"price","code",stock);
-                itemList.add(new Customlistadding(name,"price","code",stock,quantity));
+                itemList.add(new Customlistadding(name,"price","code",stock,quantity,college_id,teacher_id,department_id,comment.getText().toString()));
                 cartadding.addCart(itemList);
-                //saveintoCart(bookname,stock);
-             /*
-                intent = new Intent(BookDistributionActivity.this, ListCartActivity.class);
-                Bundle extras = new Bundle();
-                extras.putString("BOOKNAME",bookname);
-                extras.putString("STOCK",stock);
-                intent.putExtras(extras);
-                startActivity(intent);
-               */
-                //listview.setAdapter(new DynamicAddCustomlist(context,itemList));
 
-                //Toast.makeText(BookDistributionActivity.this, ""+firstText+""+secondText, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -240,11 +202,11 @@ public class BookDistributionActivity extends AppCompatActivity {
                 name = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
                 quantity = qty.getText().toString();
+                Log.d("val",college_id+teacher_id+department_id);
                 //sqlite_obj.addToCart(bookname,"price","code",stock);
-                itemList.add(new Customlistadding(name,"price","code",stock,quantity));
+                itemList.add(new Customlistadding(name,"price","code",stock,quantity,college_id,teacher_id,department_id,comment.getText().toString()));
                 cartadding.addCart(itemList);
-                //saveintoCart(bookname,stock);
-                //Toast.makeText(BookDistributionActivity.this, ""+firstText+""+secondText, Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -259,11 +221,11 @@ public class BookDistributionActivity extends AppCompatActivity {
                 name = firstTextView.getText().toString();
                 stock = secondTextView.getText().toString();
                 quantity = qty.getText().toString();
+                Log.d("val",college_id+teacher_id+department_id);
                 //sqlite_obj.addToCart(bookname,"price","code",stock);
-                itemList.add(new Customlistadding(name,"price","code",stock,quantity));
+                itemList.add(new Customlistadding(name,"price","code",stock,quantity,college_id,teacher_id,department_id,comment.getText().toString()));
                 cartadding.addCart(itemList);
-                //saveintoCart(bookname,stock);
-                //Toast.makeText(BookDistributionActivity.this, ""+firstText+""+secondText, Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -319,6 +281,19 @@ public class BookDistributionActivity extends AppCompatActivity {
                                 ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(BookDistributionActivity.this, android.R.layout.simple_spinner_item, deplist);
                                 spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 spinner1.setAdapter(spinnerAdapter);
+
+                                spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                        department_id = String.valueOf(position+1);
+                                        Toast.makeText(getApplicationContext(),"department id"+department_id,Toast.LENGTH_LONG).show();
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
 
 
                                 //Toast.makeText(getApplicationContext(),""+name,Toast.LENGTH_LONG).show();
@@ -481,8 +456,8 @@ public class BookDistributionActivity extends AppCompatActivity {
                         th = json.getJSONArray("th");
                         for (int x = 0; x < th.length(); x++) {
                             JSONObject catObj11 = th.getJSONObject(x);
-                            teacherid = catObj11.getString(TAG_TEACHERID);
-                            Toast.makeText(BookDistributionActivity.this, "teacheid"+teacherid, Toast.LENGTH_SHORT).show();
+                            teacher_id = catObj11.getString(TAG_TEACHERID);
+                            Toast.makeText(BookDistributionActivity.this, "teacheid"+teacher_id, Toast.LENGTH_SHORT).show();
                             teachername = catObj11.getString(TAG_TEACHERNAME);
                             Log.d("output",teachername);
                             teacherlist.add(teachername);
