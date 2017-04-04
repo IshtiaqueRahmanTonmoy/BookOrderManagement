@@ -99,8 +99,15 @@ public class ListCartActivity extends AppCompatActivity {
         //Calendar c = Calendar.getInstance();
         //System.out.println("Current time => " + c.getTime());
 
-        SimpleDateFormat df1 = new SimpleDateFormat("dd-MMM-yyyy");
-        distribute_date = df1.format(c.getTime());
+        //SimpleDateFormat df1 = new SimpleDateFormat("dd-MMM-yyyy");
+        //distribute_date = df1.format(c.getTime());
+
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        int m = mMonth + 1;
+        //Toast.makeText(ListCartActivity.this, ""+m, Toast.LENGTH_SHORT).show();
+        distribute_date = ""+(mDay<10?("0"+mDay):(mDay))+"-"+(m<10?("0"+m):(m))+"-"+mYear;
 
         String carListAsString = getIntent().getStringExtra("listget");
         //Log.i("list",carListAsString);
@@ -111,8 +118,6 @@ public class ListCartActivity extends AppCompatActivity {
 
         dynamicadd = new DynamicAddCustomlist(this, R.layout.activity_list_cart,carsList);
         listview.setAdapter(dynamicadd);
-
-
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-message"));

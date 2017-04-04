@@ -85,10 +85,10 @@ public class Donationrequistion extends AppCompatActivity {
     String insid,insname,teachername,cid,sids,subjid,class_id,teacherid,subjectid,subjectname,classname,book_id,bookname,onudanamount,nostudent,possbook,amountk;
     private ProgressDialog pDialog;
     private JSONParser jsonparser;
-    String college_id,bookid;
+    String college_id,bookid,transfer_money_amount;
     private int CalendarHour, CalendarMinute;
     Calendar calendar;
-    String format;
+    String format,transfer_student_quantity;
     private static final String TAG_EMAIL = "email";
     private static final String TAG_TH = "th";
     private static final String TAG_ID = "id";
@@ -97,14 +97,14 @@ public class Donationrequistion extends AppCompatActivity {
     private static final String TAG_PHONE = "phone";
     private static final String TAG_DOCTORLIST = "patientdetail";
     private static final String TAG_NAME = "name";
-    String email,namevalue,student_quantity,possible_book,duration,money_amount,teacher_id;
+    String email,namevalue,student_quantity,possible_book,duration,money_amount,teacher_id,transfer_possible_book;
     private static String url_getiuserid = "http://dik-pl.com/dikpl/getuserid.php";
     private static final String DOCTORDETAILGET_URL = "http://darumadhaka.com/patientmanagement/searchallpatientinfo.php";
     String requisition_by,division_id,jonal_id,district_id,thana_id,classid,department_id,date;
     DateFormat dateFormat;
     int mYear,mMonth,mDay;
     Calendar myCalendar;
-
+    String approved_date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,10 +196,12 @@ public class Donationrequistion extends AppCompatActivity {
 
                 date = dateFormat.format(new Date());
                 student_quantity = Noofstudent.getText().toString();
+                transfer_student_quantity = Noofstudent.getText().toString();
                 possible_book = possiblebooks.getText().toString();
+                transfer_possible_book = possiblebooks.getText().toString();
                 duration = onudan.getText().toString();
                 money_amount = amountoktk.getText().toString();
-
+                transfer_money_amount = amountoktk.getText().toString();
 
 
                 Toast.makeText(Donationrequistion.this, "student"+student_quantity+"possiblebook"+possible_book+"amountoftk"+money_amount+"onudan"+duration, Toast.LENGTH_SHORT).show();
@@ -224,6 +226,14 @@ public class Donationrequistion extends AppCompatActivity {
             }
         });
 
+
+        Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        int m = mMonth + 1;
+        //Toast.makeText(ListCartActivity.this, ""+m, Toast.LENGTH_SHORT).show();
+        approved_date = ""+(mDay<10?("0"+mDay):(mDay))+"-"+(m<10?("0"+m):(m))+"-"+mYear;
 
     }
 
@@ -608,22 +618,32 @@ public class Donationrequistion extends AppCompatActivity {
                     String urlsubmidata = "http://dik-pl.com/dikpl/donation.php";
                     //String urlsubmidata = ""+url+"/";
                     List<NameValuePair> paramss = new ArrayList<NameValuePair>();
+
                     paramss.add(new  BasicNameValuePair("requisition_by",requisition_by));
+                    paramss.add(new  BasicNameValuePair("approved_by","1"));
+                    paramss.add(new  BasicNameValuePair("approved_date",approved_date));
+                    paramss.add(new  BasicNameValuePair("invoice_no","0"));
+                    paramss.add(new  BasicNameValuePair("type","0"));
+                    paramss.add(new  BasicNameValuePair("requisition_status","0"));
                     paramss.add(new BasicNameValuePair("date",date));
                     paramss.add(new BasicNameValuePair("division_id",division_id));
                     paramss.add(new BasicNameValuePair("jonal_id",jonal_id));
                     paramss.add(new BasicNameValuePair("district_id",district_id));
                     paramss.add(new BasicNameValuePair("thana_id",thana_id));
-
                     paramss.add(new  BasicNameValuePair("college_id",college_id));
                     paramss.add(new  BasicNameValuePair("teacher_id",teacher_id));
                     paramss.add(new  BasicNameValuePair("department_id",department_id));
                     paramss.add(new  BasicNameValuePair("class_id",class_id));
                     paramss.add(new  BasicNameValuePair("student_quantity",student_quantity));
+                    paramss.add(new  BasicNameValuePair("transfer_student_quantity",transfer_student_quantity));
                     paramss.add(new  BasicNameValuePair("possible_book",possible_book));
                     paramss.add(new BasicNameValuePair("duration", duration));
+                    paramss.add(new  BasicNameValuePair("transfer_possible_book",transfer_possible_book));
                     paramss.add(new  BasicNameValuePair("book_id",book_id));
                     paramss.add(new  BasicNameValuePair("money_amount",money_amount));
+                    paramss.add(new  BasicNameValuePair("transfer_money_amount",transfer_money_amount));
+                    paramss.add(new  BasicNameValuePair("distribution_id","0"));
+                    paramss.add(new  BasicNameValuePair("status","1"));
 
                     Log.d("ouput","class"+cid+"teacher"+teacherid+"subject"+subjectid+"class"+classid+"studentno"+nostudent+"possiblebook"+possbook+"onudan"+onudanamount+"id"+bookid+"amount"+amountk);
                     JSONObject json = jsonparser.makeHttpRequest(urlsubmidata,
