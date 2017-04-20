@@ -86,6 +86,9 @@ public class BookRequistionActivity extends AppCompatActivity {
     Date dates;
     String total_amount,total_quantity,comment,date,date2,status,division_id,jonal_id,district_id,thana_id,total_transfer_book_quantity,price;
     int i=10;
+    String requisition_id="140";
+    String book_id="610";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -456,13 +459,16 @@ public class BookRequistionActivity extends AppCompatActivity {
 
                     String urlsubmidata = "http://dik-pl.com/dikpl/requistion.php";
                     List<NameValuePair> paramss = new ArrayList<NameValuePair>();
-
+                    paramss.add(new BasicNameValuePair("requisition_id",requisition_id));
+                    paramss.add(new BasicNameValuePair("book_id",book_id));
                     paramss.add(new BasicNameValuePair("department_id",department_id));
                     paramss.add(new  BasicNameValuePair("class_id",class_id));
                     paramss.add(new  BasicNameValuePair("book_type",book_type));
                     paramss.add(new  BasicNameValuePair("quantity",quantity.getText().toString()));
                     paramss.add(new  BasicNameValuePair("transfer_quantity",quantity.getText().toString()));
                     paramss.add(new  BasicNameValuePair("price",price));
+                    paramss.add(new  BasicNameValuePair("sell_price",price));
+                    paramss.add(new  BasicNameValuePair("status",status));
 
                     JSONObject json = jsonparser.makeHttpRequest(urlsubmidata, "POST", paramss);
                     Log.d("Create Response","departmentid"+department_id+"classid"+class_id+"booktype"+book_type+"quantity"+quantity.getText().toString()+"transfer"+quantity.getText().toString()+"price"+price);

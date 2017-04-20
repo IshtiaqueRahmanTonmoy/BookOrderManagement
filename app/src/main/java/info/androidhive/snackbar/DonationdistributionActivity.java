@@ -164,6 +164,7 @@ public class DonationdistributionActivity extends AppCompatActivity {
                 //sqlite_obj.addToCart(bookname,"price","code",stock);
                 itemList.add(new Customlistadding(names,"price","code",stock));
                 cartadding.addCart(itemList);
+                Toast.makeText(DonationdistributionActivity.this, "Saved in stock..", Toast.LENGTH_SHORT).show();
                 //saveintoCart(bookname,stock);
 
              /*
@@ -191,6 +192,7 @@ public class DonationdistributionActivity extends AppCompatActivity {
 
                 itemList.add(new Customlistadding(names,"price","code",stock));
                 cartadding.addCart(itemList);
+                Toast.makeText(DonationdistributionActivity.this, "Saved in stock..", Toast.LENGTH_SHORT).show();
                 //saveintoCart(bookname,stock);
              /*
                 intent = new Intent(BookDistributionActivity.this, ListCartActivity.class);
@@ -218,6 +220,7 @@ public class DonationdistributionActivity extends AppCompatActivity {
 
                 itemList.add(new Customlistadding(names,"price","code",stock));
                 cartadding.addCart(itemList);
+                Toast.makeText(DonationdistributionActivity.this, "Saved in stock..", Toast.LENGTH_SHORT).show();
                 //saveintoCart(bookname,stock);
                 //Toast.makeText(BookDistributionActivity.this, ""+firstText+""+secondText, Toast.LENGTH_SHORT).show();
             }
