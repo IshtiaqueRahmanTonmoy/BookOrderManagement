@@ -72,18 +72,17 @@ public class BookRequistionActivity extends AppCompatActivity {
     private static final String TAG_DISTRICTID = "district_id";
     private static final String TAG_THANAID = "thana_id";
 
-
-
     String cid,classvalid,class_id,bookname, bookselect_id,book_type,vid,department_id;
     private ArrayList<String> instlist,classlist,booklist;
     String[] SPINNERLIST = {"Guide Book", "Text Book"};
-    String requisition_by,email;
+    String requisition_by,email,approved_by;
     double r,total;
     EditText commentEditText;
     int q;
-    DateFormat dateFormat;
+    DateFormat dateFormat,dateFormat1;
     String invoice_no;
     Date dates;
+    String approved_date;
     String total_amount,total_quantity,comment,date,date2,status,division_id,jonal_id,district_id,thana_id,total_transfer_book_quantity,price;
     int i=10;
     String requisition_id="140";
@@ -104,6 +103,8 @@ public class BookRequistionActivity extends AppCompatActivity {
 
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         dates = new Date();
+
+        dateFormat1 = new SimpleDateFormat("dd-MM-yyyy");
 
         Intent iin= getIntent();
         Bundle b = iin.getExtras();
@@ -144,8 +145,6 @@ public class BookRequistionActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
-
             }
         });
 
@@ -165,6 +164,8 @@ public class BookRequistionActivity extends AppCompatActivity {
                 comment = commentEditText.getText().toString();
                 date = dateFormat.format(dates);
                 date2 = dateFormat.format(dates);
+
+                approved_date = dateFormat1.format(new Date());
                 status = ""+1;
 
                 r = Integer.parseInt(price);
@@ -628,6 +629,9 @@ public class BookRequistionActivity extends AppCompatActivity {
 
                     Log.d("allvalues",requisition_by+invoice_no+total_amount+total_quantity+comment+date+date2+status);
                     paramss.add(new BasicNameValuePair("requisition_by",requisition_by));
+
+                    paramss.add(new BasicNameValuePair("approved_by",approved_by));
+                    paramss.add(new BasicNameValuePair("approved_date",approved_date));
 
                     paramss.add(new BasicNameValuePair("invoice_no",invoice_no));
                     paramss.add(new BasicNameValuePair("division_id",division_id));

@@ -158,7 +158,7 @@
                     android:background="@drawable/my_drawable"
                     android:gravity="center"
                     android:padding="15dip"
-                    android:text="!" />
+                    android:text="বাংলা- টেস্ট পেপার (১ম বর্ষ)" />
 
                 <TextView
                     android:id="@+id/status"
@@ -167,7 +167,7 @@
                     android:background="@drawable/my_drawable"
                     android:gravity="center"
                     android:padding="15dip"
-                    android:text="6" />
+                    android:text="10" />
             </TableRow>
 
             <TableRow
@@ -181,7 +181,7 @@
                     android:background="@drawable/my_drawable"
                     android:gravity="center"
                     android:padding="15dip"
-                    android:text="মধুসুদনের কাব্য পাঠের ভুমিকা | হোসনেয়ারা খাতুন বাংলা অনার্স ১ম বর্ষ" />
+                    android:text="রাষ্ট্র-সাজেশন (১ম বর্ষ )" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -189,7 +189,7 @@
                     android:background="@drawable/my_drawable"
                     android:gravity="center"
                     android:padding="15dip"
-                    android:text="13" />
+                    android:text="7" />
             </TableRow>
 
             <TableRow
@@ -203,7 +203,7 @@
                     android:background="@drawable/my_drawable"
                     android:gravity="center"
                     android:padding="15dip"
-                    android:text="বাংলাদেশ এবং বাঙালির ইতিহাস ও সংস্কৃতি | শাজাহান ও দেলোয়ার বাংলা অনার্স ১ম বর" />
+                    android:text="ইংরেজি -মেজর/টেস্টপেপার (২য় বর্ষ)" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -211,7 +211,7 @@
                     android:background="@drawable/my_drawable"
                     android:gravity="center"
                     android:padding="15dip"
-                    android:text="13" />
+                    android:text="5" />
             </TableRow>
 
             <TableRow
@@ -225,7 +225,7 @@
                     android:background="@drawable/my_drawable"
                     android:gravity="center"
                     android:padding="15dip"
-                    android:text="বাংলা-২২১০০৭ (নাটক-১)" />
+                    android:text="সমাজ- টেস্ট পেপার (২য় বর্ষ)" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -233,7 +233,7 @@
                     android:background="@drawable/my_drawable"
                     android:gravity="center"
                     android:padding="15dip"
-                    android:text="4" />
+                    android:text="7" />
             </TableRow>
 
         </TableLayout>

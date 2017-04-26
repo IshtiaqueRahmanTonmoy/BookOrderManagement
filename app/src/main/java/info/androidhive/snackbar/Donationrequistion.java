@@ -349,7 +349,6 @@ public class Donationrequistion extends AppCompatActivity {
                                     @Override
                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                         college_id = String.valueOf(position+2);
-                                        Toast.makeText(getApplicationContext(),""+college_id,Toast.LENGTH_LONG).show();
                                         new GetTeacheraname().execute();
                                     }
 
@@ -397,7 +396,7 @@ public class Donationrequistion extends AppCompatActivity {
                         for (int x = 0; x < th.length(); x++) {
                             JSONObject catObj11 = th.getJSONObject(x);
                             teacherid = catObj11.getString(TAG_TEACHERID);
-                            Toast.makeText(Donationrequistion.this, "teacheid"+teacherid, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(Donationrequistion.this, "teacheid"+teacherid, Toast.LENGTH_SHORT).show();
                             teachername = catObj11.getString(TAG_TEACHERNAME);
                             Log.d("output",teachername);
                             teacherlist.add(teachername);
@@ -413,6 +412,7 @@ public class Donationrequistion extends AppCompatActivity {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 teacher_id = String.valueOf(position+1);
+                                Toast.makeText(getApplicationContext(),"teacherid"+teacherid,Toast.LENGTH_LONG).show();
                                 new SubjectName().execute();
                             }
                             @Override
@@ -454,7 +454,7 @@ public class Donationrequistion extends AppCompatActivity {
                         for (int x = 0; x < th.length(); x++) {
                             JSONObject catObj11 = th.getJSONObject(x);
                             subjectid = catObj11.getString(TAG_SUBJECTID);
-                            Toast.makeText(Donationrequistion.this, "subjectid"+subjectid, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(Donationrequistion.this, "subjectid"+subjectid, Toast.LENGTH_SHORT).show();
 
                             subjectname = catObj11.getString(TAG_SUBJECTNAME);
                             Log.d("output",teachername);
@@ -512,7 +512,7 @@ public class Donationrequistion extends AppCompatActivity {
                         for (int x = 0; x < th.length(); x++) {
                             JSONObject catObj11 = th.getJSONObject(x);
                             classid = catObj11.getString(TAG_CLASSID);
-                            Toast.makeText(Donationrequistion.this, "classid"+classid, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(Donationrequistion.this, "classid"+classid, Toast.LENGTH_SHORT).show();
                             classname = catObj11.getString(TAG_CLASSNAME);
                             Log.d("output",teachername);
                             classlist.add(classname);
@@ -630,10 +630,12 @@ public class Donationrequistion extends AppCompatActivity {
                     paramss.add(new BasicNameValuePair("jonal_id","55"));
                     paramss.add(new BasicNameValuePair("district_id","42"));
                     paramss.add(new BasicNameValuePair("thana_id",thana_id));
-                    paramss.add(new  BasicNameValuePair("college_id","520"));
-                    paramss.add(new  BasicNameValuePair("teacher_id","1289"));
-                    paramss.add(new  BasicNameValuePair("department_id","2"));
-                    paramss.add(new  BasicNameValuePair("class_id","2"));
+
+                    paramss.add(new  BasicNameValuePair("college_id",college_id));
+                    paramss.add(new  BasicNameValuePair("teacher_id",teacherid));
+                    paramss.add(new  BasicNameValuePair("department_id",department_id));
+                    paramss.add(new  BasicNameValuePair("class_id",class_id));
+
                     paramss.add(new  BasicNameValuePair("student_quantity",student_quantity));
                     paramss.add(new  BasicNameValuePair("transfer_student_quantity",transfer_student_quantity));
                     paramss.add(new  BasicNameValuePair("possible_book",possible_book));
