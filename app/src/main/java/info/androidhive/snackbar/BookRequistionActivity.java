@@ -223,7 +223,7 @@ public class BookRequistionActivity extends AppCompatActivity {
                             thana_id = c.getString(TAG_THANAID);
 
 
-                            Toast.makeText(BookRequistionActivity.this, "requistion by"+division_id, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BookRequistionActivity.this, "requistion by"+requisition_by, Toast.LENGTH_SHORT).show();
 
                           /*
                             double r = Double.parseDouble(rate);
@@ -645,7 +645,17 @@ public class BookRequistionActivity extends AppCompatActivity {
                     paramss.add(new  BasicNameValuePair("comment",comment));
                     paramss.add(new  BasicNameValuePair("date",date));
                     paramss.add(new  BasicNameValuePair("date2",date2));
-                    paramss.add(new  BasicNameValuePair("status",status));
+
+
+                    paramss.add(new BasicNameValuePair("book_id",book_id));
+                    paramss.add(new BasicNameValuePair("department_id",department_id));
+                    paramss.add(new  BasicNameValuePair("class_id",class_id));
+                    paramss.add(new  BasicNameValuePair("book_type",book_type));
+                    paramss.add(new  BasicNameValuePair("quantity",quantity.getText().toString()));
+                    paramss.add(new  BasicNameValuePair("transfer_quantity",quantity.getText().toString()));
+                    paramss.add(new  BasicNameValuePair("price",price));
+                    paramss.add(new  BasicNameValuePair("sell_price",price));
+
 
                     JSONObject json = jp.makeHttpRequest(urlsubmidata1, "POST", paramss);
                     //Log.d("Create Response", json.toString());
