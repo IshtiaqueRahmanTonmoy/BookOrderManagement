@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AddnewexpenseActivity extends AppCompatActivity {
@@ -50,6 +51,8 @@ public class AddnewexpenseActivity extends AppCompatActivity {
     int calculateusedkm = 0,calculatesumkm2 = 0,distotal = 0,personaluse = 0,officeuse = 0,kmrent = 0;
     JSONParser jsonParser;
     EditText input,input1,input2,input3,input4,input5;
+    Date date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,17 +197,133 @@ public class AddnewexpenseActivity extends AppCompatActivity {
                     }
                 });
 
+                cost.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        costs = Integer.parseInt(cost.getText().toString());
+                        Transportcost.setText(""+costs);
+                        giveMeSum(costs);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        //Toast.makeText(getApplicationContext(),""+costs+""+mobrent,Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                mobilerent.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        mobrent = Integer.parseInt(mobilerent.getText().toString());
+                        giveMeSum(mobrent);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+                });
+
+
+
+                Compensations.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        compensations = Integer.parseInt(Compensations.getText().toString());
+                        giveMeSum(compensations);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+                });
+
+                packetwithdraw.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        packetwidthdraw = Integer.parseInt(packetwithdraw.getText().toString());
+                        giveMeSum(packetwidthdraw);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+                });
+
+                othercost.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        othercosts = Integer.parseInt(othercost.getText().toString());
+                        giveMeSum(othercosts);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+                });
+
+
                 alert.setView(layout);
 
                 alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Do something with value!
-
-
-
-
                         //passTheValues(calculateusedkm,calculatesumkm2,distotal,personaluse,officeuse,kmrent);
                         //Toast.makeText(getApplicationContext(),"transport"+transportcost+"costs"+costs,Toast.LENGTH_LONG).show();
+
+                        distancefr = distancefrom.getText().toString();
+                        distancet = distanceto.getText().toString();
+                        nameofvehic = nameofvehicle.getText().toString();
+                        transportcoststring = Transportcost.getText().toString();
+                        distancekm = distanceinkm.getText().toString();
+                        costsstring = cost.getText().toString();
+                        mobrentstring = mobilerent.getText().toString();
+                        compensationsstring = Compensations.getText().toString();
+                        packetwithdrawstring = packetwithdraw.getText().toString();
+                        othercoststring = othercost.getText().toString();
+                        totalstring = total.getText().toString();
+
+                        Log.d("v", String.valueOf(costs+mobrent+compensations+packetwidthdraw+othercosts));
+                        Log.d("ouputs","from"+distancefr+"to"+distancet+"nameofvehic"+nameofvehic+"transportcost"+transportcoststring+"distancekm"+distancekm+"cost"+costsstring+"mobile"+mobrentstring+"compnesation"+compensations+"packet"+packetdrawal+"othercost"+othercosts+"total"+totalstring);
+                        Log.d("values","startjourfr"+String.valueOf(calculateusedkm)+"endjourneykm"+String.valueOf(calculatesumkm2)+"totaljourkm"+String.valueOf(distotal)+"personalusekm"+String.valueOf(personaluse)+"officeuse"+String.valueOf(officeuse)+"kmerent"+String.valueOf(kmrent));
+            /*
+               startjournstring = input.getText().toString();
+               endjourneystring = input1.getText().toString();
+               totaljourneystring = input2.getText().toString();
+               personalusestring = input3.getText().toString();
+               officestring = input4.getText().toString();
+               kmrentstring = input5.getText().toString();
+             */
+
+                        //Toast.makeText(getApplicationContext(),"costs"+distancefr+"mobrent"+distancet+"total"+totals, Toast.LENGTH_LONG).show();
+
+                        new InsertintoDB().execute();
+
+
 
                     }
                 });
@@ -226,126 +345,15 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
 
 
-        cost.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                costs = Integer.parseInt(cost.getText().toString());
-                Transportcost.setText(""+costs);
-                giveMeSum(costs);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                //Toast.makeText(getApplicationContext(),""+costs+""+mobrent,Toast.LENGTH_LONG).show();
-            }
-        });
-
-        mobilerent.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mobrent = Integer.parseInt(mobilerent.getText().toString());
-                giveMeSum(mobrent);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-
-        Compensations.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                compensations = Integer.parseInt(Compensations.getText().toString());
-                giveMeSum(compensations);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        packetwithdraw.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                packetwidthdraw = Integer.parseInt(packetwithdraw.getText().toString());
-                giveMeSum(packetwidthdraw);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        othercost.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                othercosts = Integer.parseInt(othercost.getText().toString());
-                giveMeSum(othercosts);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
 
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-                distancefr = distancefrom.getText().toString();
-                distancet = distanceto.getText().toString();
-                nameofvehic = nameofvehicle.getText().toString();
-                transportcoststring = Transportcost.getText().toString();
-                distancekm = distanceinkm.getText().toString();
-                costsstring = cost.getText().toString();
-                mobrentstring = mobilerent.getText().toString();
-                compensationsstring = Compensations.getText().toString();
-                packetwithdrawstring = packetwithdraw.getText().toString();
-                othercoststring = othercost.getText().toString();
-                totalstring = total.getText().toString();
-
-               Log.d("ouputs","from"+distancefr+"to"+distancet+"nameofvehic"+nameofvehic+"transportcost"+transportcoststring+"distancekm"+distancekm+"cost"+costsstring+"mobile"+mobrentstring+"compnesation"+compensations+"packet"+packetdrawal+"othercost"+othercosts+"total"+totalstring);
-               Log.d("values","startjourfr"+String.valueOf(calculateusedkm)+"endjourneykm"+String.valueOf(calculatesumkm2)+"totaljourkm"+String.valueOf(distotal)+"personalusekm"+String.valueOf(personaluse)+"officeuse"+String.valueOf(officeuse)+"kmerent"+String.valueOf(kmrent));
-            /*
-               startjournstring = input.getText().toString();
-               endjourneystring = input1.getText().toString();
-               totaljourneystring = input2.getText().toString();
-               personalusestring = input3.getText().toString();
-               officestring = input4.getText().toString();
-               kmrentstring = input5.getText().toString();
-             */
-
-                //Toast.makeText(getApplicationContext(),"costs"+distancefr+"mobrent"+distancet+"total"+totals, Toast.LENGTH_LONG).show();
-
-                new InsertintoDB().execute();
+                //Toast.makeText(AddnewexpenseActivity.this, ""+date, Toast.LENGTH_SHORT).show();
+               //Log.d("date string", String.valueOf(date));
 
 
                 //Toast.makeText(getApplicationContext(),"called", Toast.LENGTH_LONG).show();
@@ -361,6 +369,8 @@ public class AddnewexpenseActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
     }
 
     /*
@@ -390,11 +400,14 @@ public class AddnewexpenseActivity extends AppCompatActivity {
                 @Override
                 public void run() {
 
+                    Date today = new Date();
+                    date = new java.sql.Date(today.getTime());
+
                     jsonParser = new JSONParser();
                     String urlsubmidata = "http://dik-pl.com/dikpl/expense.php";
                     List<NameValuePair> paramss = new ArrayList<NameValuePair>();
 
-                    paramss.add(new BasicNameValuePair("destination_from",distancet));
+                    paramss.add(new BasicNameValuePair("destination_from",distancefr));
                     paramss.add(new  BasicNameValuePair("destination_to",distancet));
                     paramss.add(new  BasicNameValuePair("vicle_name",nameofvehic));
                     paramss.add(new  BasicNameValuePair("transport_fee",transportcoststring));
@@ -407,12 +420,13 @@ public class AddnewexpenseActivity extends AppCompatActivity {
                     paramss.add(new  BasicNameValuePair("total_cost",totalstring));
                     paramss.add(new  BasicNameValuePair("expense_type",type));
 
-                    paramss.add(new  BasicNameValuePair("start_journey_km",String.valueOf(calculateusedkm)));
-                    paramss.add(new  BasicNameValuePair("end_journey_km",String.valueOf(calculatesumkm2)));
-                    paramss.add(new  BasicNameValuePair("total_journey_km",String.valueOf(distotal)));
-                    paramss.add(new  BasicNameValuePair("personal_use_km",String.valueOf(personaluse)));
-                    paramss.add(new  BasicNameValuePair("office_use_km",String.valueOf(officeuse)));
-                    paramss.add(new  BasicNameValuePair("kilomitter_rate",String.valueOf(kmrent)));
+                    paramss.add(new  BasicNameValuePair("start_journey_km",input.getText().toString()));
+                    paramss.add(new  BasicNameValuePair("end_journey_km",input1.getText().toString()));
+                    paramss.add(new  BasicNameValuePair("total_journey_km",input2.getText().toString()));
+                    paramss.add(new  BasicNameValuePair("personal_use_km",input3.getText().toString()));
+                    paramss.add(new  BasicNameValuePair("office_use_km",input4.getText().toString()));
+                    paramss.add(new  BasicNameValuePair("kilomitter_rate",input5.getText().toString()));
+                    paramss.add(new  BasicNameValuePair("date",String.valueOf(date)));
 
                     JSONObject json = jsonParser.makeHttpRequest(urlsubmidata, "POST", paramss);
                     //Log.d("Create Response", json.toString());
