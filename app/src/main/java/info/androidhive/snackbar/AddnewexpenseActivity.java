@@ -440,7 +440,7 @@ public class AddnewexpenseActivity extends AppCompatActivity {
 
                             AddnewexpenseActivity.this.runOnUiThread(new Runnable() {
                                 public void run() {
-                                    Toast.makeText(AddnewexpenseActivity.this.getBaseContext(), "Registration completed..", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(AddnewexpenseActivity.this.getBaseContext(), "Insert into expense completed..", Toast.LENGTH_LONG).show();
                                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(i);
                                     finish();
