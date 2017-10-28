@@ -619,8 +619,8 @@ public class Donationrequistion extends AppCompatActivity {
                     //String urlsubmidata = ""+url+"/";
                     List<NameValuePair> paramss = new ArrayList<NameValuePair>();
 
-                    paramss.add(new  BasicNameValuePair("requisition_by","85"));
-                    paramss.add(new  BasicNameValuePair("approved_by","1"));
+                    paramss.add(new  BasicNameValuePair("requisition_by",requisition_by));
+                    paramss.add(new  BasicNameValuePair("approved_by","0"));
                     paramss.add(new  BasicNameValuePair("approved_date",approved_date));
                     paramss.add(new  BasicNameValuePair("invoice_no","0"));
                     paramss.add(new  BasicNameValuePair("type","0"));
@@ -645,7 +645,7 @@ public class Donationrequistion extends AppCompatActivity {
                     paramss.add(new  BasicNameValuePair("money_amount",money_amount));
                     paramss.add(new  BasicNameValuePair("transfer_money_amount",transfer_money_amount));
                     paramss.add(new  BasicNameValuePair("distribution_id","0"));
-                    paramss.add(new  BasicNameValuePair("status","1"));
+                    paramss.add(new  BasicNameValuePair("status","0"));
 
                     Log.d("ouput","class"+cid+"teacher"+teacherid+"subject"+subjectid+"class"+classid+"studentno"+nostudent+"possiblebook"+possbook+"onudan"+onudanamount+"id"+bookid+"amount"+amountk);
                     JSONObject json = jsonparser.makeHttpRequest(urlsubmidata,
