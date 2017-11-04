@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TextView
+        android:id="@+id/book_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:background="@drawable/cell_shape"
+        android:ellipsize="end"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:text="Book name" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/writer_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:background="@drawable/cell_shape"
+        android:ellipsize="end"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:text="writer name" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/subject"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:background="@drawable/cell_shape"
+        android:ellipsize="end"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:text="subject" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/classname"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:background="@drawable/cell_shape"
+        android:ellipsize="end"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:text="class" />
+
+    <TextView
+        android:id="@+id/type"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.7"
+        android:background="@drawable/cell_shape"
+        android:ellipsize="end"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:text="type" />
+
+    <TextView
+        android:id="@+id/quantity"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.3"
+        android:background="@drawable/cell_shape"
+        android:ellipsize="end"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:text="quantity" >
+    </TextView>
+
+</LinearLayout>

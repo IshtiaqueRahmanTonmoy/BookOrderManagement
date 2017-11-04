@@ -90,6 +90,8 @@ public class BookDistributionActivity extends AppCompatActivity {
     String college_id,teacher_id,teachername,email,department_id;
     private ListView listview;
     String bookname,writtername,quantitys,deptname,class_name;
+    private ArrayList<BookDistribution> usersList;
+    DistributionAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -258,6 +260,7 @@ public class BookDistributionActivity extends AppCompatActivity {
                             quantitys = c.getString(TAG_QUANTITY);
                             deptname = c.getString(TAG_DEPTNAME);
                             class_name = c.getString(TAG_CLASSNAME);
+                            itemList.add(new Customlistadding(bookname,writtername,deptname,class_name,quantitys));
 
 
                             Toast.makeText(BookDistributionActivity.this, "bookname"+bookname, Toast.LENGTH_SHORT).show();
