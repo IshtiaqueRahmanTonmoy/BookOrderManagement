@@ -62,9 +62,19 @@ public class BookDistributionActivity extends AppCompatActivity {
     private static final String TAG_CLASNAME = "name";
     private static final String TAG_CLASSNAME = "tbl_class";
     private static final String TAG_SUCCESS = "success";
+    private static final String TAG_MPO = "mpo_id";
     private static final String TAG_CLASSID = "id";
     private static final String TAG_COLLEGEID = "college_id";
     private static final String TAG_COLLEGEIDARRAY = "college";
+
+
+    private static final String TAG_ARRAY = "th";
+    private static final String TAG_BOOKNAME = "book_name";
+    private static final String TAG_WRITERNAME = "writter_name";
+    private static final String TAG_QUANTITY = "quantity";
+    private static final String TAG_DEPTNAME = "deptname";
+    private static final String TAG_CLASSSNAME = "class_name";
+
     JSONArray college;
     private ArrayList<String> instlist;
     private static final String TAG_INSID = "id";
@@ -72,11 +82,14 @@ public class BookDistributionActivity extends AppCompatActivity {
     String name,price,code,stock,quantity;
     JSONParser jsonParser = new JSONParser();
     private ArrayList<String> deplist,classlist,teacherlist;
+    private static String url_getiuserid = "http://dik-pl.com/dikpl/gettablebookdistribution.php";
     private static String url_institute = "http://dik-pl.com/dikpl/departmentget.php";
     private static String url_instituteg = "http://dik-pl.com/dikpl/college.php";
     private static String url_classanem = "http://dik-pl.com/dikpl/classget.php";
     private static String baseurl="http://dik-pl.com/dikpl/teachers.php";
     String college_id,teacher_id,teachername,email,department_id;
+    private ListView listview;
+    String bookname,writtername,quantitys,deptname,class_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,19 +112,13 @@ public class BookDistributionActivity extends AppCompatActivity {
 
         }
 
-        //new getuser().execute();
-        new Department().execute();
-        new Classname().execute();
+        new getList().execute();
         new getInstituionname().execute();
-
-
-        spinner1 = (Spinner) findViewById(R.id.spinner2);
-        spinner2 = (Spinner) findViewById(R.id.spinner3);
+        //new getuser().execute();
+        //new Department().execute();
 
         schoolspinner = (Spinner) findViewById(R.id.schoolspinner);
-        teacher = (Spinner) findViewById(R.id.teacher);
-
-        comment = (EditText) findViewById(R.id.txtComment);
+        listview = (ListView) findViewById(R.id.listview);
 
         sqlite_obj = new CartSavingSqlite(BookDistributionActivity.this);
 
@@ -146,90 +153,6 @@ public class BookDistributionActivity extends AppCompatActivity {
             }
         });
 
-       // spinner = (Spinner) findViewById(R.id.spinner2);
-        spinner2 = (Spinner) findViewById(R.id.spinner3);
-        tablerow2 = (TableRow) findViewById(R.id.tablerow2);
-        tablerow3 = (TableRow) findViewById(R.id.tablerow3);
-        tablerow4 = (TableRow) findViewById(R.id.tablerow4);
-        tablerow5 = (TableRow) findViewById(R.id.tablerow5);
-
-        tablerow2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int id=1;
-                TableRow t = (TableRow) v;
-                TextView firstTextView = (TextView) t.getChildAt(0);
-                TextView secondTextView = (TextView) t.getChildAt(1);
-                EditText qty = (EditText) t.getChildAt(2);
-                name = firstTextView.getText().toString();
-                stock = secondTextView.getText().toString();
-                quantity = qty.getText().toString();
-
-                Log.d("val",college_id+teacher_id+department_id);
-                //sqlite_obj.addToCart(bookname,"price","code",stock);
-                itemList.add(new Customlistadding(name,"price","code",stock,quantity,college_id,teacher_id,department_id,comment.getText().toString()));
-                cartadding.addCart(itemList);
-            }
-        });
-
-        tablerow3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int id=2;
-                TableRow t = (TableRow) v;
-                TextView firstTextView = (TextView) t.getChildAt(0);
-                TextView secondTextView = (TextView) t.getChildAt(1);
-                EditText qty = (EditText) t.getChildAt(2);
-                name = firstTextView.getText().toString();
-                stock = secondTextView.getText().toString();
-                quantity = qty.getText().toString();
-                Log.d("val",college_id+teacher_id+department_id);
-                //sqlite_obj.addToCart(bookname,"price","code",stock);
-                itemList.add(new Customlistadding(name,"price","code",stock,quantity,college_id,teacher_id,department_id,comment.getText().toString()));
-                cartadding.addCart(itemList);
-
-            }
-        });
-
-        tablerow4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int id=3;
-                TableRow t = (TableRow) v;
-                TextView firstTextView = (TextView) t.getChildAt(0);
-                TextView secondTextView = (TextView) t.getChildAt(1);
-                EditText qty = (EditText) t.getChildAt(2);
-                name = firstTextView.getText().toString();
-                stock = secondTextView.getText().toString();
-                quantity = qty.getText().toString();
-                Log.d("val",college_id+teacher_id+department_id);
-                //sqlite_obj.addToCart(bookname,"price","code",stock);
-                itemList.add(new Customlistadding(name,"price","code",stock,quantity,college_id,teacher_id,department_id,comment.getText().toString()));
-                cartadding.addCart(itemList);
-
-            }
-        });
-
-        tablerow5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int id=4;
-                TableRow t = (TableRow) v;
-                TextView firstTextView = (TextView) t.getChildAt(0);
-                TextView secondTextView = (TextView) t.getChildAt(1);
-                EditText qty = (EditText) t.getChildAt(2);
-                name = firstTextView.getText().toString();
-                stock = secondTextView.getText().toString();
-                quantity = qty.getText().toString();
-                Log.d("val",college_id+teacher_id+department_id);
-                //sqlite_obj.addToCart(bookname,"price","code",stock);
-                itemList.add(new Customlistadding(name,"price","code",stock,quantity,college_id,teacher_id,department_id,comment.getText().toString()));
-                cartadding.addCart(itemList);
-
-            }
-        });
-
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,128 +167,6 @@ public class BookDistributionActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
     }
-
-    public class Department extends AsyncTask<Void,Void,Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    deplist = new ArrayList<String>();
-                    List<NameValuePair> param = new ArrayList<NameValuePair>();
-                    // getting JSON string from URL
-                    JSONObject json = jsonParser.makeHttpRequest(url_institute, "GET", param);
-
-                    // Check your log cat for JSON reponse
-                    Log.d("All Products: ", json.toString());
-
-                    try {
-                        // Checking for SUCCESS TAG
-                        int success = json.getInt(TAG_SUCCESS);
-
-                        if (success == 1) {
-                            // products found
-                            // Getting Array of Products
-                            department = json.getJSONArray(TAG_DEPARTMENT);
-
-                            // looping through All Products
-                            for (int i = 0; i < department.length(); i++) {
-                                JSONObject c = department.getJSONObject(i);
-
-                                // Storing each json item in variable
-                                String id = c.getString(TAG_DEPID);
-                                String name = c.getString(TAG_DEPNAME);
-                                //BengaliUnicodeString.getBengaliUTF(getActivity(),head,text);
-                                deplist.add(name);
-                                ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(BookDistributionActivity.this, android.R.layout.simple_spinner_item, deplist);
-                                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                spinner1.setAdapter(spinnerAdapter);
-
-                                spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                    @Override
-                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                        department_id = String.valueOf(position+1);
-                                        Toast.makeText(getApplicationContext(),"department id"+department_id,Toast.LENGTH_LONG).show();
-                                    }
-
-                                    @Override
-                                    public void onNothingSelected(AdapterView<?> parent) {
-
-                                    }
-                                });
-
-
-                                //Toast.makeText(getApplicationContext(),""+name,Toast.LENGTH_LONG).show();
-
-                            }
-                        } else {
-
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            return null;
-        }
-    }
-
-
-    public class Classname extends AsyncTask<Void,Void,Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    classlist = new ArrayList<String>();
-                    List<NameValuePair> param = new ArrayList<NameValuePair>();
-                    // getting JSON string from URL
-                    JSONObject json = jsonParser.makeHttpRequest(url_classanem, "GET", param);
-
-                    // Check your log cat for JSON reponse
-                    Log.d("All Products: ", json.toString());
-
-                    try {
-                        // Checking for SUCCESS TAG
-                        int success = json.getInt(TAG_SUCCESS);
-
-                        if (success == 1) {
-                            // products found
-                            // Getting Array of Products
-                            classname = json.getJSONArray(TAG_CLASSNAME);
-
-                            // looping through All Products
-                            for (int i = 0; i < classname.length(); i++) {
-                                JSONObject c = classname.getJSONObject(i);
-
-                                // Storing each json item in variable
-                                String classid = c.getString(TAG_CLASSID);
-                                String classname = c.getString(TAG_CLASNAME);
-                                // Toast.makeText(BookRequistionActivity.this, ""+classname, Toast.LENGTH_SHORT).show();
-                                //BengaliUnicodeString.getBengaliUTF(getActivity(),head,text);
-                                classlist.add(classname);
-                                ArrayAdapter<String> spinnerAdapter1 = new ArrayAdapter<String>(BookDistributionActivity.this, android.R.layout.simple_spinner_item, classlist);
-                                spinnerAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                spinner2.setAdapter(spinnerAdapter1);
-
-
-                                //Toast.makeText(getApplicationContext(),""+name,Toast.LENGTH_LONG).show();
-
-                            }
-                        } else {
-
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            return null;
-        }
-    }
-
 
     public class getInstituionname extends AsyncTask<Void,Void,Void> {
         @Override
@@ -405,19 +206,6 @@ public class BookDistributionActivity extends AppCompatActivity {
                                 spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 schoolspinner.setAdapter(spinnerAdapter);
 
-                                schoolspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                    @Override
-                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                        college_id = String.valueOf(position+2);
-                                        Toast.makeText(getApplicationContext(),""+college_id,Toast.LENGTH_LONG).show();
-                                        new GetTeacheraname().execute();
-                                    }
-
-                                    @Override
-                                    public void onNothingSelected(AdapterView<?> parent) {
-
-                                    }
-                                });
                                 //Toast.makeText(getApplicationContext(),""+name,Toast.LENGTH_LONG).show();
 
                             }
@@ -432,41 +220,58 @@ public class BookDistributionActivity extends AppCompatActivity {
             return null;
         }
     }
+    private class getList extends AsyncTask<String, String, String> {
 
-
-    public class GetTeacheraname extends AsyncTask<Void,Void,Void>{
         @Override
-        protected Void doInBackground(Void... params) {
-
+        protected String doInBackground(String... params) {
+            // updating UI from Background Thread
+            final JSONParser jp = new JSONParser();
             runOnUiThread(new Runnable() {
-                @Override
                 public void run() {
-                    teacherlist = new ArrayList<String>();
-                    List<NameValuePair> param = new ArrayList<NameValuePair>();
+                    // Check for success tag
+                    int success;
 
-                    //String val = insid;
-                    //Toast.makeText(getApplicationContext(),""+val,Toast.LENGTH_LONG).show();
-                    param.add(new BasicNameValuePair(TAG_COLLEGEID, college_id));
-                    JSONObject json = jsonParser.makeHttpRequest(baseurl, "GET", param);
-
-                    Log.e("Response: ", "> " + json);
-
-                    JSONArray th = null;
                     try {
-                        th = json.getJSONArray("th");
-                        for (int x = 0; x < th.length(); x++) {
-                            JSONObject catObj11 = th.getJSONObject(x);
-                            teacher_id = catObj11.getString(TAG_TEACHERID);
-                            Toast.makeText(BookDistributionActivity.this, "teacheid"+teacher_id, Toast.LENGTH_SHORT).show();
-                            teachername = catObj11.getString(TAG_TEACHERNAME);
-                            Log.d("output",teachername);
-                            teacherlist.add(teachername);
-                        }
+                        // Building Parameters
+                        //Toast.makeText(BookRequistionActivity.this, ""+department_id, Toast.LENGTH_SHORT).show();
+                        List<NameValuePair> paramsss = new ArrayList<NameValuePair>();
+                        paramsss.add(new BasicNameValuePair(TAG_MPO,"2"));
+                        Log.d("params",paramsss.toString());
 
-                        //Log.e("Thana: ", "> " + than);
-                        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(BookDistributionActivity.this, android.R.layout.simple_list_item_1, teacherlist);
-                        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        teacher.setAdapter(spinnerAdapter);
+                        // getting product details by making HTTP request
+                        // Note that product details url will use GET request
+                        JSONObject json = jp.makeHttpRequest(
+                                url_getiuserid, "GET", paramsss);
+
+                        // check your log for json response
+                        Log.d("Single id Details", json.toString());
+
+                        // json success tag
+                        success = json.getInt(TAG_SUCCESS);
+                        if (success == 1) {
+                            // successfully received product details
+                            JSONArray bookObj = json
+                                    .getJSONArray(TAG_ARRAY); // JSON Array
+                            JSONObject c = bookObj.getJSONObject(0);
+                            bookname = c.getString(TAG_BOOKNAME);
+                            writtername = c.getString(TAG_WRITERNAME);
+                            quantitys = c.getString(TAG_QUANTITY);
+                            deptname = c.getString(TAG_DEPTNAME);
+                            class_name = c.getString(TAG_CLASSNAME);
+
+
+                            Toast.makeText(BookDistributionActivity.this, "bookname"+bookname, Toast.LENGTH_SHORT).show();
+
+                          /*
+                            double r = Double.parseDouble(rate);
+                            int q = Integer.parseInt(quantity.getText().toString());
+                            double v = r * q;
+                            Toast.makeText(BookRequistionActivity.this, ""+v, Toast.LENGTH_SHORT).show();
+                           */
+
+                        } else {
+                            // product with pid not found
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

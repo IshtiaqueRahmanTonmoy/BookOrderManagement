@@ -8,6 +8,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
+
     android:orientation="vertical"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -15,60 +16,12 @@
     tools:showIn="@layout/activity_book_distribution">
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:id="@+id/content_book_requistion"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/background_light"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:id="@+id/text1"
-            android:text="Department Name"
-            android:textStyle="bold"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:id="@+id/text2"
-            android:text="Class Name"
-            android:textStyle="bold"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_weight="2"
-        android:background="@android:color/background_light"
-        android:orientation="horizontal" >
-
-        <Spinner
-            android:id="@+id/spinner2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="DepartmentName"/>
-
-        <Spinner
-            android:id="@+id/spinner3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="ClassName"/>
-
-     </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,16 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
 
-            <TextView
-                android:id="@+id/college"
-                android:text="Teacher"
-                android:textStyle="bold"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
         </LinearLayout>
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -109,14 +53,73 @@
                 android:layout_weight="1"
                 android:hint="DepartmentName"/>
 
-            <Spinner
-                android:id="@+id/teacher"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Teacher"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id = "@+id/relativeLayout1"
+            android:layout_width = "fill_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height = "wrap_content"
+            android:background = "@color/blue" >
+
+            <TextView
+                android:layout_width = "0dp"
+                android:layout_height = "wrap_content"
+                android:layout_weight = "1"
+                android:gravity = "center"
+                android:padding = "5dp"
+                android:text = "book name"
+                android:textColor = "#ffffff"/>
+
+            <TextView
+                android:layout_width = "0dp"
+                android:layout_height = "wrap_content"
+                android:layout_weight = "1"
+                android:gravity = "center"
+                android:padding = "5dp"
+                android:text = "writer name"
+                android:textColor = "#ffffff" />
+
+            <TextView
+                android:layout_width = "0dp"
+                android:layout_height = "wrap_content"
+                android:layout_weight = "1.3"
+                android:gravity = "center"
+                android:padding = "5dp"
+                android:text = "subject"
+                android:textColor = "#ffffff" />
+
+
+            <TextView
+                android:layout_width = "0dp"
+                android:layout_height = "wrap_content"
+                android:layout_weight = "1"
+                android:gravity = "center"
+                android:padding = "5dp"
+                android:text = "class"
+                android:textColor = "#ffffff" />
+
+            <TextView
+                android:layout_width = "0dp"
+                android:layout_height = "wrap_content"
+                android:layout_weight = "1"
+                android:gravity = "center"
+                android:padding = "5dp"
+                android:text = "type"
+                android:textColor = "#ffffff" />
+
+            <TextView
+                android:layout_width = "0dp"
+                android:layout_height = "wrap_content"
+                android:layout_weight = "1"
+                android:gravity = "center"
+                android:padding = "5dp"
+                android:text = "quantity"
+                android:textColor = "#ffffff" />
 
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -126,187 +129,12 @@
             android:background="@android:color/background_light"
             android:orientation="horizontal" >
 
-            <EditText
-                android:id="@+id/txtComment"
-                android:layout_width="200dp"
-                android:layout_weight="1.5"
-                android:layout_height="50dp"
-                android:textSize="20dp"
-                android:hint="Comment" />
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
-        <TableLayout
-            android:id="@+id/tablelayout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/my_drawable"
-            android:padding="5dp" >
-
-            <TableRow
-                android:id="@+id/tablerow1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/my_drawable"
-                    android:gravity="center"
-                    android:padding="15dip"
-                    android:text="Book Name" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/my_drawable"
-                    android:gravity="center"
-                    android:padding="15dip"
-                    android:text="Curent Stock" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/my_drawable"
-                    android:gravity="center"
-                    android:padding="15dip"
-                    android:text="Quantity" />
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tablerow2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/home"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/my_drawable"
-                    android:gravity="center"
-                    android:padding="15dip"
-                    android:text="!" />
-
-                <TextView
-                    android:id="@+id/status"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/my_drawable"
-                    android:gravity="center"
-                    android:padding="15dip"
-                    android:text="6" />
-
-                <EditText
-                    android:id="@+id/quantity1"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:drawablePadding="10dp"
-                    android:textColorHint="@color/cyan_500"
-                    android:gravity="fill"
-                    android:textColor="#1a1919"
-                    android:hint="Enter quantity"
-                    android:paddingLeft="15dp"/>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tablerow3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/my_drawable"
-                    android:gravity="center"
-                    android:padding="15dip"
-                    android:text="মধুসুদনের কাব্য পাঠের ভুমিকা | হোসনেয়ারা খাতুন বাংলা অনার্স ১ম বর্ষ" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/my_drawable"
-                    android:gravity="center"
-                    android:padding="15dip"
-                    android:text="13" />
-
-                <EditText
-                    android:id="@+id/quantity2"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:drawablePadding="10dp"
-                    android:textColorHint="@color/cyan_500"
-                    android:gravity="fill"
-                    android:textColor="#1a1919"
-                    android:hint="Enter quantity"
-                    android:paddingLeft="15dp"/>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tablerow4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/my_drawable"
-                    android:gravity="center"
-                    android:padding="15dip"
-                    android:text="বাংলাদেশ এবং বাঙালির ইতিহাস ও সংস্কৃতি" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/my_drawable"
-                    android:gravity="center"
-                    android:padding="15dip"
-                    android:text="13" />
-                <EditText
-                    android:id="@+id/quantity3"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:drawablePadding="10dp"
-                    android:textColorHint="@color/cyan_500"
-                    android:gravity="fill"
-                    android:textColor="#1a1919"
-                    android:hint="Enter quantity"
-                    android:paddingLeft="15dp"/>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tablerow5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/my_drawable"
-                    android:gravity="center"
-                    android:padding="15dip"
-                    android:text="বাংলা-২২১০০৭ (নাটক-১)" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/my_drawable"
-                    android:gravity="center"
-                    android:padding="15dip"
-                    android:text="4" />
-
-                <EditText
-                    android:id="@+id/quantity4"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:drawablePadding="10dp"
-                    android:textColorHint="@color/cyan_500"
-                    android:gravity="fill"
-                    android:textColor="#1a1919"
-                    android:hint="Enter quantity"
-                    android:paddingLeft="15dp"/>
-            </TableRow>
-
-        </TableLayout>
-
 
         <LinearLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
